@@ -231,10 +231,10 @@ global_rules:
     layer: "schema"
     lifecycle: "pre_calculation"
     scope: "scope2_only"
-    condition: {"!=": [{"var": "input.emission_sources.identified"}, null]}
+    condition: {"!=": [{"var": "input.emission_sources"}, null]}
     assertion:
       "all": [
-        {"var": "input.emission_sources.identified"},
+        {"var": "input.emission_sources"},
         {
           "and": [
             {"!=": [{"var": "activity_data"}, null]},

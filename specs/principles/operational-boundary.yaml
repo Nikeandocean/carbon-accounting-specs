@@ -28,7 +28,7 @@ rules:
     assertion:
       "and": [
         {"!=": [{"var": "input.emission_sources"}, null]},
-        {">": [{"var": "input.emission_sources.length"}, 0]}
+        {"!=": [{"var": "input.emission_sources"}, []]}
       ]
     on_fail: "raise_fatal"
     on_fail_message: "未识别任何Scope 2排放源"

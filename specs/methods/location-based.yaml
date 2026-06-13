@@ -27,9 +27,14 @@ rules:
     lifecycle: "runtime_inference"
     condition: {"==": [{"var": "input.method"}, "location_based"]}
     assertion:
-      "and": [
-        {"!=": [{"var": "input.activity_data"}, null]},
-        {">": [{"var": "input.activity_data"}, 0]}
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "and": [
+            {"!=": [{"var": "activity_data"}, null]},
+            {">": [{"var": "activity_data"}, 0]}
+          ]
+        }
       ]
     on_fail: "raise_fatal"
     on_fail_message: "位置法计算需要有效的活动数据"
@@ -43,9 +48,14 @@ rules:
     layer: "schema"
     lifecycle: "runtime_inference"
     assertion:
-      "or": [
-        {"!=": [{"var": "input.emission_factor.source"}, "default"]},
-        {"!=": [{"var": "input.justifications.rule-lb-002"}, null]}
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "emission_factor.source"}, "default"]},
+            {"!=": [{"var": "input.justifications.rule-lb-002"}, null]}
+          ]
+        }
       ]
     on_fail: "require_justification"
     on_fail_message: "应优先使用区域电网因子而非国家平均因子"
