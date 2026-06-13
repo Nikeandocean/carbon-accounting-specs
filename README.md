@@ -122,6 +122,11 @@ print("✅ 所有前置规则校验通过")
 - [World Resources Institute (WRI)](https://www.wri.org/) — 标准制定机构
 - [WBCSD](https://www.wbcsd.org/) — 标准制定机构
 
+## 联系方式
+
+- GitHub: [@Nikeandocean](https://github.com/Nikeandocean)
+- Email: nikeandocean@gmail.com
+
 ## 许可证
 
 MIT License - 详见 [LICENSE](LICENSE)
