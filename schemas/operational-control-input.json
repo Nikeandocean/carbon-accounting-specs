@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Operational Control Input",
+  "type": "object",
+  "required": ["subsidiaries", "control_indicators"],
+  "properties": {
+    "subsidiaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"}
+        }
+      }
+    },
+    "control_indicators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["subsidiary_id", "has_operational_control"],
+        "properties": {
+          "subsidiary_id": {"type": "string"},
+          "has_operational_control": {"type": "boolean"},
+          "evidence": {"type": "string"}
+        }
+      }
+    }
+  }
+}

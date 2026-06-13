@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Boundary Overlap Output",
+  "description": "Output schema for Scope 1/2 boundary overlap detection",
+  "type": "object",
+  "required": ["overlap_detected", "boundary_violations"],
+  "properties": {
+    "overlap_detected": {
+      "type": "boolean",
+      "description": "Whether any overlap was detected"
+    },
+    "boundary_violations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scope1_source_id": {"type": "string"},
+          "scope2_source_id": {"type": "string"},
+          "violation_type": {
+            "type": "string",
+            "enum": ["id_duplicate", "energy_flow_overlap", "chp_boundary_issue"]
+          },
+          "description": {"type": "string"}
+        }
+      }
+    }
+  }
+}

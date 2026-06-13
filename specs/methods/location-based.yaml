@@ -1,0 +1,71 @@
+meta:
+  id: "scope2/location-based"
+  version: "1.0.0"
+  source: "GHG Protocol Scope 2 Guidance"
+  source_ref: "https://ghgprotocol.org/scope-2-guidance"
+  layer: "schema"
+  description: "基于位置法（Location-Based Method）"
+
+citations:
+  - id: "cit-lb-001"
+    text: "The location-based method reflects the average emissions intensity of grids on which energy consumption occurs, including reflecting, where applicable, the contractual instruments (including tradable certificates) that are available on that grid."
+    page: 28
+    section: "Chapter 6: Scope 2 Guidance"
+
+  - id: "cit-lb-002"
+    text: "Under the location-based method, companies use grid average emission factor data to calculate their Scope 2 emissions."
+    page: 30
+    section: "Chapter 6: Location-Based Method"
+
+rules:
+  - id: "rule-lb-001"
+    name: "位置法适用条件"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition: {"==": [{"var": "input.method"}, "location_based"]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.activity_data"}, null]},
+        {">": [{"var": "input.activity_data"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "位置法计算需要有效的活动数据"
+    citation: "cit-lb-001"
+
+  - id: "rule-lb-002"
+    name: "电网因子选择"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    assertion:
+      "or": [
+        {"!=": [{"var": "input.emission_factor.source"}, "default"]},
+        {"!=": [{"var": "input.justifications.rule-lb-002"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "应优先使用区域电网因子而非国家平均因子"
+    citation: "cit-lb-002"
+
+  - id: "rule-lb-003"
+    name: "位置法计算公式"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "knowledge"
+    statement: "排放量 = 活动数据(MWh) × 电网排放因子(tCO2/MWh)"
+    citation: "cit-lb-002"
+
+dependencies:
+  - ref: "principles/data-quality-hierarchy"
+    relation: "constrained_by"
+  - ref: "principles/emission-attribution"
+    relation: "applies_within"
+
+conflicts_with:
+  - ref: "methods/market-based"
+    resolution: "两种方法均需报告，不可互相替代"

@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Financial Control Output",
+  "type": "object",
+  "required": ["consolidated_entities"],
+  "properties": {
+    "consolidated_entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "has_financial_control": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+meta:
+  id: "scope2/operational-boundary"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "schema"
+  description: "运营边界确定规则：Scope 1/2/3划分"
+
+citations:
+  - id: "cit-op-001"
+    text: "Companies shall report Scope 1 and Scope 2 emissions. Companies may also report Scope 3 emissions."
+    page: 25
+    section: "Chapter 4: Setting Operational Boundaries"
+
+  - id: "cit-op-002"
+    text: "Scope 2 accounts for GHG emissions from the generation of purchased or acquired electricity, steam, heating, and cooling consumed by the reporting company."
+    page: 27
+    section: "Chapter 4: Scope 2 Emissions"
+
+rules:
+  - id: "rule-op-001"
+    name: "Scope 2排放源识别"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.emission_sources"}, null]},
+        {">": [{"var": "input.emission_sources.length"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "未识别任何Scope 2排放源"
+    citation: "cit-op-002"
+
+  - id: "rule-op-002"
+    name: "排放源类型校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {"in": [{"var": "type"}, ["electricity", "steam", "heat", "cooling"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "排放源类型必须为electricity、steam、heat或cooling"
+    citation: "cit-op-002"
+
+  - id: "rule-op-003"
+    name: "活动数据正数校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {">": [{"var": "activity_data"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "活动数据必须为正数"
+    citation: "cit-op-001"
+
+dependencies:
+  - ref: "principles/organizational-boundary"
+    relation: "applies_within"
+
+conflicts_with: []

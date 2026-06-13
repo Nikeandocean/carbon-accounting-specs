@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Equity Share Output",
+  "description": "Output schema for equity share calculation",
+  "type": "object",
+  "required": ["boundary_emissions", "controlled_entities"],
+  "properties": {
+    "boundary_emissions": {
+      "type": "number",
+      "description": "Total emissions within organizational boundary (tCO2e)"
+    },
+    "controlled_entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "ownership_percentage": {"type": "number"},
+          "emissions_share": {"type": "number"}
+        }
+      }
+    }
+  }
+}

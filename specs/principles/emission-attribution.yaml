@@ -1,0 +1,40 @@
+meta:
+  id: "scope2/emission-attribution"
+  version: "1.0.0"
+  source: "GHG Protocol Scope 2 Guidance"
+  source_ref: "https://ghgprotocol.org/scope-2-guidance"
+  layer: "knowledge"
+  description: "排放归属原则"
+
+citations:
+  - id: "cit-ea-001"
+    text: "Scope 2 emissions are physically produced at the facility where electricity is generated. However, for corporate accounting purposes, these emissions are attributed to the consumer of the electricity."
+    page: 28
+    section: "Chapter 5: Tracking and Reporting"
+
+rules:
+  - id: "rule-ea-001"
+    name: "消费者归属原则"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "knowledge"
+    statement: "Scope 2排放归属于电力消费者，而非发电设施"
+    interpretation_guidance: "在集团核算中，各子公司按各自用电量分别归属排放"
+    citation: "cit-ea-001"
+
+  - id: "rule-ea-002"
+    name: "地理归属原则"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "knowledge"
+    statement: "排放因子应使用电力消费所在地的电网因子，而非发电厂所在地"
+    interpretation_guidance: "跨国企业需按各国用电量分别计算"
+    citation: "cit-ea-001"
+
+dependencies:
+  - ref: "principles/organizational-boundary"
+    relation: "constrained_by"
+
+conflicts_with: []

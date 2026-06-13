@@ -1,0 +1,73 @@
+meta:
+  id: "scope2/organizational-boundary"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "schema"
+  description: "组织边界确定规则：控制权法、股权比例法"
+
+citations:
+  - id: "cit-ob-001"
+    text: "Companies shall select and consistently use one of two approaches for consolidating GHG emissions: the equity share approach or the financial control approach or the operational control approach."
+    page: 18
+    section: "Chapter 3: Setting Organizational Boundaries"
+
+rules:
+  - id: "rule-ob-001"
+    name: "组织边界核算"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.subsidiaries"}, null]}
+    computation:
+      function: "calc.equity_share"
+      params:
+        subsidiaries: {"var": "input.subsidiaries"}
+        ownership_data: {"var": "input.ownership_structure"}
+        control_type: {"var": "input.control_method"}
+    assertion: {"!=": [{"var": "computation.result.boundary_emissions"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "组织边界计算失败，无法确定合并范围"
+    citation: "cit-ob-001"
+
+  - id: "rule-ob-002"
+    name: "控制权法判定"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.control_method"}, "operational_control"]}
+    computation:
+      function: "calc.operational_control"
+      params:
+        subsidiaries: {"var": "input.subsidiaries"}
+        control_indicators: {"var": "input.control_indicators"}
+    assertion: {"!=": [{"var": "computation.result.controlled_entities"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "运营控制权判定失败"
+    citation: "cit-ob-001"
+
+  - id: "rule-ob-003"
+    name: "股权比例法判定"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.control_method"}, "equity_share"]}
+    computation:
+      function: "calc.equity_share"
+      params:
+        subsidiaries: {"var": "input.subsidiaries"}
+        ownership_data: {"var": "input.ownership_structure"}
+    assertion: {"!=": [{"var": "computation.result.equity_share_emissions"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "股权比例法计算失败"
+    citation: "cit-ob-001"
+
+dependencies: []
+
+conflicts_with: []

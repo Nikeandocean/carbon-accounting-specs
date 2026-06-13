@@ -1,0 +1,72 @@
+meta:
+  id: "scope2/disclosure-requirements"
+  version: "1.0.0"
+  source: "GHG Protocol Scope 2 Guidance"
+  source_ref: "https://ghgprotocol.org/scope-2-guidance"
+  layer: "schema"
+  description: "报告披露要求"
+
+citations:
+  - id: "cit-disc-001"
+    text: "Companies shall disclose the methodologies, assumptions, and data sources used to calculate Scope 2 emissions."
+    page: 38
+    section: "Chapter 8: Reporting Requirements"
+
+rules:
+  - id: "rule-disc-001"
+    name: "必须披露字段"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.total_scope2_emissions"}, null]},
+        {"!=": [{"var": "output.methodology"}, null]},
+        {"!=": [{"var": "output.emission_factor_source"}, null]},
+        {"!=": [{"var": "output.reporting_period"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "报告缺少必要披露字段"
+    citation: "cit-disc-001"
+
+  - id: "rule-disc-002"
+    name: "双重报告披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"==": [{"var": "context.region.has_market_instruments"}, true]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.location_based_emissions"}, null]},
+        {"!=": [{"var": "output.market_based_emissions"}, null]},
+        {"!=": [{"var": "output.methodology_explanation"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "双重报告必须包含两种方法的排放量和方法论说明"
+    citation: "cit-disc-001"
+
+  - id: "rule-disc-003"
+    name: "数据质量披露"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      "or": [
+        {"!=": [{"var": "output.data_quality_assessment"}, null]},
+        {"!=": [{"var": "input.justifications.rule-disc-003"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "建议披露数据质量评估"
+    citation: "cit-disc-001"
+
+dependencies:
+  - ref: "methods/dual-reporting"
+    relation: "constrained_by"
+
+conflicts_with: []

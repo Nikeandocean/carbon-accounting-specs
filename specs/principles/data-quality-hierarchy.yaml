@@ -1,0 +1,220 @@
+meta:
+  id: "scope2/data-quality-hierarchy"
+  version: "1.0.0"
+  source: "GHG Protocol Scope 2 Guidance"
+  source_ref: "https://ghgprotocol.org/scope-2-guidance"
+  layer: "schema"
+  description: "数据质量层级与回退机制"
+
+citations:
+  - id: "cit-dq-001"
+    text: "Companies should use the most accurate data available, prioritizing supplier-specific data over averages, and averages over defaults."
+    page: 35
+    section: "Chapter 6: Data Quality"
+
+fallback_chains:
+  market_based:
+    name: "市场法数据回退链"
+    description: "当高优先级数据不可用时，按序降级"
+    chain:
+      - level: 1
+        name: "合同/PPA"
+        data_type: "contract_emission_factor"
+        condition: {"!=": [{"var": "input.contract_ef"}, null]}
+        on_match:
+          action: "use_value"
+          log_level: "info"
+          message: "使用合同排放因子"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 2
+        name: "绿色电力证书"
+        data_type: "renewable_energy_certificate"
+        condition: {"!=": [{"var": "input.rec_ef"}, null]}
+        on_match:
+          action: "use_value"
+          log_level: "info"
+          message: "使用绿证排放因子"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 3
+        name: "供应商排放因子"
+        data_type: "supplier_specific_factor"
+        condition: {"!=": [{"var": "input.supplier_ef"}, null]}
+        on_match:
+          action: "use_value"
+          log_level: "info"
+          message: "使用供应商排放因子"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 4
+        name: "残余电力组合"
+        data_type: "residual_mix_factor"
+        condition: {"!=": [{"var": "context.region.residual_mix_ef"}, null]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "使用残余电力组合因子，数据质量降级"
+          require_disclosure: true
+          disclosure_key: "proh-006"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 5
+        name: "电网平均排放因子"
+        data_type: "grid_average_factor"
+        condition: {"!=": [{"var": "context.region.grid_average_ef"}, null]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "回退至电网平均因子，请在报告中说明原因"
+          require_disclosure: true
+          disclosure_key: "proh-006"
+        on_null:
+          action: "mark_unavailable"
+          log_level: "fatal"
+          message: "市场法所有数据源均不可用"
+          set_state: "market_based.data_available = false"
+
+  location_based:
+    name: "位置法数据回退链"
+    chain:
+      - level: 1
+        name: "区域电网排放因子"
+        data_type: "subnational_grid_factor"
+        condition: {"!=": [{"var": "context.region.subnational_ef"}, null]}
+        on_match:
+          action: "use_value"
+          log_level: "info"
+          message: "使用区域电网排放因子"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 2
+        name: "国家电网排放因子"
+        data_type: "national_grid_factor"
+        condition: {"!=": [{"var": "context.country.grid_ef"}, null]}
+        on_match:
+          action: "use_value"
+          log_level: "warning"
+          message: "使用国家电网排放因子，精度降级"
+          require_disclosure: true
+          disclosure_key: "proh-006"
+        on_null:
+          action: "raise_fatal"
+          message: "无可用的电网排放因子数据"
+
+  time_based_fallback:
+    name: "排放因子时效性回退"
+    description: "当当年因子不可用时的降级策略"
+    chain:
+      - level: 1
+        name: "当年排放因子"
+        data_type: "current_year_factor"
+        condition: {"!=": [{"var": "context.emission_factors.current_year"}, null]}
+        on_match:
+          action: "use_value"
+          log_level: "info"
+          message: "使用当年排放因子"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 2
+        name: "前一年排放因子"
+        data_type: "previous_year_factor"
+        condition: {"!=": [{"var": "context.emission_factors.previous_year"}, null]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "当年因子不可用，使用前一年因子"
+          require_disclosure: true
+          disclosure_key: "proh-006"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 3
+        name: "最近可用排放因子"
+        data_type: "latest_available_factor"
+        condition: {"!=": [{"var": "context.emission_factors.latest_available"}, null]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "使用最近可用因子，距核算期存在时滞"
+          require_disclosure: true
+          disclosure_key: "proh-006"
+        on_null:
+          action: "raise_fatal"
+          message: "无任何可用的排放因子数据"
+
+# 横向联动校验
+cross_method_validation:
+  - id: "cross-val-001"
+    name: "市场法兜底联动"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "market_based.fallback_level"}, 5]},
+        {"!=": [{"var": "location_based.result"}, null]}
+      ]
+    assertion:
+      "or": [
+        {"==": [{"var": "market_based.emission_factor.source"}, {"var": "location_based.emission_factor.source"}]},
+        {
+          "and": [
+            {"==": [{"var": "market_based.emission_factor.type"}, "residual_mix"]},
+            {"==": [{"var": "location_based.emission_factor.type"}, "grid_average"]},
+            {"!=": [{"var": "input.justifications.cross-val-001"}, null]}
+          ]
+        }
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "市场法已回退至电网平均因子，但与位置法数据源不一致，请说明原因"
+
+  - id: "cross-val-002"
+    name: "双重报告完整性保障"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"==": [{"var": "market_based.data_available"}, false]},
+        {"==": [{"var": "location_based.data_available"}, false]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "位置法和市场法数据均不可用，无法完成双重报告"
+
+  - id: "cross-val-003"
+    name: "市场法不可用时的降级策略"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"==": [{"var": "market_based.data_available"}, false]},
+        {"==": [{"var": "location_based.data_available"}, true]}
+      ]
+    action: "fallback_to_location_based"
+    action_description: |
+      市场法数据完全不可用时，允许将位置法结果同时作为市场法结果报告，
+      但必须在报告中明确披露：
+      1. 市场法数据不可用的原因
+      2. 使用位置法结果替代市场法结果
+      3. 该替代对排放总量的影响
+    require_disclosure: true
+    disclosure_key: "cross-val-003"
+    on_fail: "require_justification"
+    on_fail_message: "市场法数据不可用，使用位置法结果替代，必须披露原因"
+
+dependencies: []
+
+conflicts_with: []

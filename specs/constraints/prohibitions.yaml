@@ -1,0 +1,152 @@
+meta:
+  id: "scope2/prohibitions"
+  version: "1.0.0"
+  source: "GHG Protocol Scope 2 Guidance"
+  source_ref: "https://ghgprotocol.org/scope-2-guidance"
+  layer: "hybrid"
+  description: "核算过程中绝对禁止的行为"
+
+citations:
+  - id: "cit-pr-001"
+    text: "Companies shall not double-count emissions between Scope 1 and Scope 2."
+    page: 25
+    section: "Chapter 4: Setting Operational Boundaries"
+
+  - id: "cit-pr-002"
+    text: "Companies should disclose any emission sources excluded from the inventory and the reasons for exclusion."
+    page: 26
+    section: "Chapter 4: Setting Operational Boundaries"
+
+  - id: "cit-pr-003"
+    text: "If a company uses both location-based and market-based methods, it shall clearly explain the methodology used."
+    page: 34
+    section: "Chapter 7: Dual Reporting"
+
+  - id: "cit-pr-004"
+    text: "When measured data is available, companies should prioritize it over default emission factors."
+    page: 35
+    section: "Chapter 6: Data Quality"
+
+  - id: "cit-pr-005"
+    text: "Emission factors should correspond to the same time period as the activity data. When current year factors are unavailable, companies may use the most recent available factors with appropriate disclosure."
+    page: 36
+    section: "Chapter 6: Data Quality"
+
+prohibitions:
+  - id: "proh-001"
+    name: "禁止双重计算"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "hybrid"
+    lifecycle: "pre_calculation"
+    assertion:
+      "none": [
+        {"var": "input.scope2_emission_sources"},
+        {"in": [{"var": "id"}, {"var": "input.scope1_emission_sources.id"}]}
+      ]
+    computation:
+      function: "calc.boundary_overlap_check"
+      params:
+        scope1_sources: {"var": "input.scope1_emission_sources"}
+        scope2_sources: {"var": "input.scope2_emission_sources"}
+        energy_flows: {"var": "input.energy_flow_graph"}
+        chp_assets: {"var": "input.chp_assets"}
+    post_computation_assertion:
+      "and": [
+        {"==": [{"var": "computation.result.overlap_detected"}, false]},
+        {"==": [{"var": "computation.result.boundary_violations"}, []]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "检测到Scope 1与Scope 2存在能源边界重叠或ID重复，构成双重计算"
+    citation: "cit-pr-001"
+
+  - id: "proh-002"
+    name: "排放源完整性建议"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    statement: "建议纳入所有已识别的排放源"
+    citation: "cit-pr-002"
+
+  - id: "proh-003"
+    name: "排除披露强制"
+    type: "constraint"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.excluded_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.excluded_emission_sources"},
+        {
+          "and": [
+            {"!=": [{"var": "exclusion_reason"}, null]},
+            {"==": [{"var": "disclosed_in_report"}, true]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "存在排放源排除但未披露原因，违反GHG Protocol合规要求"
+    citation: "cit-pr-002"
+
+  - id: "proh-004"
+    name: "方法混用声明"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.location_based_result"}, null]},
+        {"!=": [{"var": "output.market_based_result"}, null]}
+      ]
+    assertion:
+      "and": [
+        {"==": [{"var": "output.methodology_declaration"}, true]},
+        {"!=": [{"var": "output.methodology_explanation"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "同时使用位置法和市场法但未声明方法论"
+    citation: "cit-pr-003"
+
+  - id: "proh-005"
+    name: "缺省因子使用建议"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "hybrid"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.measured_data"}, null]},
+        {"==": [{"var": "input.emission_factor.type"}, "default"]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "存在实测数据但使用了缺省排放因子"
+    statement: "当有实测数据可用时，应优先使用实测数据"
+    citation: "cit-pr-004"
+
+  - id: "proh-006"
+    name: "排放因子时效性"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition: {"!=": [{"var": "input.activity_data.year"}, null]}
+    assertion:
+      "or": [
+        {"==": [{"var": "input.emission_factor.year"}, {"var": "input.activity_data.year"}]},
+        {
+          "and": [
+            {"==": [{"var": "input.emission_factor.is_latest_available"}, true]},
+            {"!=": [{"var": "input.justifications.proh-006"}, null]}
+          ]
+        }
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "排放因子年份与活动数据年份不匹配。如使用滞后因子，必须披露原因。"
+    fallback_trigger: "principles/data-quality-hierarchy/time_based_fallback"
+    citation: "cit-pr-005"

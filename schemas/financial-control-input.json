@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Financial Control Input",
+  "type": "object",
+  "required": ["subsidiaries", "financial_data"],
+  "properties": {
+    "subsidiaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"}
+        }
+      }
+    },
+    "financial_data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["subsidiary_id", "has_financial_control"],
+        "properties": {
+          "subsidiary_id": {"type": "string"},
+          "has_financial_control": {"type": "boolean"},
+          "ownership_percentage": {"type": "number"}
+        }
+      }
+    }
+  }
+}

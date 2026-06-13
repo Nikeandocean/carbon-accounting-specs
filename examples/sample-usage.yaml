@@ -1,0 +1,81 @@
+# Sample Usage: Manufacturing Company Scope 2 Calculation
+# This example demonstrates how to use the spec for a typical manufacturing company
+
+context:
+  region:
+    country_code: "CN"
+    subnational_code: "CN-GD"
+    has_market_instruments: true
+    grid_average_ef: 0.5810
+    residual_mix_ef: null
+  emission_factors:
+    current_year: 0.5703
+    previous_year: 0.5810
+    latest_available: 0.5810
+    latest_year: 2025
+
+input:
+  entity:
+    name: "Example Manufacturing Co., Ltd."
+    reporting_year: 2026
+    control_method: "operational_control"
+
+  subsidiaries:
+    - id: "sub-001"
+      name: "Guangzhou Factory"
+      country: "CN"
+    - id: "sub-002"
+      name: "Shenzhen Factory"
+      country: "CN"
+
+  ownership_structure:
+    - subsidiary_id: "sub-001"
+      ownership_percentage: 100
+    - subsidiary_id: "sub-002"
+      ownership_percentage: 80
+
+  control_indicators:
+    - subsidiary_id: "sub-001"
+      has_operational_control: true
+      evidence: "Full management control"
+    - subsidiary_id: "sub-002"
+      has_operational_control: true
+      evidence: "Majority board control"
+
+  emission_sources:
+    - id: "src-001"
+      type: "electricity"
+      activity_data: 10000
+      activity_data_unit: "MWh"
+      emission_factor:
+        value: 0.5703
+        year: 2025
+        source: "Guangdong Provincial Grid"
+        type: "grid_average"
+        is_latest_available: true
+
+  location_based_input:
+    activity_data: 10000
+    emission_factor_source: "Guangdong Provincial Grid"
+
+  market_based_input:
+    activity_data: 10000
+    contract_ef: null
+    rec_ef: null
+    supplier_ef: null
+
+  assumptions: "Using provincial grid average factor as no specific contracts available"
+  methodology_rationale: "Location-based method using latest available provincial factor"
+  data_sources: "Guangdong Provincial Grid Emission Factor 2025"
+
+  justifications:
+    "proh-006": "2026年官方因子尚未发布，使用2025年最新可用因子"
+
+# Expected output structure
+expected_output:
+  total_scope2_emissions: 5703
+  location_based_emissions: 5703
+  market_based_emissions: 5703
+  methodology: "location_based"
+  emission_factor_source: "Guangdong Provincial Grid 2025"
+  reporting_period: "2026-01-01 to 2026-12-31"

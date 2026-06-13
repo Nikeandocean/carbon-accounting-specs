@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Boundary Overlap Input",
+  "description": "Input schema for Scope 1/2 boundary overlap detection",
+  "type": "object",
+  "required": ["scope1_sources", "scope2_sources"],
+  "properties": {
+    "scope1_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": {"type": "string"},
+          "type": {"type": "string"},
+          "description": {"type": "string"}
+        }
+      }
+    },
+    "scope2_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": {"type": "string"},
+          "type": {"type": "string"},
+          "description": {"type": "string"}
+        }
+      }
+    },
+    "energy_flows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_id": {"type": "string"},
+          "target_id": {"type": "string"},
+          "flow_type": {"type": "string"}
+        }
+      }
+    },
+    "chp_assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "fuel_input": {"type": "number"},
+          "electricity_output": {"type": "number"},
+          "heat_output": {"type": "number"}
+        }
+      }
+    }
+  }
+}

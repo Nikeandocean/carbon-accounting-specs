@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Equity Share Input",
+  "description": "Input schema for equity share calculation",
+  "type": "object",
+  "required": ["subsidiaries", "ownership_data"],
+  "properties": {
+    "subsidiaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "country": {"type": "string"}
+        }
+      }
+    },
+    "ownership_data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["subsidiary_id", "ownership_percentage"],
+        "properties": {
+          "subsidiary_id": {"type": "string"},
+          "ownership_percentage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      }
+    },
+    "control_type": {
+      "type": "string",
+      "enum": ["financial_control", "operational_control", "equity_share"]
+    }
+  }
+}

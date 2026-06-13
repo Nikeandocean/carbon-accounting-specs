@@ -1,0 +1,285 @@
+id: "ghg-protocol/scope2"
+name: "GHG Protocol Scope 2 企业外购电力、蒸汽核算规范"
+version: "1.0.0"
+
+source_standard:
+  name: "GHG Protocol Corporate Accounting and Reporting Standard"
+  scope: "Scope 2: Indirect Emissions from Purchased Electricity, Steam, Heat, and Cooling"
+  publisher: "World Resources Institute (WRI) & WBCSD"
+  original_version: "2015"
+  url: "https://ghgprotocol.org/scope-2-guidance"
+
+applicability:
+  entity_types: ["企业", "组织", "政府机构"]
+  geographic_scope: "全球"
+  excluded: ["产品级LCA", "项目级减排"]
+
+# 表达式引擎定义
+expression_engines:
+  jsonlogic:
+    version: "2.0"
+    scope: "基础规则：非空校验、类型检查、简单比较、集合操作"
+  external_functions:
+    scope: "复杂拓扑：组织边界、股权穿透、控制权计算"
+    registry:
+      - id: "calc.equity_share"
+        description: "按股权比例法计算子公司排放分摊"
+        input_schema: "schemas/equity-share-input.json"
+        output_schema: "schemas/equity-share-output.json"
+      - id: "calc.operational_control"
+        description: "按运营控制权法判定排放归属"
+        input_schema: "schemas/operational-control-input.json"
+        output_schema: "schemas/operational-control-output.json"
+      - id: "calc.financial_control"
+        description: "按财务控制权法判定合并范围"
+        input_schema: "schemas/financial-control-input.json"
+        output_schema: "schemas/financial-control-output.json"
+      - id: "calc.boundary_overlap_check"
+        description: "检测Scope 1与Scope 2的能源边界重叠（含CHP自发电、热电联产等场景）"
+        input_schema: "schemas/boundary-overlap-input.json"
+        output_schema: "schemas/boundary-overlap-output.json"
+
+# 规则生命周期分层
+rule_lifecycle:
+  stages:
+    - id: "pre_calculation"
+      name: "前置约束"
+      description: "计算前必须满足的条件（输入校验、边界确认）"
+      timing: "before_computation"
+    - id: "runtime_inference"
+      name: "运行时推导"
+      description: "计算过程中的动态决策（方法选择、因子选择）"
+      timing: "during_computation"
+    - id: "post_audit"
+      name: "后置审计"
+      description: "计算完成后的合规性断言（输出校验、双重报告校验）"
+      timing: "after_computation"
+
+# on_fail动作定义
+on_fail_actions:
+  raise_fatal:
+    description: "终止计算，抛出合规异常"
+    agent_behavior: "停止所有后续计算，输出错误详情"
+  raise_warning:
+    description: "继续计算，生成审计日志"
+    agent_behavior: "记录warning，继续执行"
+  log_info:
+    description: "记录日志，不干预"
+    agent_behavior: "仅记录，不影响流程"
+  mark_unavailable:
+    description: "标记数据不可用，不立即终止，由后续cross_method_validation统一裁决"
+    agent_behavior: |
+      1. 设置状态标记（如 market_based.data_available = false）
+      2. 记录fatal级别日志
+      3. 继续执行其他流程
+      4. 由post_audit阶段的cross_method_validation决定最终处理
+  require_justification:
+    description: "要求合规性解释（Comply or Explain），支持实例级隔离"
+    agent_behavior: |
+      1. 检查justification是否存在，优先级：
+         a. 实例级：input.justifications["{rule_id}@{instance_path}"]
+         b. 全局级：input.justifications[rule_id]
+      2. 若存在且非空：
+         - 将severity降级为warning
+         - 记录justification到审计日志（含instance_path）
+         - 继续计算
+      3. 若不存在或为空：
+         - 将severity升级为fatal
+         - 终止计算
+    instance_isolation_example: |
+      # justifications支持两种粒度：
+      justifications:
+        "proh-006": "全局理由：2026年官方因子尚未发布"
+        "proh-006@emission_sources[1].id": "该网点位于偏远地区，仅能获取2024年因子"
+
+# 冲突解决策略
+conflict_resolution:
+  strategy: "local_overrides_global"
+  description: "本地法规优先于通用标准"
+  hierarchy:
+    - level: 1
+      scope: "enterprise_specific"
+      description: "企业特定规则（最高优先级）"
+    - level: 2
+      scope: "industry_specific"
+      description: "行业特定规则"
+    - level: 3
+      scope: "regional_specific"
+      description: "地区/国家特定规则"
+    - level: 4
+      scope: "global_standard"
+      description: "GHG Protocol通用规则（最低优先级）"
+  override_mechanics:
+    - rule: "本地规则可覆盖global_rules中的SHOULD和MAY规则"
+    - rule: "本地规则不可覆盖global_rules中的MUST规则，除非有明确的法规冲突声明"
+    - rule: "覆盖时必须记录overridden_by和override_reason"
+
+# 输入数据Schema
+input_schema:
+  context:
+    region:
+      type: "object"
+      required: true
+      properties:
+        country_code:
+          type: "string"
+          format: "ISO_3166-1_alpha-2"
+          description: "国家代码（如CN、US、DE）"
+        subnational_code:
+          type: "string"
+          format: "ISO_3166-2"
+          description: "行政区划代码（如CN-BJ、CN-GD）"
+          nullable: true
+        has_market_instruments:
+          type: "boolean"
+          description: |
+            该地区是否存在市场化电力交易工具（绿证、PPA、I-REC等）
+            注意：只要该国/地区存在任何能够改变电力环境属性的合同工具市场，
+            不论企业自身是否购买，该字段都必须为true。
+            维护规则：由context数据库统一维护，企业不可自行覆盖。
+        grid_average_ef:
+          type: "number"
+          unit: "tCO2/MWh"
+          description: "电网平均排放因子"
+          nullable: true
+        residual_mix_ef:
+          type: "number"
+          unit: "tCO2/MWh"
+          description: "残余电力组合排放因子"
+          nullable: true
+    emission_factors:
+      type: "object"
+      properties:
+        current_year:
+          type: "number"
+          nullable: true
+        previous_year:
+          type: "number"
+          nullable: true
+        latest_available:
+          type: "number"
+          nullable: true
+        latest_year:
+          type: "integer"
+          nullable: true
+  input:
+    entity:
+      type: "object"
+      required: true
+      properties:
+        name:
+          type: "string"
+        reporting_year:
+          type: "integer"
+        control_method:
+          type: "string"
+          enum: ["financial_control", "operational_control", "equity_share"]
+    emission_sources:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+          type:
+            type: "string"
+            enum: ["electricity", "steam", "heat", "cooling"]
+          activity_data:
+            type: "number"
+            unit: "MWh"
+          emission_factor:
+            type: "object"
+            properties:
+              value:
+                type: "number"
+              year:
+                type: "integer"
+              source:
+                type: "string"
+              type:
+                type: "string"
+                enum: ["contract", "certificate", "supplier", "residual_mix", "grid_average", "default"]
+    justifications:
+      type: "object"
+      description: |
+        合规性解释（Comply or Explain），支持两级粒度：
+        - 全局级：key为rule_id，适用于所有实例
+        - 实例级：key为"{rule_id}@{instance_path}"，适用于特定排放源
+        优先级：实例级 > 全局级
+      additionalProperties:
+        type: "string"
+      examples:
+        - "proh-006": "全局理由：2026年官方因子尚未发布"
+        - "proh-006@emission_sources[1].id": "该网点位于偏远地区，仅能获取2024年因子"
+
+load_order:
+  - principles/organizational-boundary
+  - principles/operational-boundary
+  - principles/data-quality-hierarchy
+  - principles/emission-attribution
+  - methods/location-based
+  - methods/market-based
+  - methods/dual-reporting
+  - reporting/disclosure-requirements
+  - constraints/prohibitions
+
+global_rules:
+  - id: "global-001"
+    name: "完整性原则"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    scope: "scope2_only"
+    condition: {"!=": [{"var": "input.emission_sources.identified"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.emission_sources.identified"},
+        {
+          "and": [
+            {"!=": [{"var": "activity_data"}, null]},
+            {"!=": [{"var": "emission_factor"}, null]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "存在已识别但未提供数据的排放源"
+    citation: "GHG Protocol Corporate Standard, Chapter 4"
+
+  - id: "global-002"
+    name: "一致性原则"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      "or": [
+        {"==": [{"var": "input.accounting_method"}, {"var": "context.previous_year.accounting_method"}]},
+        {"!=": [{"var": "input.justifications.global-002"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "核算方法与上年度不一致，需在报告中说明变更原因"
+    citation: "GHG Protocol Corporate Standard, Chapter 4"
+
+  - id: "global-003"
+    name: "透明度原则"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.assumptions"}, null]},
+        {"!=": [{"var": "input.methodology_rationale"}, null]},
+        {"!=": [{"var": "input.data_sources"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "缺少假设、方法选择或数据来源的说明，无法通过审计"
+    citation: "GHG Protocol Corporate Standard, Chapter 4"
+
+versioning:
+  scheme: "semver"
+  rules:
+    major: "规则语义变更（MUST变SHOULD等）"
+    minor: "新增规则或文件"
+    patch: "修正措辞、补充引用"

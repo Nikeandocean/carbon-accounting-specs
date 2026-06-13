@@ -1,0 +1,61 @@
+meta:
+  id: "scope2/dual-reporting"
+  version: "1.0.0"
+  source: "GHG Protocol Scope 2 Guidance"
+  source_ref: "https://ghgprotocol.org/scope-2-guidance"
+  layer: "schema"
+  description: "双重报告强制规则"
+
+citations:
+  - id: "cit-dr-001"
+    text: "Companies operating in markets where product-specific instruments (e.g., EACs, PPAs) are available shall report both a location-based and a market-based Scope 2 figure."
+    page: 34
+    section: "Chapter 7: Dual Reporting"
+
+rules:
+  - id: "rule-dr-001"
+    name: "双重报告触发"
+    type: "constraint"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "context.region.has_market_instruments"}, true]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.location_based_input"}, null]},
+        {"!=": [{"var": "input.market_based_input"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "该地区要求双重报告，但未提供两种方法的输入数据"
+    citation: "cit-dr-001"
+
+  - id: "rule-dr-002"
+    name: "双重报告输出校验"
+    type: "constraint"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"==": [{"var": "computation.status"}, "completed"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.location_based_result"}, null]},
+        {"!=": [{"var": "output.market_based_result"}, null]},
+        {"!=": [{"var": "output.methodology_explanation"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "双重报告输出不完整"
+    citation: "cit-dr-001"
+
+dependencies:
+  - ref: "methods/location-based"
+    relation: "applies_within"
+  - ref: "methods/market-based"
+    relation: "applies_within"
+
+conflicts_with: []
