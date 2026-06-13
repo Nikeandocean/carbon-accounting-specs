@@ -9,13 +9,13 @@ meta:
 citations:
   - id: "cit-disc-001"
     text: "Companies shall disclose the methodologies, assumptions, and data sources used to calculate Scope 2 emissions."
-    page: 38
-    section: "Chapter 8: Reporting Requirements"
+    page: 59
+    section: "Chapter 7: Accounting and Reporting Requirements"
 
   - id: "cit-disc-002"
     text: "Companies shall disclose methods used for scope 2 accounting. For the market-based method, companies shall disclose the category or categories of instruments from which the emission factors were derived, where possible specifying the energy generation technologies."
     page: 63
-    section: "Chapter 7: Methodology Disclosure"
+    section: "Chapter 7.1: Methodology Disclosure"
 
   - id: "cit-disc-003"
     text: "Companies shall disclose the year chosen as the base year; the method used to calculate the base year's scope 2 emissions; whether historic location-based data is used as a proxy for a market-based method."
@@ -36,6 +36,16 @@ citations:
     text: "If setting a target, companies shall specify which method is used in the goal calculation and progress tracking, including the method used for the base-year calculation."
     page: 78
     section: "Chapter 9: Setting Reduction Targets"
+
+  - id: "cit-disc-007"
+    text: "Companies should report total electricity, steam, heat, and cooling per reporting period separately from the scopes totals (in kWh, MWh, BTU, etc.), which should include all scope 2 activity data as well as the quantity of energy consumed from owned/operated installations."
+    page: 61
+    section: "Chapter 7.2: Annual Electricity Consumption"
+
+  - id: "cit-disc-008"
+    text: "Companies should disclose key features associated with their contractual instruments claimed, including any instrument certification labels that entail their own set of eligibility criteria, as well as characteristics of the energy generation facility itself and the policy context of the instrument."
+    page: 67
+    section: "Chapter 8: Recommended Reporting on Instrument Features"
 
 rules:
   - id: "rule-disc-001"
@@ -223,6 +233,42 @@ rules:
     on_fail: "raise_fatal"
     on_fail_message: "设定减排目标时，须说明目标基于哪种方法，以及基准年计算使用的方法。"
     citation: "cit-disc-006"
+
+  # ========== Ch7.2 推荐性披露 ==========
+
+  - id: "rule-disc-012"
+    name: "年度电力消费量独立披露"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      "or": [
+        {"!=": [{"var": "output.annual_electricity_consumption"}, null]},
+        {"!=": [{"var": "input.justifications.rule-disc-012"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "建议独立披露年度总电力、蒸汽、热力和冷量消费量（kWh/MWh），有助于区分消费量变化与供应侧变化。"
+    citation: "cit-disc-007"
+
+  - id: "rule-disc-013"
+    name: "合同工具特征与政策背景披露"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "context.region.has_market_instruments"}, true]}
+    assertion:
+      "or": [
+        {"!=": [{"var": "output.instrument_features"}, null]},
+        {"!=": [{"var": "input.justifications.rule-disc-013"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "建议披露合同工具的关键特征（认证标签、能源类型、设施位置/年龄）和政策背景（供应商配额、碳交易、补贴、抵消），以提高透明度。"
+    citation: "cit-disc-008"
 
 dependencies:
   - ref: "methods/dual-reporting"

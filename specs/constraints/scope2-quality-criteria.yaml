@@ -8,9 +8,14 @@ meta:
 
 citations:
   - id: "cit-qc-001"
-    text: "All contractual instruments used in the market-based method for scope 2 accounting shall: 1) Convey the direct GHG emission rate attribute associated with the unit of electricity produced. 2) Be the only instruments that carry the GHG emission rate attribute claim. 3) Be tracked and redeemed, retired, or canceled by or on behalf of the reporting entity. 4) Be issued and redeemed as close as possible to the period of energy consumption. 5) Be sourced from the same market in which the reporting entity's electricity-consuming operations are located."
+    text: "All contractual instruments used in the market-based method for scope 2 accounting shall: 1) Convey the direct GHG emission rate attribute associated with the unit of electricity produced. 2) Be the only instruments that carry the GHG emission rate attribute claim. 3) Be tracked and redeemed, retired, or canceled by or on behalf of the reporting entity."
     page: 62
-    section: "Chapter 7: Table 7.1 Scope 2 Quality Criteria"
+    section: "Chapter 7: Table 7.1 Scope 2 Quality Criteria, Criteria 1-3"
+
+  - id: "cit-qc-001b"
+    text: "Contractual instruments shall: 4) Be issued and redeemed as close as possible to the period of energy consumption to which the instrument is applied. 5) Be sourced from the same market in which the reporting entity's electricity-consuming operations are located and to which the instrument is applied."
+    page: 62
+    section: "Chapter 7: Table 7.1 Scope 2 Quality Criteria, Criteria 4-5"
 
   - id: "cit-qc-002"
     text: "In addition, utility-specific emission factors shall: 6) Be calculated based on delivered electricity, incorporating certificates sourced and retired on behalf of its customers. Electricity from renewable facilities for which the attributes have been sold off shall be characterized as having the GHG attributes of the residual mix."
@@ -134,7 +139,7 @@ rules:
       ]
     on_fail: "require_justification"
     on_fail_message: "QC4违反：合同工具的发电日期(vintage)与报告期不匹配。工具应在消费期附近发行和退役。"
-    citation: "cit-qc-001"
+    citation: "cit-qc-001b"
 
   # ========== QC5: 市场边界 ==========
   - id: "qc-005"
@@ -161,7 +166,7 @@ rules:
       ]
     on_fail: "raise_fatal"
     on_fail_message: "QC5违反：合同工具来源市场与报告实体用电运营所在市场不一致。"
-    citation: "cit-qc-001"
+    citation: "cit-qc-001b"
 
   # ========== QC6: 供应商因子基于交付电量 ==========
   - id: "qc-006"

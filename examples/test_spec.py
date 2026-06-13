@@ -473,6 +473,8 @@ def test_comply_or_explain(specs: Dict):
         "rule-mb-002": "该企业无合同工具",
         "rule-disc-003": "数据质量评估将在后续补充",
         "rule-disc-008": "残余混合因子不可用",
+        "rule-disc-012": "年度消费量数据将在后续补充",
+        "rule-disc-013": "工具特征信息将在后续补充",
         "qc-004": "工具vintage与报告期存在偏差",
         "qc-008": "残余混合因子不可用"
     }
