@@ -52,6 +52,42 @@ rules:
     on_fail_message: "双重报告输出不完整"
     citation: "cit-dr-001"
 
+  - id: "rule-dr-003"
+    name: "无市场化工具时须按位置法计算"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, false]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      {"==": [{"var": "input.method"}, "location_based"]}
+    on_fail: "raise_fatal"
+    on_fail_message: "该地区无市场化工具，须按位置法计算Scope 2排放。市场法不适用。"
+    citation: "cit-dr-001"
+
+  - id: "rule-dr-004"
+    name: "混合运营时市场法回退至位置法"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"==": [{"var": "input.has_operations_without_market"}, true]}
+      ]
+    assertion:
+      {"==": [{"var": "input.non_market_operations_method"}, "location_based"]}
+    on_fail: "raise_warning"
+    on_fail_message: "公司有部分运营不在市场化工具覆盖范围内，该部分须按位置法计算（市场法结果与位置法相同）。"
+    citation: "cit-dr-001"
+
 dependencies:
   - ref: "methods/location-based"
     relation: "applies_within"

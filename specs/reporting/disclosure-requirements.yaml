@@ -12,6 +12,31 @@ citations:
     page: 38
     section: "Chapter 8: Reporting Requirements"
 
+  - id: "cit-disc-002"
+    text: "Companies shall disclose methods used for scope 2 accounting. For the market-based method, companies shall disclose the category or categories of instruments from which the emission factors were derived, where possible specifying the energy generation technologies."
+    page: 63
+    section: "Chapter 7: Methodology Disclosure"
+
+  - id: "cit-disc-003"
+    text: "Companies shall disclose the year chosen as the base year; the method used to calculate the base year's scope 2 emissions; whether historic location-based data is used as a proxy for a market-based method."
+    page: 63
+    section: "Chapter 7: Base-Year Information"
+
+  - id: "cit-disc-004"
+    text: "If a company sets a corporate inventory reduction goal and/or a scope 2-specific reduction goal, the company shall clarify whether the goal is based on the location-based method total or market-based method total."
+    page: 63
+    section: "Chapter 7: Disclose Basis for Goal Setting"
+
+  - id: "cit-disc-005"
+    text: "Companies that have already set a base year for scope 2 shall specify which method was used to calculate it. Once a base year is selected, a reporting entity shall set a base-year recalculation policy and clearly articulate the basis and context for any recalculations."
+    page: 77
+    section: "Chapter 8: Base Year and Recalculation"
+
+  - id: "cit-disc-006"
+    text: "If setting a target, companies shall specify which method is used in the goal calculation and progress tracking, including the method used for the base-year calculation."
+    page: 78
+    section: "Chapter 9: Setting Reduction Targets"
+
 rules:
   - id: "rule-disc-001"
     name: "必须披露字段"
@@ -64,6 +89,140 @@ rules:
     on_fail: "require_justification"
     on_fail_message: "建议披露数据质量评估"
     citation: "cit-disc-001"
+
+  # ========== Ch7.1 新增披露要求 ==========
+
+  - id: "rule-disc-004"
+    name: "市场法合同工具类别披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "context.region.has_market_instruments"}, true]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.market_based.instrument_categories"}, null]},
+        {"!=": [{"var": "output.market_based.generation_technologies"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "市场法须披露合同工具类别及能源发电技术类型。"
+    citation: "cit-disc-002"
+
+  - id: "rule-disc-005"
+    name: "基准年信息披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.base_year.year"}, null]},
+        {"!=": [{"var": "output.base_year.method"}, null]},
+        {"!=": [{"var": "output.base_year.recalculation_policy"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "须披露基准年、基准年计算方法及重算政策。"
+    citation: "cit-disc-002"
+
+  - id: "rule-disc-006"
+    name: "目标设定方法披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.reduction_target"}, null]}
+    assertion:
+      {"!=": [{"var": "output.reduction_target.method_basis"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "设定减排目标时，须说明目标基于哪种方法（位置法或市场法）。"
+    citation: "cit-disc-002"
+
+  - id: "rule-disc-007"
+    name: "单一清单方法披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "output.single_inventory_total"}, true]}
+    assertion:
+      {"!=": [{"var": "output.method_used_for_single_total"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "报告单一清单总量时，须披露使用的是位置法还是市场法。"
+    citation: "cit-disc-002"
+
+  - id: "rule-disc-008"
+    name: "残余混合缺失披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "context.region.residual_mix_ef"}, null]}
+    assertion:
+      {"!=": [{"var": "input.justifications.rule-disc-008"}, null]}
+    on_fail: "require_justification"
+    on_fail_message: "残余混合排放因子不可用，须在清单中披露此缺失及可能导致的双重计算风险。"
+    citation: "cit-disc-002"
+
+  # ========== Ch8 基准年与目标披露 ==========
+
+  - id: "rule-disc-009"
+    name: "基准年重算政策披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.base_year.year"}, null]},
+        {"!=": [{"var": "output.base_year.recalculation_policy"}, null]},
+        {"!=": [{"var": "output.base_year.recalculation_triggers"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "须设定并披露基准年重算政策，包括触发重算的情形（收购/剥离、外包/内包、边界变更、方法变更等）。"
+    citation: "cit-disc-005"
+
+  - id: "rule-disc-010"
+    name: "基准年方法一致性披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      {"!=": [{"var": "output.base_year.method"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "须披露基准年使用的Scope 2计算方法（位置法或市场法），以及是否使用位置法数据作为市场法代理。"
+    citation: "cit-disc-005"
+
+  # ========== Ch9 目标设定方法披露 ==========
+
+  - id: "rule-disc-011"
+    name: "目标方法选择披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.reduction_target"}, null]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.reduction_target.method_basis"}, null]},
+        {"!=": [{"var": "output.reduction_target.base_year_method"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "设定减排目标时，须说明目标基于哪种方法，以及基准年计算使用的方法。"
+    citation: "cit-disc-006"
 
 dependencies:
   - ref: "methods/dual-reporting"

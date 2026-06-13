@@ -222,6 +222,8 @@ load_order:
   - methods/dual-reporting
   - reporting/disclosure-requirements
   - constraints/prohibitions
+  - constraints/scope2-quality-criteria
+  - constraints/certificate-management
 
 global_rules:
   - id: "global-001"
@@ -276,6 +278,33 @@ global_rules:
     on_fail: "raise_fatal"
     on_fail_message: "缺少假设、方法选择或数据来源的说明，无法通过审计"
     citation: "GHG Protocol Corporate Standard, Chapter 4"
+
+  - id: "global-004"
+    name: "相关性原则"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "清单应适当反映公司GHG排放，服务于决策需求。请确认报告年度和边界设置是否与当前决策需求相关。"
+    citation: "GHG Protocol Scope 2 Guidance, Chapter 3"
+
+  - id: "global-005"
+    name: "准确性原则"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.total_scope2_emissions"}, null]},
+        {">": [{"var": "output.total_scope2_emissions"}, 0]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "GHG排放量化应系统性地既不高估也不低估实际排放。请确认排放因子和活动数据的不确定性已在合理范围内。"
+    citation: "GHG Protocol Scope 2 Guidance, Chapter 3"
 
 versioning:
   scheme: "semver"

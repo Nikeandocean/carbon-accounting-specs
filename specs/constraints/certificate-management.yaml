@@ -1,0 +1,213 @@
+meta:
+  id: "scope2/certificate-management"
+  version: "1.0.0"
+  source: "GHG Protocol Scope 2 Guidance"
+  source_ref: "https://ghgprotocol.org/scope-2-guidance"
+  layer: "schema"
+  description: "证书管理规则：多证书系统识别、证书保留、证书售出场景处理"
+
+citations:
+  - id: "cit-cm-001"
+    text: "For the purposes of market-based scope 2 accounting, consumers in multi-certificate systems shall identify which certificate, if any, conveys GHG emission attributes to end users, and ensure that only one certificate, or jurisdictionally defined combination of certificates, does so."
+    page: 86
+    section: "Chapter 10: Multi-certificate systems"
+
+  - id: "cit-cm-002"
+    text: "In order to make a claim on any purchased energy, companies shall retain any certificates associated with the energy production because they convey GHG emission rate attributes."
+    page: 93
+    section: "Chapter 11: Direct contracts with new projects"
+
+  - id: "cit-cm-003"
+    text: "If energy attribute certificates are sold from energy generation, companies shall treat consumed electricity as though it were purchased from the grid—using the hierarchies of emission factors indicated for both methods."
+    page: 42
+    section: "Chapter 5: Table 6.1 Certificate sales scenarios"
+
+  - id: "cit-cm-004"
+    text: "Companies consuming energy from owned/operated facilities or direct-line transfers where certificates are sold off, shall calculate that consumption using other market-based method emission factor data."
+    page: 46
+    section: "Chapter 6: Certificate sales treatment"
+
+rules:
+  # ========== 多证书系统识别 (Ch10 p.86) ==========
+
+  - id: "cert-001"
+    name: "多证书系统须识别GHG属性证书"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"==": [{"var": "context.region.certificate_system"}, "multi"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.certificate_ghg_identifier"}, null]},
+        {"==": [{"var": "input.certificate_ghg_identifier.is_unique_ghg_claim"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "多证书系统中须识别哪个证书传达GHG排放属性，并确保只有一个证书（或法定组合）承载此声明。"
+    citation: "cit-cm-001"
+
+  # ========== 证书保留 (Ch11 p.93) ==========
+
+  - id: "cert-002"
+    name: "须保留购电相关证书"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "emission_factor.type"}, "contract"]},
+            {"==": [{"var": "emission_factor.certificates_retained"}, true]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "须保留与购电相关的所有证书，因为证书传达GHG排放率属性。未保留证书的声明无效。"
+    citation: "cit-cm-002"
+
+  # ========== Table 6.1 证书售出场景 (Ch5.5 p.42) ==========
+  # 场景: 自有发电 + 证书售出 → 位置法用位置法层级, 市场法用市场法层级
+
+  - id: "cert-003"
+    name: "自有发电证书售出时位置法处理"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.generation_ownership"}, "owned_operated"]},
+        {"==": [{"var": "input.certificates_sold"}, true]},
+        {"==": [{"var": "input.method"}, "location_based"]}
+      ]
+    assertion:
+      {"in": [{"var": "input.emission_factor.type"}, ["grid_average", "subnational", "national"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "自有发电且证书已售出时，位置法须使用电网平均排放因子层级（非自有发电因子）。"
+    citation: "cit-cm-003"
+
+  - id: "cert-004"
+    name: "自有发电证书售出时市场法处理"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.generation_ownership"}, "owned_operated"]},
+        {"==": [{"var": "input.certificates_sold"}, true]},
+        {"==": [{"var": "input.method"}, "market_based"]}
+      ]
+    assertion:
+      {"in": [{"var": "input.emission_factor.type"}, ["contract", "certificate", "supplier", "residual_mix", "grid_average"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "自有发电且证书已售出时，市场法须使用市场法排放因子层级（合同/证书/供应商/残余混合/电网平均）。"
+    citation: "cit-cm-003"
+
+  # ========== Table 6.1 直连线路场景 ==========
+  # 场景: 直连线路 + 证书被消费者购买并保留 → 使用源特定因子
+
+  - id: "cert-005"
+    name: "直连线路且证书保留时使用源特定因子"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.distribution_type"}, "direct_line"]},
+        {"==": [{"var": "input.certificates_retained_by_consumer"}, true]}
+      ]
+    assertion:
+      {"==": [{"var": "input.emission_factor.type"}, "source_specific"]}
+    on_fail: "raise_fatal"
+    on_fail_message: "直连线路且消费者保留证书时，应使用源特定排放因子（与证书因子相同）。"
+    citation: "cit-cm-003"
+
+  - id: "cert-006"
+    name: "直连线路证书售出时处理"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.distribution_type"}, "direct_line"]},
+        {"==": [{"var": "input.certificates_sold"}, true]},
+        {"==": [{"var": "input.method"}, "location_based"]}
+      ]
+    assertion:
+      {"in": [{"var": "input.emission_factor.type"}, ["grid_average", "subnational", "national"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "直连线路且证书已售出时，位置法须使用电网平均排放因子层级。"
+    citation: "cit-cm-003"
+
+  # ========== Table 6.1 电网配送场景 ==========
+  # 场景: 电网配送 → 无论证书是否售出，两种方法都使用各自层级
+
+  - id: "cert-007"
+    name: "电网配送时排放因子选择"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.distribution_type"}, "grid"]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.emission_factor"}, null]},
+        {"!=": [{"var": "input.emission_factor.type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "电网配送时须选择排放因子。位置法使用电网平均因子层级，市场法使用合同工具因子层级。"
+    citation: "cit-cm-003"
+
+  # ========== Ch6.4 证书售出时的降级 ==========
+
+  - id: "cert-008"
+    name: "证书售出时须使用其他市场法因子"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.certificates_sold_from_owned_generation"}, true]},
+        {"==": [{"var": "input.method"}, "market_based"]}
+      ]
+    assertion:
+      "and": [
+        {"in": [{"var": "input.emission_factor.type"}, ["supplier", "residual_mix", "grid_average"]]},
+        {"!=": [{"var": "input.emission_factor.source"}, "owned_generation"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "自有发电证书售出后，市场法须使用供应商、残余混合或电网平均因子（Table 6.3层级），不得使用自有发电因子。"
+    citation: "cit-cm-004"
+
+dependencies:
+  - ref: "constraints/scope2-quality-criteria"
+    relation: "constrained_by"
+  - ref: "methods/market-based"
+    relation: "constrains"
+
+conflicts_with: []

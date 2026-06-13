@@ -89,6 +89,8 @@ jobs:
           "specs/methods/dual-reporting.yaml"
           "specs/reporting/disclosure-requirements.yaml"
           "specs/constraints/prohibitions.yaml"
+          "specs/constraints/scope2-quality-criteria.yaml"
+          "specs/constraints/certificate-management.yaml"
           "schemas/equity-share-input.json"
           "schemas/equity-share-output.json"
           "schemas/operational-control-input.json"

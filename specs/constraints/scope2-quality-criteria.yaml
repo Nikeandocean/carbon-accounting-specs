@@ -1,0 +1,309 @@
+meta:
+  id: "scope2/scope2-quality-criteria"
+  version: "1.0.0"
+  source: "GHG Protocol Scope 2 Guidance"
+  source_ref: "https://ghgprotocol.org/scope-2-guidance"
+  layer: "schema"
+  description: "Scope 2 Quality Criteria — 市场法合同工具的完整性前提条件（Table 7.1）"
+
+citations:
+  - id: "cit-qc-001"
+    text: "All contractual instruments used in the market-based method for scope 2 accounting shall: 1) Convey the direct GHG emission rate attribute associated with the unit of electricity produced. 2) Be the only instruments that carry the GHG emission rate attribute claim. 3) Be tracked and redeemed, retired, or canceled by or on behalf of the reporting entity. 4) Be issued and redeemed as close as possible to the period of energy consumption. 5) Be sourced from the same market in which the reporting entity's electricity-consuming operations are located."
+    page: 62
+    section: "Chapter 7: Table 7.1 Scope 2 Quality Criteria"
+
+  - id: "cit-qc-002"
+    text: "In addition, utility-specific emission factors shall: 6) Be calculated based on delivered electricity, incorporating certificates sourced and retired on behalf of its customers. Electricity from renewable facilities for which the attributes have been sold off shall be characterized as having the GHG attributes of the residual mix."
+    page: 62
+    section: "Chapter 7: Table 7.1 Scope 2 Quality Criteria"
+
+  - id: "cit-qc-003"
+    text: "7) Ensure all contractual instruments conveying emissions claims be transferred to the reporting entity only. No other instruments that convey this claim to another end user shall be issued for the contracted electricity."
+    page: 62
+    section: "Chapter 7: Table 7.1 Scope 2 Quality Criteria"
+
+  - id: "cit-qc-004"
+    text: "8) An adjusted, residual mix characterizing the GHG intensity of unclaimed or publicly shared electricity shall be made available for consumer scope 2 calculations, or its absence shall be disclosed by the reporting entity."
+    page: 62
+    section: "Chapter 7: Table 7.1 Scope 2 Quality Criteria"
+
+rules:
+  # ========== QC1: GHG排放率属性 ==========
+  - id: "qc-001"
+    name: "QC1: 合同工具须传达GHG排放率属性"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "emission_factor.type"}, "contract"]},
+            {"!=": [{"var": "emission_factor.ghg_emission_rate_attribute"}, null]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "QC1违反：合同工具未传达GHG排放率属性。市场法要求所有合同工具必须包含与发电单位关联的直接GHG排放率属性。"
+    citation: "cit-qc-001"
+
+  # ========== QC2: 唯一声明 ==========
+  - id: "qc-002"
+    name: "QC2: 合同工具须为唯一排放率声明载体"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "emission_factor.type"}, "contract"]},
+            {"==": [{"var": "emission_factor.unique_claim"}, true]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "QC2违反：存在其他工具可被其他消费者用于同一发电量的排放率声明。必须确保该工具是唯一承载此声明的工具。"
+    citation: "cit-qc-001"
+
+  # ========== QC3: 退役/注销 ==========
+  - id: "qc-003"
+    name: "QC3: 合同工具须被退役/注销以支持声明"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "emission_factor.type"}, "contract"]},
+            {"==": [{"var": "emission_factor.retired_for_claims"}, true]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "QC3违反：合同工具未被退役/注销。用于市场法声明的工具必须通过跟踪系统退役、赎回或注销。"
+    citation: "cit-qc-001"
+
+  # ========== QC4: 时效性(Vintage) ==========
+  - id: "qc-004"
+    name: "QC4: 合同工具须在消费期附近发行和退役"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "emission_factor.type"}, "contract"]},
+            {"==": [{"var": "emission_factor.vintage_match"}, true]}
+          ]
+        }
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "QC4违反：合同工具的发电日期(vintage)与报告期不匹配。工具应在消费期附近发行和退役。"
+    citation: "cit-qc-001"
+
+  # ========== QC5: 市场边界 ==========
+  - id: "qc-005"
+    name: "QC5: 合同工具须来自同一市场"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "emission_factor.type"}, "contract"]},
+            {"==": [{"var": "emission_factor.same_market"}, true]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "QC5违反：合同工具来源市场与报告实体用电运营所在市场不一致。"
+    citation: "cit-qc-001"
+
+  # ========== QC6: 供应商因子基于交付电量 ==========
+  - id: "qc-006"
+    name: "QC6: 供应商排放因子须基于交付电量计算"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "emission_factor.type"}, "supplier"]},
+            {"==": [{"var": "emission_factor.based_on_delivered_electricity"}, true]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "QC6违反：供应商排放因子未基于全部交付电量计算。因子应包含供应商为客户采购和退役的证书。"
+    citation: "cit-qc-002"
+
+  # ========== QC7: 声明唯一转移 ==========
+  - id: "qc-007"
+    name: "QC7: 合同工具声明须仅转移给报告实体"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "emission_factor.type"}, "contract"]},
+            {"==": [{"var": "emission_factor.claim_exclusively_transferred"}, true]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "QC7违反：合同工具的排放率声明未唯一转移给报告实体。同一发电量不得有其他工具向其他终端用户传达此声明。"
+    citation: "cit-qc-003"
+
+  # ========== QC8: 残余混合可用性 ==========
+  - id: "qc-008"
+    name: "QC8: 残余混合须可获得或缺失须被披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"==": [{"var": "context.region.residual_mix_ef"}, null]}
+      ]
+    assertion:
+      {"!=": [{"var": "input.justifications.qc-008"}, null]}
+    on_fail: "require_justification"
+    on_fail_message: "QC8违反：残余混合排放因子不可用，但未在报告中披露。报告方应说明调整后的排放因子不可用，这可能导致电力消费者之间的双重计算。"
+    citation: "cit-qc-004"
+
+  # ========== QC前置综合校验 ==========
+  - id: "qc-009"
+    name: "市场法合同工具须满足全部Quality Criteria"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "emission_factor.type"}, "contract"]},
+            {
+              "and": [
+                {"!=": [{"var": "emission_factor.ghg_emission_rate_attribute"}, null]},
+                {"==": [{"var": "emission_factor.unique_claim"}, true]},
+                {"==": [{"var": "emission_factor.retired_for_claims"}, true]},
+                {"==": [{"var": "emission_factor.same_market"}, true]}
+              ]
+            }
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "合同工具不满足Scope 2 Quality Criteria。不满足Criteria的工具不得用于市场法计算，应使用Table 6.3中的其他数据替代。"
+    citation: "cit-qc-001"
+
+  # ========== 不满足Criteria时的降级 ==========
+  - id: "qc-010"
+    name: "不满足Criteria时须使用其他数据"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"==": [{"var": "emission_factor.type"}, "contract"]},
+            {"==": [{"var": "emission_factor.type"}, "certificate"]},
+            {"==": [{"var": "emission_factor.type"}, "supplier"]},
+            {"==": [{"var": "emission_factor.type"}, "residual_mix"]},
+            {"==": [{"var": "emission_factor.type"}, "grid_average"]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "排放因子类型无效。不满足Quality Criteria的合同工具不得用于市场法，应使用供应商因子、残余混合或电网平均因子替代。"
+    citation: "cit-qc-001"
+
+dependencies:
+  - ref: "methods/market-based"
+    relation: "constrains"
+  - ref: "methods/dual-reporting"
+    relation: "constrains"
+
+conflicts_with: []

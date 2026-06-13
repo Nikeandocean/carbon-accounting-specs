@@ -12,6 +12,11 @@ citations:
     page: 18
     section: "Chapter 3: Setting Organizational Boundaries"
 
+  - id: "cit-ob-002"
+    text: "As noted in the Corporate Standard and its supplemental Appendix F, all leases confer operational control to the lessee or tenants, unless otherwise noted. If a tenant can demonstrate that they do not exercise operational control in their lease, they shall document and justify the exclusion of these emissions."
+    page: 34
+    section: "Chapter 5: Leased Assets"
+
 rules:
   - id: "rule-ob-001"
     name: "组织边界核算"
@@ -68,6 +73,53 @@ rules:
     on_fail_message: "股权比例法计算失败"
     citation: "cit-ob-001"
 
-dependencies: []
+  # ========== 租赁资产规则 (Ch5.2.1) ==========
 
-conflicts_with: []
+  - id: "rule-ob-004"
+    name: "租赁资产运营控制权默认归属"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"!=": [{"var": "input.leased_assets"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.leased_assets"},
+        {
+          "or": [
+            {"==": [{"var": "has_operational_control"}, true]},
+            {"!=": [{"var": "exclusion_justification"}, null]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "租赁资产默认由租户拥有运营控制权。若租户不拥有运营控制权，须记录并说明排除原因。"
+    citation: "cit-ob-002"
+
+  - id: "rule-ob-005"
+    name: "租赁资产排放分类"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.leased_assets"}, null]},
+        {"==": [{"var": "input.control_method"}, "operational_control"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.leased_assets"},
+        {
+          "or": [
+            {"==": [{"var": "scope"}, "scope2"]},
+            {"==": [{"var": "scope"}, "scope1"]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "租赁资产排放须正确分类为Scope 1或Scope 2。租户购买的外部能源报Scope 2，自有设备排放报Scope 1。"
+    citation: "cit-ob-002"

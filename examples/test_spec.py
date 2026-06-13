@@ -248,13 +248,18 @@ def make_base_data() -> Dict:
             "emission_sources": [],
             "assumptions": "测试假设",
             "methodology_rationale": "测试方法论",
-            "data_sources": "测试数据源"
+            "data_sources": "测试数据源",
+            "justifications": {}
+        },
+        "output": {
+            "total_scope2_emissions": 2851.5
         },
         "context": {
             "region": {
                 "country_code": "CN",
                 "has_market_instruments": True,
-                "grid_average_ef": 0.5703
+                "grid_average_ef": 0.5703,
+                "residual_mix_ef": 0.5500
             },
             "emission_factors": {
                 "current_year": 0.5703,
@@ -269,16 +274,25 @@ def make_base_data() -> Dict:
 def make_electricity_source(id: str = "elec-001", ef_value: float = 0.5703,
                             ef_year: int = 2025, ef_type: str = "grid_average") -> Dict:
     """生成电力排放源"""
+    ef = {
+        "value": ef_value,
+        "year": ef_year,
+        "source": "测试来源",
+        "type": ef_type
+    }
+    # 为合同类型添加QC必要字段
+    if ef_type == "contract":
+        ef["ghg_emission_rate_attribute"] = 0.0
+        ef["unique_claim"] = True
+        ef["retired_for_claims"] = True
+        ef["vintage_match"] = True
+        ef["same_market"] = True
+        ef["claim_exclusively_transferred"] = True
     return {
         "id": id,
         "type": "electricity",
         "activity_data": 5000,
-        "emission_factor": {
-            "value": ef_value,
-            "year": ef_year,
-            "source": "测试来源",
-            "type": ef_type
-        }
+        "emission_factor": ef
     }
 
 
@@ -372,6 +386,8 @@ def test_dual_reporting(specs: Dict):
     # 场景1：有市场化工具的地区，应该触发双重报告
     data = make_base_data()
     data["input"]["emission_sources"] = [make_electricity_source()]
+    data["input"]["location_based_input"] = {"activity_data": 5000}
+    data["input"]["market_based_input"] = {"activity_data": 5000}
 
     for rule in specs.get("methods/dual-reporting", {}).get("rules", []):
         passed, msg = execute_rule(rule, data)
@@ -386,6 +402,7 @@ def test_dual_reporting(specs: Dict):
     data_no_market = make_base_data()
     data_no_market["context"]["region"]["has_market_instruments"] = False
     data_no_market["input"]["emission_sources"] = [make_electricity_source()]
+    data_no_market["input"]["method"] = "location_based"
 
     for rule in specs.get("methods/dual-reporting", {}).get("rules", []):
         passed, msg = execute_rule(rule, data_no_market)
@@ -454,7 +471,10 @@ def test_comply_or_explain(specs: Dict):
         "proh-006": "2025年因子尚未发布",
         "rule-lb-002": "该区域无区域电网因子",
         "rule-mb-002": "该企业无合同工具",
-        "rule-disc-003": "数据质量评估将在后续补充"
+        "rule-disc-003": "数据质量评估将在后续补充",
+        "rule-disc-008": "残余混合因子不可用",
+        "qc-004": "工具vintage与报告期存在偏差",
+        "qc-008": "残余混合因子不可用"
     }
 
     for spec in specs.values():

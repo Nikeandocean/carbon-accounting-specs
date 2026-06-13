@@ -32,6 +32,31 @@ citations:
     page: 36
     section: "Chapter 6: Data Quality"
 
+  - id: "cit-pr-006"
+    text: "Each method's results shall not be added or netted. Each method represents a separate way of allocating energy generation emissions."
+    page: 42
+    section: "Chapter 5: Avoiding Double Counting"
+
+  - id: "cit-pr-007"
+    text: "If energy attribute certificates are sold from energy generation, companies shall treat consumed electricity as though it were purchased from the grid—using the hierarchies of emission factors indicated for both methods."
+    page: 42
+    section: "Chapter 5: Avoiding Double Counting"
+
+  - id: "cit-pr-008"
+    text: "For accurate scope 2 GHG accounting, companies shall use the total—or gross—electricity purchases from the grid rather than grid purchases net of generation for the scope 2 calculation."
+    page: 38
+    section: "Chapter 5: Distinguishing Scopes"
+
+  - id: "cit-pr-009"
+    text: "Companies shall not use marginal emission factors such as those provided by CDM for a location-based scope 2 calculation."
+    page: 55
+    section: "Chapter 6: Location-Based Emission Factors"
+
+  - id: "cit-pr-010"
+    text: "Based on the Corporate Standard, any CH4 or N2O emissions from biogenic energy sources use shall be reported in scope 2, while the CO2 portion of the biofuel combustion shall be reported outside the scopes."
+    page: 59
+    section: "Chapter 6: Treatment of Biofuel Emissions"
+
 prohibitions:
   - id: "proh-001"
     name: "禁止双重计算"
@@ -150,3 +175,171 @@ prohibitions:
     on_fail_message: "排放因子年份与活动数据年份不匹配。如使用滞后因子，必须披露原因。"
     fallback_trigger: "principles/data-quality-hierarchy/time_based_fallback"
     citation: "cit-pr-005"
+
+  # ========== 双重计算防范规则 (Ch5.5) ==========
+
+  - id: "proh-007"
+    name: "两种方法结果禁止相加或抵消"
+    type: "constraint"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.location_based_emissions"}, null]},
+        {"!=": [{"var": "output.market_based_emissions"}, null]}
+      ]
+    assertion:
+      {"==": [{"var": "output.methods_added_or_netted"}, false]}
+    on_fail: "raise_fatal"
+    on_fail_message: "位置法和市场法的结果禁止相加或抵消。两种方法各自代表独立的排放分配方式，不得合并为单一数字。"
+    citation: "cit-pr-006"
+
+  - id: "proh-008"
+    name: "自产自用排放不得重复计入Scope 2"
+    type: "constraint"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"==": [{"var": "source_type"}, "grid_purchased"]},
+            {"==": [{"var": "self_consumed_with_certificates_sold"}, true]},
+            {"!=": [{"var": "scope1_reported"}, true]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "自产自用的排放已报Scope 1，不得在Scope 2中重复计算。若证书已售出，则消费电力视为电网购入。"
+    citation: "cit-pr-006"
+
+  - id: "proh-009"
+    name: "证书售出时消费电力视为电网购入"
+    type: "constraint"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.certificates_sold_from_owned_generation"}, true]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.emission_factor_source"}, "owned_generation"]},
+        {"in": [{"var": "input.emission_factor.type"}, ["grid_average", "residual_mix", "supplier", "contract", "certificate"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "自有发电设施的证书已售出时，消费电力应使用排放因子层级中的因子（非自有发电因子），视为从电网购入。"
+    citation: "cit-pr-007"
+
+  - id: "proh-010"
+    name: "Scope 1仍须反映发电设施排放"
+    type: "constraint"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "input.certificates_sold_from_owned_generation"}, true]}
+    assertion:
+      {"!=": [{"var": "output.scope1_from_generator"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "证书售出后，发电设施的排放仍须在Scope 1中报告。"
+    citation: "cit-pr-007"
+
+  - id: "proh-011"
+    name: "须使用总用电量(非净计量)计算Scope 2"
+    type: "constraint"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"!=": [{"var": "input.has_on_site_generation"}, null]}
+    assertion:
+      {"==": [{"var": "input.uses_gross_grid_purchases"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Scope 2计算须使用从电网购买的总电量(gross)，而非扣除自发电后的净电量(net)。如无法区分，须在清单中说明。"
+    citation: "cit-pr-008"
+
+  # ========== 排放因子限制规则 (Ch6) ==========
+
+  - id: "proh-012"
+    name: "禁止使用边际排放因子进行位置法计算"
+    type: "constraint"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.method"}, "location_based"]}
+    assertion:
+      {"==": [{"var": "input.emission_factor.is_marginal"}, false]}
+    on_fail: "raise_fatal"
+    on_fail_message: "位置法禁止使用边际排放因子(如CDM提供的因子)。位置法应使用电网平均排放因子。"
+    citation: "cit-pr-009"
+
+  - id: "proh-013"
+    name: "合同工具须包含GHG排放率属性"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "context.region.has_market_instruments"}, true]},
+        {"!=": [{"var": "input.emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "emission_factor.type"}, "contract"]},
+            {"!=": [{"var": "emission_factor.ghg_emission_rate_attribute"}, null]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "合同工具未包含GHG排放率属性。市场法要求所有合同工具必须传达与发电单位关联的直接GHG排放率。"
+    citation: "cit-pr-009"
+
+  # ========== 生物燃料排放处理 (Ch6.12) ==========
+
+  - id: "proh-014"
+    name: "生物燃料CH4/N2O须报Scope 2"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.emission_factor.fuel_type"}, "biofuel"]}
+    assertion:
+      "and": [
+        {"==": [{"var": "input.ch4_n2o_in_scope2"}, true]},
+        {"==": [{"var": "input.co2_biogenic_outside_scopes"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "生物燃料排放处理不正确：CH4和N2O排放须报Scope 2，生物源CO2须报Scope外。"
+    citation: "cit-pr-010"
+
+  - id: "proh-015"
+    name: "生物燃料不得使用零排放因子"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.emission_factor.fuel_type"}, "biofuel"]}
+    assertion:
+      {">": [{"var": "input.emission_factor.value"}, 0]}
+    on_fail: "require_justification"
+    on_fail_message: "生物燃料不应使用零排放因子。生物燃料仍产生GHG排放（CH4/N2O），应如实报告。"
+    citation: "cit-pr-010"
