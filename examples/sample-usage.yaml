@@ -1,7 +1,109 @@
-# Sample Usage: Manufacturing Company Scope 2 Calculation
-# This example demonstrates how to use the spec for a typical manufacturing company
+# =====================================================
+# GHG Protocol Scope 2 核算示例
+# =====================================================
+#
+# 这个文件展示了一个制造企业如何使用这套 spec 进行碳核算。
+#
+# 背景：
+# - 企业名称：示例制造有限公司
+# - 核算年份：2025年
+# - 控制方法：运营控制权法
+# - 排放源：外购电力
+#
+# 核算流程：
+# 1. 准备输入数据（企业信息、排放源、排放因子）
+# 2. 加载 spec 规则
+# 3. 执行前置校验（pre_calculation）
+# 4. 执行计算（runtime_inference）
+# 5. 执行后置审计（post_audit）
+# 6. 生成合规报告
+#
+# 注意：
+# - 这套 spec 只做合规校验，不做实际计算
+# - 排放因子数据需要从外部数据源获取
+# - 每条规则都有 GHG Protocol 原文出处
+# =====================================================
 
+# 背景信息：地区与排放因子上下文
 context:
+  region:                                  # 地区信息
+    country_code: "CN"                     # 国家代码
+    subnational_code: "CN-GD"              # 省级行政区代码（广东省）
+    has_market_instruments: true           # 是否有市场化工具（如绿证、合同）
+    grid_average_ef: 0.5810                # 电网平均排放因子
+    residual_mix_ef: null                  # 残余组合排放因子（无则为null）
+  emission_factors:                        # 可用排放因子
+    current_year: 0.5703                   # 当年排放因子
+    previous_year: 0.5810                  # 上一年排放因子
+    latest_available: 0.5810               # 最新可用排放因子
+    latest_year: 2025                      # 最新因子对应的年份
+
+# 输入数据：企业基本信息、排放源与排放因子
+input:
+  entity:                                  # 企业信息
+    name: "Example Manufacturing Co., Ltd." # 企业名称
+    reporting_year: 2026                   # 核算年份
+    control_method: "operational_control"  # 控制方法：operational_control（运营控制）| financial_control（财务控制）| equity_share（股权比例）
+
+  subsidiaries:                            # 子公司/附属设施列表
+    - id: "sub-001"                        # 子公司唯一标识
+      name: "Guangzhou Factory"            # 子公司名称
+      country: "CN"                        # 所在国家
+    - id: "sub-002"
+      name: "Shenzhen Factory"
+      country: "CN"
+
+  ownership_structure:                     # 股权结构
+    - subsidiary_id: "sub-001"             # 子公司标识
+      ownership_percentage: 100            # 持股比例（%）
+    - subsidiary_id: "sub-002"
+      ownership_percentage: 80
+
+  control_indicators:                      # 控制权指标
+    - subsidiary_id: "sub-001"
+      has_operational_control: true        # 是否拥有运营控制权
+      evidence: "Full management control"  # 控制权证据
+    - subsidiary_id: "sub-002"
+      has_operational_control: true
+      evidence: "Majority board control"
+
+  emission_sources:                        # 排放源列表
+    - id: "src-001"                        # 排放源唯一标识
+      type: "electricity"                  # 排放源类型：electricity（电力）| steam（蒸汽）| heat（热力）| cooling（冷量）
+      activity_data: 10000                 # 活动数据，单位：MWh
+      activity_data_unit: "MWh"            # 活动数据单位
+      emission_factor:                     # 排放因子
+        value: 0.5703                      # 排放因子值，单位：tCO2/MWh
+        year: 2025                         # 排放因子年份
+        source: "Guangdong Provincial Grid" # 数据来源
+        type: "grid_average"               # 因子类型：contract（合同）| certificate（绿证）| supplier（供应商）| residual_mix（残余组合）| grid_average（电网平均）| default（缺省）
+        is_latest_available: true          # 是否为最新可用因子
+
+  location_based_input:                    # 基于地点法输入
+    activity_data: 10000                   # 活动数据（MWh）
+    emission_factor_source: "Guangdong Provincial Grid" # 排放因子来源
+
+  market_based_input:                      # 基于市场法输入
+    activity_data: 10000                   # 活动数据（MWh）
+    contract_ef: null                      # 合同排放因子（无则为null）
+    rec_ef: null                           # 绿证排放因子（无则为null）
+    supplier_ef: null                      # 供应商排放因子（无则为null）
+
+  assumptions: "Using provincial grid average factor as no specific contracts available"
+  methodology_rationale: "Location-based method using latest available provincial factor"
+  data_sources: "Guangdong Provincial Grid Emission Factor 2025"
+
+  justifications:                          # 特殊说明/例外理由
+    "proh-006": "2026年官方因子尚未发布，使用2025年最新可用因子"
+
+# 预期输出结构（用于验证计算结果）
+expected_output:
+  total_scope2_emissions: 5703             # 范畴2总排放量（tCO2）
+  location_based_emissions: 5703           # 基于地点法排放量（tCO2）
+  market_based_emissions: 5703             # 基于市场法排放量（tCO2）
+  methodology: "location_based"            # 使用的核算方法
+  emission_factor_source: "Guangdong Provincial Grid 2025" # 排放因子来源
+  reporting_period: "2026-01-01 to 2026-12-31" # 报告期
   region:
     country_code: "CN"
     subnational_code: "CN-GD"
