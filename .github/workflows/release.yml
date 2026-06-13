@@ -1,0 +1,108 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyyaml
+
+    - name: Validate before release
+      run: |
+        echo "Validating all files before release..."
+        find specs -name "*.yaml" -exec python -c "import yaml; yaml.safe_load(open('{}', encoding='utf-8'))" \;
+        find schemas -name "*.json" -exec python -c "import json; json.load(open('{}'))" \;
+        echo "✅ All files validated"
+
+    - name: Extract version from tag
+      id: version
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/v}
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Extracted version: $VERSION"
+
+    - name: Generate release notes
+      id: notes
+      run: |
+        # Get commits since last tag
+        LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+        if [ -z "$LAST_TAG" ]; then
+          COMMITS=$(git log --oneline)
+        else
+          COMMITS=$(git log ${LAST_TAG}..HEAD --oneline)
+        fi
+
+        # Create release notes
+        cat > release_notes.md << EOF
+        # GHG Protocol Scope 2 Spec v${{ steps.version.outputs.version }}
+
+        ## Changes
+        ${COMMITS}
+
+        ## Installation
+
+        \`\`\`bash
+        git clone https://github.com/Nikeandocean/carbon-accounting-specs.git
+        cd carbon-accounting-specs
+        git checkout v${{ steps.version.outputs.version }}
+        \`\`\`
+
+        ## Quick Start
+
+        See [README.md](README.md) for usage instructions.
+
+        ## Validation
+
+        All YAML and JSON files have been validated.
+
+        ## License
+
+        MIT License - see [LICENSE](LICENSE) for details.
+        EOF
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        body_path: release_notes.md
+        draft: false
+        prerelease: false
+        files: |
+          specs/**/*.yaml
+          schemas/**/*.json
+          docs/**/*.md
+          examples/**/*.yaml
+          LICENSE
+          README.md
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload release artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: carbon-accounting-specs-v${{ steps.version.outputs.version }}
+        path: |
+          specs/
+          schemas/
+          docs/
+          examples/
+          LICENSE
+          README.md
