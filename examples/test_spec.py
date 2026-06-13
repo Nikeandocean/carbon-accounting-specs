@@ -489,8 +489,15 @@ def test_comply_or_explain(specs: Dict):
                     )
 
     # 场景2：无 justification 时应失败
+    # rule-lb-002: emission_factor.source="default" 且无 justification → 应失败
+    # rule-mb-002: emission_factor.type="grid_average" 且无 justification → 应失败
+    # qc-004: contract 类型且 vintage_match=False 且无 justification → 应失败
     data_no_justification = make_base_data()
-    data_no_justification["input"]["emission_sources"] = [make_electricity_source(ef_year=2024)]
+    src_default = make_electricity_source(ef_type="grid_average")
+    src_default["emission_factor"]["source"] = "default"
+    src_contract = make_electricity_source(id="elec-contract", ef_type="contract")
+    src_contract["emission_factor"]["vintage_match"] = False
+    data_no_justification["input"]["emission_sources"] = [src_default, src_contract]
     # 不提供 justifications
 
     for spec in specs.values():
