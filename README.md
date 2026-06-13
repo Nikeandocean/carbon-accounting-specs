@@ -90,6 +90,13 @@ print("✅ 所有前置规则校验通过")
 **位置法：** 区域电网 → 国家电网
 **时间：** 当年 → 前一年 → 最近可用
 
+## 文档目录
+
+- [方法论说明](docs/methodology.md) — 双层架构和执行流程
+- [Schema 规范](docs/schema-spec.md) — 输入输出 schema 详情
+- [Agent 集成指南](docs/agent-integration-guide.md) — 分步集成说明
+- [示例用法](examples/sample-usage.yaml) — 完整制造企业示例
+
 ## 参与贡献
 
 我们欢迎以下贡献：
