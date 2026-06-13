@@ -196,8 +196,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - GitHub: [@Nikeandocean](https://github.com/Nikeandocean)
 - Email: nikeandocean@gmail.com
 - Repository: [carbon-accounting-specs](https://github.com/Nikeandocean/carbon-accounting-specs)
-
-## 🌐 中文文档
-
-- [中文文档入口](docs/README_CN.md) — 项目中文说明
-- [贡献指南](CONTRIBUTING.md) — 如何参与贡献
