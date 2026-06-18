@@ -152,12 +152,28 @@ def run_scenario(sc: Dict, specs: Dict, meta: Dict) -> ScenarioResult:
         for r in spec.get("rules", []):
             all_rules.append((sp, r))
 
+    tested_rules = set()
     for _, rule in all_rules:
         rid = rule["id"]
+        # 先在顶层执行
         passed, _ = execute_rule(rule, data)
-        if passed is None: result.skipped.append(rid)
-        elif passed: result.passed.append(rid)
-        else: result.failed.append(rid)
+        if passed is not None:
+            tested_rules.add(rid)
+            if passed: result.passed.append(rid)
+            else: result.failed.append(rid)
+        else:
+            # 顶层跳过的规则，尝试逐源执行（针对 runtime_inference 规则）
+            lifecycle = rule.get("lifecycle", "")
+            if lifecycle == "runtime_inference":
+                for src in data.get("input", {}).get("scope1_emission_sources", []):
+                    src_data = {**data, "input": {**data["input"], **src}}
+                    p, _ = execute_rule(rule, src_data)
+                    if p is not None and rid not in tested_rules:
+                        tested_rules.add(rid)
+                        if p: result.passed.append(rid)
+                        else: result.failed.append(rid)
+            if rid not in tested_rules:
+                result.skipped.append(rid)
 
     for rid in sc.get("expect_pass", []):
         if rid not in result.passed:
@@ -751,6 +767,308 @@ SCENARIO_10 = {
 
 
 # ============================================================
+# 场景 11: 钢铁企业 — 过程排放 + 固定燃烧（基于宝武钢铁案例）
+# ============================================================
+
+SCENARIO_11 = {
+    "name": "钢铁企业Scope1",
+    "desc": "大型钢铁企业 — 高炉炼铁过程排放 + 焦炉煤气固定燃烧",
+    "data": {
+        "input": {
+            "entity": {"name": "东方钢铁集团", "reporting_year": 2025},
+            "control_method": "operational_control",
+            "scope1_emission_sources": [
+                {"id": "blast-furnace-001", "scope": "scope1", "type": "process",
+                 "process_type": "iron_smelting", "activity_data": 5000000, "activity_unit": "tonnes",
+                 "emission_factor": {"value": 1.35, "year": 2025, "source": "ipcc", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5"},
+                {"id": "coke-oven-001", "scope": "scope1", "type": "stationary_combustion",
+                 "fuel_type": "coke_oven_gas", "activity_data": 800000, "activity_unit": "tonnes",
+                 "emission_factor": {"value": 0.85, "year": 2025, "source": "ipcc", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5"},
+                {"id": "converter-gas-001", "scope": "scope1", "type": "stationary_combustion",
+                 "fuel_type": "converter_gas", "activity_data": 200000, "activity_unit": "tonnes",
+                 "emission_factor": {"value": 1.06, "year": 2025, "source": "ipcc", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5"}
+            ],
+            "emission_sources": [
+                {"id": "elec-grid-001", "type": "electricity", "activity_data": 500000,
+                 "emission_factor": {"value": 0.5703, "year": 2025, "source": "生态环境部", "type": "grid_average"}}
+            ],
+            "assumptions": "高炉炼铁过程排放基于产品产量，焦炉煤气和转炉煤气燃烧排放",
+            "methodology_rationale": "过程排放采用IPCC 2006钢铁行业指南，燃烧排放采用燃料特定因子",
+            "data_sources": "IPCC 2006、企业能源统计台账",
+            "justifications": {}
+        },
+        "output": {
+            "total_scope1_emissions": 7750000.0,
+            "scope1_by_category": {
+                "stationary_combustion": 890000.0,
+                "mobile_combustion": 0,
+                "process": 6750000.0,
+                "fugitive": 0
+            },
+            "methodology": "IPCC 2006 钢铁行业指南",
+            "emission_factor_source": "IPCC 2006",
+            "gas_by_gas_breakdown": {"co2": 7600000.0, "ch4": 100000.0, "n2o": 50000.0},
+            "base_year": {"scope1_emissions": 7500000.0, "recalculation_policy": "股权边界变更法"}
+        },
+        "context": {
+            "region": {"country_code": "CN"},
+            "emission_factors": {"current_year": 0.5703, "previous_year": 0.5810, "latest_available": 0.5703, "latest_year": 2025}
+        }
+    },
+    "expect_pass": [
+        "global-001", "global-002", "global-003", "global-004",
+        "s1-cat-001", "s1-cat-002", "s1-cat-003",
+        "s1-bound-001",
+        "s1-disc-001", "s1-disc-002", "s1-disc-003", "s1-disc-004", "s1-disc-005", "s1-disc-007",
+        "s1-qc-001", "s1-qc-002", "s1-qc-004",
+        "s1-ctv-001",
+    ],
+    "expect_fail": [],
+    "expect_emissions": 7927150.0
+}
+
+
+# ============================================================
+# 场景 12: 制冷剂泄漏 — 逸散排放 + 合规错误检测
+# ============================================================
+
+SCENARIO_12 = {
+    "name": "制冷剂泄漏逸散排放",
+    "desc": "商业建筑 HVAC 系统 — R-410A/R-134a 冷媒泄漏，GWP 高值",
+    "data": {
+        "input": {
+            "entity": {"name": "万达商业物业管理", "reporting_year": 2025},
+            "control_method": "operational_control",
+            "scope1_emission_sources": [
+                {"id": "hvac-r410a-001", "scope": "scope1", "type": "fugitive",
+                 "fuel_type": None, "activity_data": 150, "activity_unit": "kg",
+                 "emission_factor": {"value": 2.088, "year": 2025, "source": "ipcc", "is_biomass": False},
+                 "gwp_source": "IPCC_AR4"},
+                {"id": "hvac-r134a-001", "scope": "scope1", "type": "fugitive",
+                 "fuel_type": None, "activity_data": 80, "activity_unit": "kg",
+                 "emission_factor": {"value": 1.43, "year": 2025, "source": "ipcc", "is_biomass": False},
+                 "gwp_source": "IPCC_AR4"},
+                {"id": "backup-gen-001", "scope": "scope1", "type": "stationary_combustion",
+                 "fuel_type": "diesel", "activity_data": 50, "activity_unit": "tonnes",
+                 "emission_factor": {"value": 2.68, "year": 2025, "source": "ipcc", "is_biomass": False},
+                 "gwp_source": "IPCC_AR4"}
+            ],
+            "emission_sources": [],
+            "assumptions": "商业建筑HVAC系统冷媒年泄漏率约10%，备用柴油发电机",
+            "methodology_rationale": "逸散排放基于冷媒充注量和泄漏率，GWP采用IPCC AR4值",
+            "data_sources": "IPCC AR4、设备维护记录",
+            "justifications": {}
+        },
+        "output": {
+            "total_scope1_emissions": 567.24,
+            "scope1_by_category": {
+                "stationary_combustion": 134.0,
+                "mobile_combustion": 0,
+                "process": 0,
+                "fugitive": 433.24
+            },
+            "methodology": "排放因子法",
+            "emission_factor_source": "IPCC AR4",
+            "base_year": {"scope1_emissions": 520.0, "recalculation_policy": "股权边界变更法"}
+        },
+        "context": {
+            "region": {"country_code": "CN"},
+            "emission_factors": {"current_year": 0.5703, "previous_year": 0.5810, "latest_available": 0.5703, "latest_year": 2025}
+        }
+    },
+    "expect_pass": [
+        "global-001", "global-002", "global-003", "global-004",
+        "s1-cat-001", "s1-cat-002", "s1-cat-003",
+        "s1-bound-001",
+        "s1-disc-001", "s1-disc-002",
+        "s1-qc-001", "s1-qc-002", "s1-qc-004",
+        "s1-ctv-001",
+    ],
+    "expect_fail": [],
+    "expect_emissions": 561.6
+}
+
+
+# ============================================================
+# 场景 13: GWP 版本混用 — 合规错误检测
+# ============================================================
+
+SCENARIO_13 = {
+    "name": "GWP版本混用错误",
+    "desc": "企业混用 IPCC AR4 和 AR6 的 GWP 值 — 应触发一致性校验失败",
+    "data": {
+        "input": {
+            "entity": {"name": "测试企业（错误场景）", "reporting_year": 2025},
+            "control_method": "operational_control",
+            "scope1_emission_sources": [
+                {"id": "boiler-001", "scope": "scope1", "type": "stationary_combustion",
+                 "fuel_type": "natural_gas", "activity_data": 1000, "activity_unit": "tonnes",
+                 "emission_factor": {"value": 2.0, "year": 2025, "source": "ipcc", "is_biomass": False},
+                 "gwp_source": "IPCC_AR4"},
+                {"id": "hvac-001", "scope": "scope1", "type": "fugitive",
+                 "fuel_type": None, "activity_data": 50, "activity_unit": "kg",
+                 "emission_factor": {"value": 1.43, "year": 2025, "source": "ipcc", "is_biomass": False},
+                 "gwp_source": "IPCC_AR6"}
+            ],
+            "emission_sources": [],
+            "assumptions": "混用了不同版本的GWP值",
+            "methodology_rationale": "部分使用AR4，部分使用AR6",
+            "data_sources": "IPCC",
+            "justifications": {}
+        },
+        "output": {
+            "total_scope1_emissions": 2071.5,
+            "scope1_by_category": {
+                "stationary_combustion": 2000.0,
+                "fugitive": 71.5
+            },
+            "methodology": "排放因子法",
+            "emission_factor_source": "IPCC"
+        },
+        "context": {
+            "region": {"country_code": "CN"},
+            "emission_factors": {"current_year": 0.5703, "previous_year": 0.5810, "latest_available": 0.5703, "latest_year": 2025}
+        }
+    },
+    "expect_pass": [
+        "global-001", "global-002",
+        "s1-cat-001", "s1-cat-002", "s1-cat-003",
+    ],
+    "expect_fail": [
+        "s1-ctv-001",   # GWP 来源不一致
+        "s1-qc-004",    # GWP 版本不一致
+    ],
+    "expect_emissions": 2071.5
+}
+
+
+# ============================================================
+# 场景 14: 排放因子回退 — 缺省因子 + justification
+# ============================================================
+
+SCENARIO_14 = {
+    "name": "排放因子回退场景",
+    "desc": "企业使用缺省排放因子，通过 justification 解释",
+    "data": {
+        "input": {
+            "entity": {"name": "西部矿业集团", "reporting_year": 2025},
+            "control_method": "operational_control",
+            "scope1_emission_sources": [
+                {"id": "diesel-gen-001", "scope": "scope1", "type": "stationary_combustion",
+                 "fuel_type": "diesel", "activity_data": 300, "activity_unit": "tonnes",
+                 "emission_factor": {"value": 2.68, "year": 2024, "source": "default", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5"},
+                {"id": "fleet-001", "scope": "scope1", "type": "mobile_combustion",
+                 "fuel_type": "diesel", "activity_data": 200000, "activity_unit": "km",
+                 "emission_factor": {"value": 0.0002, "year": 2024, "source": "default", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5"}
+            ],
+            "emission_sources": [],
+            "assumptions": "偏远矿区无法获取设施特定因子，使用国家缺省值",
+            "methodology_rationale": "采用IPCC缺省排放因子",
+            "data_sources": "IPCC 2006 缺省因子数据库",
+            "justifications": {
+                "s1-sc-004": "矿区无燃料特定因子，使用IPCC缺省值",
+                "s1-mc-003": "车辆未安装里程计，使用缺省车辆因子"
+            }
+        },
+        "output": {
+            "total_scope1_emissions": 844.0,
+            "scope1_by_category": {
+                "stationary_combustion": 804.0,
+                "mobile_combustion": 40.0,
+                "process": 0,
+                "fugitive": 0
+            },
+            "methodology": "排放因子法（缺省因子）",
+            "emission_factor_source": "IPCC 2006 缺省因子",
+            "base_year": {"scope1_emissions": 800.0, "recalculation_policy": "股权边界变更法"}
+        },
+        "context": {
+            "region": {"country_code": "CN"},
+            "emission_factors": {"current_year": 0.5703, "previous_year": 0.5810, "latest_available": 0.5703, "latest_year": 2025}
+        }
+    },
+    "expect_pass": [
+        "global-001", "global-002", "global-003", "global-004",
+        "s1-cat-001", "s1-cat-002", "s1-cat-003",
+        "s1-bound-001",
+        "s1-sc-004",   # 有 justification，应通过
+        "s1-disc-001", "s1-disc-002", "s1-disc-003", "s1-disc-004", "s1-disc-007",
+        "s1-qc-001", "s1-qc-004",
+    ],
+    "expect_fail": [
+        "s1-qc-002",   # EF source 是 "default"，不在允许列表
+    ],
+    "expect_emissions": 844.0
+}
+
+
+# ============================================================
+# 场景 15: 生物质混合燃烧 — CO2 排除但 CH4/N2O 计入
+# ============================================================
+
+SCENARIO_15 = {
+    "name": "生物质混合燃烧",
+    "desc": "造纸厂 — 木质废料+煤炭混合燃烧，生物源CO2排除但CH4/N2O计入Scope 1",
+    "data": {
+        "input": {
+            "entity": {"name": "华南造纸集团", "reporting_year": 2025},
+            "control_method": "operational_control",
+            "scope1_emission_sources": [
+                {"id": "coal-001", "scope": "scope1", "type": "stationary_combustion",
+                 "fuel_type": "coal", "activity_data": 10000, "activity_unit": "tonnes",
+                 "is_biomass": False,
+                 "emission_factor": {"value": 2.42, "year": 2025, "source": "ipcc", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5"},
+                {"id": "biomass-001", "scope": "scope1", "type": "stationary_combustion",
+                 "fuel_type": "wood_waste", "activity_data": 5000, "activity_unit": "tonnes",
+                 "is_biomass": True,
+                 "emission_factor": {"value": 0.39, "year": 2025, "source": "ipcc", "is_biomass": True},
+                 "gwp_source": "IPCC_AR5"}
+            ],
+            "emission_sources": [],
+            "assumptions": "木质废料燃烧CO2为生物源，CH4/N2O仍计入Scope 1",
+            "methodology_rationale": "生物源CO2报告在Scope外，CH4/N2O报告在Scope 1",
+            "data_sources": "IPCC 2006",
+            "justifications": {}
+        },
+        "output": {
+            "total_scope1_emissions": 26150.0,
+            "scope1_by_category": {
+                "stationary_combustion": 26150.0,
+                "mobile_combustion": 0,
+                "process": 0,
+                "fugitive": 0
+            },
+            "methodology": "排放因子法",
+            "emission_factor_source": "IPCC 2006",
+            "biogenic_co2": 1950.0,
+            "biogenic_co2_outside_scopes": True,
+            "base_year": {"scope1_emissions": 25000.0, "recalculation_policy": "股权边界变更法"}
+        },
+        "context": {
+            "region": {"country_code": "CN"},
+            "emission_factors": {"current_year": 0.5703, "previous_year": 0.5810, "latest_available": 0.5703, "latest_year": 2025}
+        }
+    },
+    "expect_pass": [
+        "global-001", "global-002", "global-003", "global-004",
+        "s1-cat-001", "s1-cat-002", "s1-cat-003",
+        "s1-bound-001",
+        "s1-disc-001", "s1-disc-002", "s1-disc-006",  # 生物质CO2单独报告
+        "s1-qc-001", "s1-qc-002", "s1-qc-004",
+        "s1-ctv-001",
+    ],
+    "expect_fail": [],
+    "expect_emissions": 26150.0
+}
+
+
+# ============================================================
 # 主程序
 # ============================================================
 
@@ -764,7 +1082,8 @@ def main():
     print(f"\n📂 加载 {len(specs)} 个 spec 文件")
 
     scenarios = [SCENARIO_1, SCENARIO_2, SCENARIO_3, SCENARIO_4, SCENARIO_5, SCENARIO_6, SCENARIO_7,
-                 SCENARIO_8, SCENARIO_9, SCENARIO_10]
+                 SCENARIO_8, SCENARIO_9, SCENARIO_10, SCENARIO_11, SCENARIO_12, SCENARIO_13,
+                 SCENARIO_14, SCENARIO_15]
 
     total_pass = total_fail = total_skip = total_unexpected = 0
     tested = set()

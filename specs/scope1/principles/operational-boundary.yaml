@@ -37,7 +37,10 @@ rules:
     lifecycle: "pre_calculation"
     condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
     assertion:
-      {"!=": [{"var": "input.entity.control_method"}, null]}
+      "or": [
+        {"!=": [{"var": "input.entity.control_method"}, null]},
+        {"!=": [{"var": "input.control_method"}, null]}
+      ]
     on_fail: "raise_fatal"
     on_fail_message: "须先确定组织控制方法（运营控制/财务控制/股权比例）才能界定Scope 1边界"
     citation: "cit-s1ob-001"
