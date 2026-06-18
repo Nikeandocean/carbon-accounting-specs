@@ -44,3 +44,17 @@
 Rules with `require_justification` action allow compliance through disclosure:
 - Global justification: `input.justifications[rule_id]`
 - Instance justification: `input.justifications["{rule_id}@{instance_path}"]`
+
+## Scope 1 Calculation
+
+### Emission Categories
+- **Stationary Combustion**: Fuel × Emission Factor (CO2 + CH4×GWP + N2O×GWP)
+- **Mobile Combustion**: Distance × Vehicle EF OR Fuel Volume × Fuel EF
+- **Process Emissions**: Production Output × Process EF
+- **Fugitive Emissions**: Leak Rate × GWP
+
+### Biogenic CO2
+CO2 from combustion of biomass is reported outside Scopes 1-3. CH4 and N2O from biomass combustion are reported in Scope 1.
+
+### CHP Allocation
+Emissions from CHP facilities are allocated between heat (Scope 1) and electricity (Scope 2) using energy, exergy, or constant allocation methods.

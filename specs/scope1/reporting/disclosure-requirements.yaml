@@ -1,0 +1,172 @@
+meta:
+  id: "scope1/reporting/disclosure-requirements"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "schema"
+  description: "Scope 1排放信息披露要求"
+
+citations:
+  - id: "cit-disc-001"
+    text: "Companies shall report total Scope 1 emissions separately from Scope 2 and Scope 3 emissions."
+    page: 28
+    section: "Chapter 4: Setting Operational Boundaries"
+
+  - id: "cit-disc-002"
+    text: "Companies shall report Scope 1 emissions by category: stationary combustion, mobile combustion, process emissions, and fugitive emissions."
+    page: 28
+    section: "Chapter 4: Setting Operational Boundaries"
+
+  - id: "cit-disc-003"
+    text: "Companies shall disclose the methodology used to calculate GHG emissions, including any assumptions made."
+    page: null
+    section: "Chapter 7: Managing Inventory Quality"
+
+  - id: "cit-disc-004"
+    text: "Companies shall disclose the source of emission factors used in calculations."
+    page: 44
+    section: "Chapter 6: Emission Factors"
+
+  - id: "cit-disc-005"
+    text: "Companies should report emissions by individual GHG type (CO2, CH4, N2O, HFCs, PFCs, SF6, NF3)."
+    page: 28
+    section: "Chapter 4: Setting Operational Boundaries"
+
+  - id: "cit-disc-006"
+    text: "CO2 emissions from biogenic sources shall be reported separately and outside Scopes 1, 2, and 3."
+    page: 29
+    section: "Chapter 4: Treatment of Biogenic Emissions"
+
+  - id: "cit-disc-007"
+    text: "Companies shall disclose base year Scope 1 emissions and the recalculation policy."
+    page: 37
+    section: "Chapter 5: Tracking Emissions Over Time"
+
+rules:
+  - id: "s1-disc-001"
+    name: "Scope 1总排放量披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      {"!=": [{"var": "output.total_scope1_emissions"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "须披露Scope 1总排放量"
+    citation: "cit-disc-001"
+
+  - id: "s1-disc-002"
+    name: "分类别排放量披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.scope1_by_category"}, null]},
+        {"!=": [{"var": "output.scope1_by_category.stationary_combustion"}, null]},
+        {"!=": [{"var": "output.scope1_by_category.mobile_combustion"}, null]},
+        {"!=": [{"var": "output.scope1_by_category.process"}, null]},
+        {"!=": [{"var": "output.scope1_by_category.fugitive"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "须按排放类别（固定燃烧、移动燃烧、工艺排放、逸散排放）分别披露排放量"
+    citation: "cit-disc-002"
+
+  - id: "s1-disc-003"
+    name: "方法论和假设披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.methodology"}, null]},
+        {"!=": [{"var": "input.assumptions"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "须披露Scope 1核算方法论和关键假设"
+    citation: "cit-disc-003"
+
+  - id: "s1-disc-004"
+    name: "排放因子来源披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      {"!=": [{"var": "output.emission_factor_source"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "须披露排放因子数据来源"
+    citation: "cit-disc-004"
+
+  - id: "s1-disc-005"
+    name: "分气体种类披露"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "or": [
+        {"!=": [{"var": "output.gas_by_gas_breakdown"}, null]},
+        {"!=": [{"var": "input.justifications.s1-disc-005"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "建议按温室气体种类（CO2、CH4、N2O、HFCs等）分别披露排放量"
+    citation: "cit-disc-005"
+
+  - id: "s1-disc-006"
+    name: "生物源CO2单独报告"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "some": [
+        {"var": "input.scope1_emission_sources"},
+        {"==": [{"var": "is_biomass"}, true]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.biogenic_co2"}, null]},
+        {"==": [{"var": "output.biogenic_co2_outside_scopes"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "生物源CO2须单独报告且不计入Scope 1总量"
+    citation: "cit-disc-006"
+
+  - id: "s1-disc-007"
+    name: "基准年Scope 1披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.base_year.scope1_emissions"}, null]},
+        {"!=": [{"var": "output.base_year.recalculation_policy"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "须披露基准年Scope 1排放量及重算政策"
+    citation: "cit-disc-007"
+
+dependencies:
+  - ref: "principles/operational-boundary"
+    relation: "applies_within"
+  - ref: "scope1/emission-categories"
+    relation: "constrained_by"
+
+conflicts_with: []

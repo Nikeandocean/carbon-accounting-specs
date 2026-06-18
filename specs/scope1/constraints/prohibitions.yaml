@@ -1,0 +1,161 @@
+meta:
+  id: "scope1/prohibitions"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "hybrid"
+  description: "Scope 1核算过程中绝对禁止的行为"
+
+citations:
+  - id: "cit-s1pr-001"
+    text: "A company shall not double count emissions. Each emission source should be counted once and only once in the appropriate scope."
+    page: 34
+    section: "Chapter 4: Setting Operational Boundaries"
+
+  - id: "cit-s1pr-002"
+    text: "Scope 1 and Scope 2 are mutually exclusive. A company should not double count emissions by reporting the same emission in both scopes."
+    page: 34
+    section: "Chapter 4: Setting Operational Boundaries"
+
+  - id: "cit-s1pr-003"
+    text: "CO2 emissions from biomass combustion or decomposition are reported separately from scopes and are not included in Scope 1, Scope 2, or Scope 3."
+    page: 29
+    section: "Chapter 4: Scope 1 Emissions"
+
+  - id: "cit-s1pr-004"
+    text: "Emissions from the transportation of products by vehicles not owned or controlled by the reporting company are accounted for in Scope 3."
+    page: 31
+    section: "Chapter 4: Distinguishing Scopes"
+
+  - id: "cit-s1pr-005"
+    text: "Emission factors should correspond to the same time period as the activity data. When current year factors are unavailable, companies may use the most recent available factors with appropriate disclosure."
+    page: 44
+    section: "Chapter 6: Data Quality"
+
+  - id: "cit-s1pr-006"
+    text: "Companies shall use GWP values from a single IPCC assessment report consistently across all emission sources within a scope for a given reporting year."
+    page: 47
+    section: "Chapter 6: Emission Factors and GWP Values"
+
+prohibitions:
+  - id: "s1-proh-001"
+    name: "禁止Scope 1内部双重计算"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "none": [
+        {"var": "input.scope1_emission_sources"},
+        {"in": [{"var": "id"}, {"var": "input.scope1_emission_sources.id"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Scope 1排放源ID重复，构成双重计算"
+    citation: "cit-s1pr-001"
+
+  - id: "s1-proh-002"
+    name: "禁止Scope 1/2双重计算"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "none": [
+        {"var": "input.scope1_emission_sources"},
+        {"in": [{"var": "id"}, {"var": "input.scope2_emission_sources.id"}]}
+      ]
+    computation:
+      function: "calc.boundary_overlap_check"
+      params:
+        scope1_sources: {"var": "input.scope1_emission_sources"}
+        scope2_sources: {"var": "input.scope2_emission_sources"}
+        energy_flows: {"var": "input.energy_flow_graph"}
+    post_computation_assertion:
+      "and": [
+        {"==": [{"var": "computation.result.overlap_detected"}, false]},
+        {"==": [{"var": "computation.result.boundary_violations"}, []]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "检测到Scope 1与Scope 2存在排放源ID重复或边界重叠"
+    citation: "cit-s1pr-002"
+
+  - id: "s1-proh-003"
+    name: "生物源CO2不得计入Scope 1"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition: {"==": [{"var": "input.emission_factor.is_biomass"}, true]}
+    assertion: {"==": [{"var": "output.co2_excluded_from_scope1_total"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "生物源CO2不得计入Scope 1排放总量"
+    citation: "cit-s1pr-003"
+
+  - id: "s1-proh-004"
+    name: "外包运输不得计入Scope 1"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.mobile_combustion"},
+        {"!=": [{"var": "ownership"}, "outsourced"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "外包运输排放属于Scope 3，不得计入Scope 1"
+    citation: "cit-s1pr-004"
+
+  - id: "s1-proh-005"
+    name: "排放因子时效性"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition: {"!=": [{"var": "input.activity_data.year"}, null]}
+    assertion:
+      "or": [
+        {"==": [{"var": "input.emission_factor.year"}, {"var": "input.activity_data.year"}]},
+        {
+          "and": [
+            {"==": [{"var": "input.emission_factor.is_latest_available"}, true]},
+            {"!=": [{"var": "input.justifications.s1-proh-005"}, null]}
+          ]
+        }
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "排放因子年份与活动数据年份不匹配，如使用滞后因子须说明原因"
+    citation: "cit-s1pr-005"
+
+  - id: "s1-proh-006"
+    name: "GWP来源一致性"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {"==": [{"var": "gwp_source"}, {"var": "input.scope1_emission_sources[0].gwp_source"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "所有Scope 1排放源须使用同一IPCC评估报告的GWP值"
+    citation: "cit-s1pr-006"
+
+dependencies:
+  - ref: "principles/operational-boundary"
+    relation: "constrained_by"
+  - ref: "scope2/prohibitions"
+    relation: "avoids_overlap"
+
+conflicts_with: []

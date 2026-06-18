@@ -1,0 +1,113 @@
+meta:
+  id: "scope1/fugitive-emissions"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "hybrid"
+  description: "逸散排放（Fugitive Emissions）计算规则：制冷剂泄漏、天然气泄漏、煤矿瓦斯等"
+
+citations:
+  - id: "cit-fe-001"
+    text: "Fugitive emissions include leaks from industrial equipment, refrigeration and air conditioning equipment, and unintentional emissions from coal mining."
+    page: 43
+    section: "Chapter 6: Tracking and Reporting Emissions"
+
+  - id: "cit-fe-002"
+    text: "To calculate the GWP-weighted emissions, companies shall multiply the quantity of gas leaked or emitted by the GWP of that gas. The GWP values should be drawn from the IPCC Assessment Reports."
+    page: 47
+    section: "Chapter 6: Tracking and Reporting Emissions"
+
+  - id: "cit-fe-003"
+    text: "Fugitive emissions are calculated by multiplying the quantity of gas leaked or emitted (in kg) by its Global Warming Potential (GWP). For example, 1 kg of HFC-134a with a GWP of 1430 equals 1.43 tCO2e."
+    page: 47
+    section: "Chapter 6: Tracking and Reporting Emissions"
+
+  - id: "cit-fe-004"
+    text: "Companies should track refrigerant use and emissions at the equipment level to improve data quality and support leak detection."
+    page: 47
+    section: "Chapter 6: Tracking and Reporting Emissions"
+
+  - id: "cit-fe-005"
+    text: "When reporting fugitive emissions from refrigeration and air conditioning, companies should specify the type of refrigerant used (e.g., HFC-134a, R-410A, SF6) to enable accurate GWP calculation."
+    page: 47
+    section: "Chapter 6: Tracking and Reporting Emissions"
+
+rules:
+  - id: "s1-fe-001"
+    name: "逸散排放源类型校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.type"}, "fugitive"]}
+    assertion: {"!=": [{"var": "input.fugitive_source_type"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "逸散排放源须指定逸散类型（制冷剂泄漏、天然气泄漏、煤矿瓦斯等）"
+    citation: "cit-fe-001"
+
+  - id: "s1-fe-002"
+    name: "GWP值来源必填"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.type"}, "fugitive"]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.gwp_source"}, null]},
+        {"in": [{"var": "input.gwp_source"}, ["IPCC_AR4", "IPCC_AR5", "IPCC_AR6"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "逸散排放须指定GWP值来源的IPCC评估报告版本"
+    citation: "cit-fe-002"
+
+  - id: "s1-fe-003"
+    name: "逸散排放计算公式"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "knowledge"
+    statement: "排放量 = 泄漏量(kg) × GWP值。例如HFC-134a: 1kg × 1430 = 1.43 tCO2e"
+    citation: "cit-fe-003"
+
+  - id: "s1-fe-004"
+    name: "建议设备级追踪"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.type"}, "fugitive"]},
+        {"==": [{"var": "input.fugitive_source_type"}, "refrigerant"]}
+      ]
+    assertion: {"==": [{"var": "input.equipment_level_tracking"}, true]}
+    on_fail: "raise_warning"
+    on_fail_message: "建议对制冷剂进行设备级追踪以提高数据质量"
+    citation: "cit-fe-004"
+
+  - id: "s1-fe-005"
+    name: "制冷剂类型必填"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.type"}, "fugitive"]},
+        {"==": [{"var": "input.fugitive_source_type"}, "refrigerant"]}
+      ]
+    assertion: {"!=": [{"var": "input.refrigerant_type"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "制冷剂逸散排放须指定制冷剂类型"
+    citation: "cit-fe-005"
+
+dependencies:
+  - ref: "principles/operational-boundary"
+    relation: "applies_within"
+
+conflicts_with: []

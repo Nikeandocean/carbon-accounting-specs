@@ -1,0 +1,98 @@
+meta:
+  id: "scope1/emission-categories"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "schema"
+  description: "Scope 1直接排放源分类与识别规则"
+
+citations:
+  - id: "cit-cat-001"
+    text: "Direct GHG emissions are emissions from sources that are owned or controlled by the company."
+    page: 27
+    section: "Chapter 4: Setting Operational Boundaries"
+
+  - id: "cit-cat-002"
+    text: "GHG emissions typically occur from the following source categories: Stationary combustion, Mobile combustion, Process emissions, Fugitive emissions."
+    page: 43
+    section: "Chapter 6: Direct (Scope 1) GHG Emissions"
+
+  - id: "cit-cat-003"
+    text: "Each emission source shall have a unique identifier for tracking and audit purposes."
+    page: 43
+    section: "Chapter 6: Direct (Scope 1) GHG Emissions"
+
+  - id: "cit-cat-004"
+    text: "Companies should identify and report emissions from all four source categories to ensure a complete and consistent GHG inventory."
+    page: 28
+    section: "Chapter 4: Setting Operational Boundaries"
+
+rules:
+  - id: "s1-cat-001"
+    name: "Scope 1排放源识别"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope1_emission_sources"}, null]},
+        {"!=": [{"var": "input.scope1_emission_sources"}, []]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "未识别任何Scope 1排放源"
+    citation: "cit-cat-001"
+
+  - id: "s1-cat-002"
+    name: "排放源类型校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {"in": [{"var": "type"}, ["stationary_combustion", "mobile_combustion", "process", "fugitive"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Scope 1排放源类型必须为stationary_combustion、mobile_combustion、process或fugitive"
+    citation: "cit-cat-002"
+
+  - id: "s1-cat-003"
+    name: "排放源标识必填"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {"!=": [{"var": "id"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "每个Scope 1排放源必须有唯一标识"
+    citation: "cit-cat-003"
+
+  - id: "s1-cat-004"
+    name: "建议识别所有排放类别"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "建议识别所有四类Scope 1排放源（固定燃烧、移动燃烧、工艺过程、逸散排放）以确保温室气体清单的完整性"
+    on_fail: "raise_warning"
+    on_fail_message: "建议识别所有四类Scope 1排放源以确保完整性"
+    citation: "cit-cat-004"
+
+dependencies:
+  - ref: "principles/organizational-boundary"
+    relation: "applies_within"
+
+conflicts_with: []

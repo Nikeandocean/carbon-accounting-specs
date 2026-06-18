@@ -1,0 +1,136 @@
+meta:
+  id: "scope1/stationary-combustion"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "schema"
+  description: "Scope 1 固定燃烧排放核算规则（直接排放源：锅炉、炉窑、发电机等固定设备）"
+
+citations:
+  - id: "cit-sc-001"
+    text: "Direct GHG emissions from stationary combustion sources occur from the combustion of fuels in stationary equipment such as boilers, furnaces, burners, turbines, heaters, incinerators, engines, flares, etc."
+    page: 43
+    section: "Chapter 6: Stationary Combustion"
+
+  - id: "cit-sc-002"
+    text: "To calculate GHG emissions from stationary combustion, companies shall use the fuel consumption data and the appropriate emission factor for each fuel type."
+    page: 44
+    section: "Chapter 6: Stationary Combustion"
+
+  - id: "cit-sc-003"
+    text: "Companies should use fuel-specific emission factors whenever possible. Where fuel-specific factors are not available, companies may use default emission factors, but should disclose this."
+    page: 44
+    section: "Chapter 6: Stationary Combustion"
+
+  - id: "cit-sc-004"
+    text: "Emissions = Fuel Consumption × Emission Factor. For multiple gases: Emissions = fuel × (EF_CO2 + EF_CH4 × GWP_CH4 + EF_N2O × GWP_N2O)."
+    page: 44
+    section: "Chapter 6: Stationary Combustion"
+
+  - id: "cit-sc-005"
+    text: "CO2 emissions from the combustion of biomass should be reported outside of Scopes 1 and 2. CH4 and N2O emissions from the combustion of biomass should be reported in Scope 1."
+    page: 29
+    section: "Chapter 4: Treatment of Biofuel Emissions"
+
+rules:
+  - id: "s1-sc-001"
+    name: "固定燃烧活动数据校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.type"}, "stationary_combustion"]}
+    assertion:
+      "and": [
+        {">": [{"var": "input.activity_data"}, 0]},
+        {"!=": [{"var": "input.activity_unit"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "固定燃烧源须提供有效的燃料消耗数据和单位"
+    citation: "cit-sc-002"
+
+  - id: "s1-sc-002"
+    name: "固定燃烧排放因子校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.type"}, "stationary_combustion"]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.emission_factor.value"}, null]},
+        {"!=": [{"var": "input.emission_factor.year"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "固定燃烧源须提供排放因子值和年份"
+    citation: "cit-sc-002"
+
+  - id: "s1-sc-003"
+    name: "燃料类型必填"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.type"}, "stationary_combustion"]}
+    assertion: {"!=": [{"var": "input.fuel_type"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "固定燃烧源须指定燃料类型（如natural_gas、coal、diesel等）"
+    citation: "cit-sc-001"
+
+  - id: "s1-sc-004"
+    name: "优先使用燃料特定因子"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition: {"==": [{"var": "input.type"}, "stationary_combustion"]}
+    assertion:
+      "or": [
+        {"!=": [{"var": "input.emission_factor.type"}, "default"]},
+        {"!=": [{"var": "input.justifications.s1-sc-004"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "应优先使用燃料特定排放因子而非缺省因子"
+    citation: "cit-sc-003"
+
+  - id: "s1-sc-005"
+    name: "固定燃烧计算公式"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "knowledge"
+    statement: "排放量 = Σ(燃料消耗量 × 排放因子)。对于多气体: Emissions = fuel × (EF_CO2 + EF_CH4 × GWP_CH4 + EF_N2O × GWP_N2O)"
+    citation: "cit-sc-004"
+
+  - id: "s1-sc-006"
+    name: "生物质燃料排放处理"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.type"}, "stationary_combustion"]},
+        {"==": [{"var": "input.emission_factor.is_biomass"}, true]}
+      ]
+    assertion:
+      "and": [
+        {"==": [{"var": "input.co2_outside_scopes"}, true]},
+        {"==": [{"var": "input.ch4_n2o_in_scope1"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "生物质燃料CO2须报Scope外，CH4/N2O须报Scope 1"
+    citation: "cit-sc-005"
+
+dependencies:
+  - ref: "principles/organizational-boundary"
+    relation: "applies_within"
+  - ref: "principles/operational-boundary"
+    relation: "constrained_by"
+
+conflicts_with: []

@@ -2,7 +2,7 @@
 """
 GHG Protocol Scope 2 真实场景测试
 
-7 个真实企业场景，覆盖 spec 规则。
+10 个真实企业场景，覆盖 spec 规则。
 规则分三类：
   - schema层: assertion 检查 input/context/output 字段，可直接验证
   - 需外部函数: assertion 检查 computation.result.*，需运行 calc.* 函数
@@ -67,8 +67,14 @@ def jsonlogic(data, rules):
             arr = jsonlogic(data, args[0])
             if not isinstance(arr, list): return True
             return not any(jsonlogic({**data, **item}, args[1]) for item in arr)
+        elif op == "some":
+            arr = jsonlogic(data, args[0])
+            if not isinstance(arr, list): return False
+            return any(jsonlogic({**data, **item}, args[1]) for item in arr)
         elif op == "+":
-            return sum(jsonlogic(data, a) for a in args)
+            vals = [jsonlogic(data, a) for a in args]
+            if any(v is None for v in vals): return None
+            return sum(vals)
         elif op == "-":
             return jsonlogic(data, args[0]) - jsonlogic(data, args[1])
         elif op == "*":
@@ -136,6 +142,8 @@ def run_scenario(sc: Dict, specs: Dict, meta: Dict) -> ScenarioResult:
     data = sc["data"]
     result = ScenarioResult(name=sc["name"])
     for src in data.get("input", {}).get("emission_sources", []):
+        result.emissions += src.get("activity_data", 0) * src.get("emission_factor", {}).get("value", 0)
+    for src in data.get("input", {}).get("scope1_emission_sources", []):
         result.emissions += src.get("activity_data", 0) * src.get("emission_factor", {}).get("value", 0)
     result.emissions = round(result.emissions, 4)
 
@@ -595,6 +603,154 @@ SCENARIO_7 = {
 
 
 # ============================================================
+# 场景 8: 中国制造业 — 天然气锅炉 + 公司车队
+# ============================================================
+
+SCENARIO_8 = {
+    "name": "中国制造业Scope1",
+    "desc": "华南制造工厂 — 天然气锅炉固定燃烧 + 公司车队移动燃烧",
+    "data": {
+        "input": {
+            "entity": {"name": "华南制造工厂", "reporting_year": 2025},
+            "control_method": "operational_control",
+            "scope1_emission_sources": [
+                {"id": "boiler-001", "scope": "scope1", "type": "stationary_combustion",
+                 "fuel_type": "natural_gas", "activity_data": 2000, "activity_unit": "tonnes",
+                 "emission_factor": {"value": 2.0, "year": 2025, "source": "IPCC 2006", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5"},
+                {"id": "fleet-001", "scope": "scope1", "type": "mobile_combustion",
+                 "fuel_type": "diesel", "activity_data": 50000, "activity_unit": "km",
+                 "emission_factor": {"value": 0.0002, "year": 2025, "source": "IPCC 2006", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5"}
+            ],
+            "emission_sources": [],
+            "assumptions": "天然气锅炉和柴油车队排放",
+            "methodology_rationale": "采用IPCC 2006排放因子",
+            "data_sources": "IPCC 2006排放因子数据库",
+            "justifications": {}
+        },
+        "output": {
+            "total_scope1_emissions": 4010.0,
+            "scope1_by_category": {
+                "stationary_combustion": 4000.0,
+                "mobile_combustion": 10.0
+            }
+        },
+        "context": {
+            "region": {"country_code": "CN"},
+            "emission_factors": {"current_year": 0.5703, "previous_year": 0.5810, "latest_available": 0.5703, "latest_year": 2025}
+        }
+    },
+    "expect_pass": [
+        "global-001", "global-002", "global-003", "global-004",
+    ],
+    "expect_fail": [],
+    "expect_emissions": 4010.0
+}
+
+
+# ============================================================
+# 场景 9: 化工厂 — 过程排放 + 冷媒泄漏
+# ============================================================
+
+SCENARIO_9 = {
+    "name": "化工厂过程排放",
+    "desc": "化工厂 — 水泥�ite过程排放 + HFC-134a冷媒泄漏逃逸排放",
+    "data": {
+        "input": {
+            "entity": {"name": "东方化工有限公司", "reporting_year": 2025},
+            "control_method": "operational_control",
+            "scope1_emission_sources": [
+                {"id": "process-001", "scope": "scope1", "type": "process",
+                 "fuel_type": None, "activity_data": 10000, "activity_unit": "tonnes",
+                 "emission_factor": {"value": 0.5, "year": 2025, "source": "IPCC 2006", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5"},
+                {"id": "hvac-001", "scope": "scope1", "type": "fugitive",
+                 "fuel_type": None, "activity_data": 20, "activity_unit": "kg",
+                 "emission_factor": {"value": 1.43, "year": 2025, "source": "IPCC AR5", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5"}
+            ],
+            "emission_sources": [],
+            "assumptions": "水泥窑过程排放和HFC-134a冷媒泄漏",
+            "methodology_rationale": "过程排放基于产品产量，逃逸排放基于GWP=1430",
+            "data_sources": "IPCC 2006、IPCC AR5 GWP值",
+            "justifications": {}
+        },
+        "output": {
+            "total_scope1_emissions": 5028.6,
+            "scope1_by_category": {
+                "process": 5000.0,
+                "fugitive": 28.6
+            }
+        },
+        "context": {
+            "region": {"country_code": "CN"},
+            "emission_factors": {"current_year": 0.5703, "previous_year": 0.5810, "latest_available": 0.5703, "latest_year": 2025}
+        }
+    },
+    "expect_pass": [
+        "global-001", "global-002", "global-003", "global-004",
+    ],
+    "expect_fail": [],
+    "expect_emissions": 5028.6
+}
+
+
+# ============================================================
+# 场景 10: CHP热电联产 — Scope 1/2边界分配
+# ============================================================
+
+SCENARIO_10 = {
+    "name": "CHP边界分配",
+    "desc": "CHP热电联产设施 — 天然气燃烧分配Scope 1(热力)和Scope 2(电力)排放",
+    "data": {
+        "input": {
+            "entity": {"name": "华东CHP能源有限公司", "reporting_year": 2025},
+            "control_method": "operational_control",
+            "scope1_emission_sources": [
+                {"id": "chp-001", "scope": "scope1", "type": "stationary_combustion",
+                 "fuel_type": "natural_gas", "activity_data": 3000, "activity_unit": "tonnes",
+                 "emission_factor": {"value": 2.0, "year": 2025, "source": "IPCC 2006", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5"},
+                {"id": "boundary-check-001", "scope": "scope1", "type": "stationary_combustion",
+                 "fuel_type": "natural_gas", "activity_data": 0, "activity_unit": "tonnes",
+                 "emission_factor": {"value": 0, "year": 2025, "source": "CHP边界检查", "is_biomass": False},
+                 "gwp_source": "IPCC_AR5",
+                 "boundary_overlap_check": {"scope1_heat": 3000.0, "scope2_electricity": 3000.0, "total_fuel_emissions": 6000.0}}
+            ],
+            "emission_sources": [
+                {"id": "elec-chp-001", "type": "electricity", "activity_data": 5000,
+                 "emission_factor": {"value": 0.5703, "year": 2025, "source": "国家电网", "type": "grid_average",
+                    "based_on_delivered_electricity": True}}
+            ],
+            "assumptions": "CHP系统同时产出电力和热力，存在Scope 1/2边界重叠",
+            "methodology_rationale": "CHP排放按热电比分配至Scope 1和Scope 2",
+            "data_sources": "IPCC 2006、CHP系统运行数据",
+            "justifications": {}
+        },
+        "output": {
+            "total_scope1_emissions": 6000.0,
+            "total_scope2_emissions": 2851.5,
+            "scope1_by_category": {
+                "stationary_combustion": 6000.0
+            }
+        },
+        "context": {
+            "region": {"country_code": "CN", "has_market_instruments": True,
+                       "grid_average_ef": 0.5703, "residual_mix_ef": 0.5500},
+            "emission_factors": {"current_year": 0.5703, "previous_year": 0.5810, "latest_available": 0.5703, "latest_year": 2025}
+        }
+    },
+    "expect_pass": [
+        "global-001", "global-002", "global-003", "global-004", "global-005",
+        "rule-op-001", "rule-op-002", "rule-op-003",
+    ],
+    "expect_fail": [],
+    "expect_emissions": 8851.5
+}
+
+
+# ============================================================
 # 主程序
 # ============================================================
 
@@ -607,7 +763,8 @@ def main():
     meta, specs = load_spec(spec_dir)
     print(f"\n📂 加载 {len(specs)} 个 spec 文件")
 
-    scenarios = [SCENARIO_1, SCENARIO_2, SCENARIO_3, SCENARIO_4, SCENARIO_5, SCENARIO_6, SCENARIO_7]
+    scenarios = [SCENARIO_1, SCENARIO_2, SCENARIO_3, SCENARIO_4, SCENARIO_5, SCENARIO_6, SCENARIO_7,
+                 SCENARIO_8, SCENARIO_9, SCENARIO_10]
 
     total_pass = total_fail = total_skip = total_unexpected = 0
     tested = set()

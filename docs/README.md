@@ -33,6 +33,21 @@ schemas/
 4. Use `fallback_chains` for emission factor selection
 5. Run `cross_method_validation` in post-audit phase
 
+## Scope 1 Coverage
+
+In addition to Scope 2, this repository now includes Scope 1 (direct emissions) rules:
+
+| Module | Rules | Priority | Description |
+|--------|-------|----------|-------------|
+| Emission Categories | 4 | MUST/SHOULD | Source classification and identification |
+| Stationary Combustion | 6 | MUST/SHOULD | Boilers, furnaces, generators |
+| Mobile Combustion | 5 | MUST/SHOULD | Company fleet and vehicles |
+| Process Emissions | 5 | MUST/SHOULD | Industrial process emissions |
+| Fugitive Emissions | 5 | MUST/SHOULD | Refrigerant leaks, methane |
+| Disclosure | 7 | MUST/SHOULD | Reporting requirements |
+| Prohibitions | 6 | MUST | Double-counting, biogenic CO2 |
+| Quality Criteria | 5 | MUST/SHOULD | Data quality requirements |
+
 ## For Agent Developers
 
 See [Agent Integration Guide](agent-integration-guide.md) for detailed integration instructions.

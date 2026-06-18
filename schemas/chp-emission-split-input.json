@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CHP Emission Split Input",
+  "description": "Input schema for CHP heat/electricity emission allocation",
+  "type": "object",
+  "required": ["fuel_input", "electricity_output", "heat_output", "total_emissions"],
+  "properties": {
+    "fuel_input": {
+      "type": "number",
+      "description": "Total fuel input (GJ)"
+    },
+    "electricity_output": {
+      "type": "number",
+      "description": "Electricity output (GJ or MWh)"
+    },
+    "heat_output": {
+      "type": "number",
+      "description": "Heat output (GJ)"
+    },
+    "total_emissions": {
+      "type": "number",
+      "description": "Total CO2e emissions from CHP (tonnes)"
+    },
+    "allocation_method": {
+      "type": "string",
+      "enum": ["energy", "exergy", "constant"],
+      "default": "energy",
+      "description": "Allocation method: energy (physical), exergy (thermodynamic), constant (fixed ratio)"
+    },
+    "constant_electricity_share": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Fixed electricity share (only used when allocation_method=constant)"
+    }
+  }
+}

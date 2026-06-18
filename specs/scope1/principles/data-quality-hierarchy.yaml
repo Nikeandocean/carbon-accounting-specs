@@ -1,0 +1,171 @@
+meta:
+  id: "scope1/data-quality-hierarchy"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "schema"
+  description: "Scope 1 数据质量层级与回退机制"
+
+citations:
+  - id: "cit-s1dq-001"
+    text: "Companies should use the most accurate data available. Where company-specific data is not available, companies may use default emission factors, but should disclose this."
+    page: 44
+    section: "Chapter 6: Calculating GHG Emissions"
+
+  - id: "cit-s1dq-002"
+    text: "Emission factors should correspond to the same time period as the activity data."
+    page: 36
+    section: "Chapter 6: Data Quality"
+
+  - id: "cit-s1dq-003"
+    text: "When calculating emissions from multiple GHGs, companies shall use GWP values from a single IPCC assessment report."
+    page: 30
+    section: "Chapter 4: Choosing a GWP"
+
+fallback_chains:
+  emission_factor:
+    name: "Scope 1 排放因子回退链"
+    description: "当高优先级排放因子不可用时，按序降级"
+    chain:
+      - level: 1
+        name: "设施特定排放因子"
+        data_type: "facility_specific_factor"
+        condition: {"!=": [{"var": "input.emission_factor.source"}, "default"]}
+        on_match:
+          action: "use_value"
+          log_level: "info"
+          message: "使用设施特定排放因子"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 2
+        name: "国家/区域平均排放因子"
+        data_type: "national_average_factor"
+        condition: {"!=": [{"var": "context.country.default_ef"}, null]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "使用国家/区域平均排放因子，数据质量降级"
+          require_disclosure: true
+          disclosure_key: "s1-qc-002"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 3
+        name: "IPCC 缺省排放因子"
+        data_type: "ipcc_default_factor"
+        condition: {"!=": [{"var": "context.ipcc.default_ef"}, null]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "使用 IPCC 缺省排放因子，数据质量降级"
+          require_disclosure: true
+          disclosure_key: "s1-qc-002"
+        on_null:
+          action: "mark_unavailable"
+          log_level: "fatal"
+          message: "所有排放因子数据源均不可用"
+          set_state: "scope1.emission_factor_available = false"
+
+  time_based_fallback:
+    name: "排放因子时效性回退"
+    description: "当当年因子不可用时的降级策略"
+    chain:
+      - level: 1
+        name: "当年排放因子"
+        data_type: "current_year_factor"
+        condition: {"!=": [{"var": "context.emission_factors.current_year"}, null]}
+        on_match:
+          action: "use_value"
+          log_level: "info"
+          message: "使用当年排放因子"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 2
+        name: "前一年排放因子"
+        data_type: "previous_year_factor"
+        condition: {"!=": [{"var": "context.emission_factors.previous_year"}, null]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "当年因子不可用，使用前一年因子"
+          require_disclosure: true
+          disclosure_key: "s1-qc-002"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 3
+        name: "最近可用排放因子"
+        data_type: "latest_available_factor"
+        condition: {"!=": [{"var": "context.emission_factors.latest_available"}, null]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "使用最近可用因子，距核算期存在时滞"
+          require_disclosure: true
+          disclosure_key: "s1-qc-002"
+        on_null:
+          action: "raise_fatal"
+          message: "无任何可用的排放因子数据"
+
+# 横向联动校验
+cross_method_validation:
+  - id: "cross-s1-001"
+    name: "排放因子回退一致性"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "scope1.emission_factor.fallback_level"}, null]},
+        {">": [{"var": "scope1.emission_factor.fallback_level"}, 1]}
+      ]
+    assertion:
+      {"!=": [{"var": "input.justifications.cross-s1-001"}, null]}
+    on_fail: "require_justification"
+    on_fail_message: "排放因子已回退至低级别数据源，应披露回退原因"
+
+  - id: "cross-s1-002"
+    name: "GWP 来源一致性"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {"==": [{"var": "gwp_source"}, {"var": "input.scope1_emission_sources.0.gwp_source"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "所有Scope 1排放源必须使用同一IPCC评估报告的GWP值"
+
+  - id: "cross-s1-003"
+    name: "排放量完整性"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.total_scope1_emissions"}, null]},
+        {"!=": [{"var": "output.scope1_by_category"}, null]}
+      ]
+    assertion:
+      {"==": [
+        {"var": "output.total_scope1_emissions"},
+        {"+": [
+          {"var": "output.scope1_by_category.stationary_combustion"},
+          {"var": "output.scope1_by_category.mobile_combustion"},
+          {"var": "output.scope1_by_category.process"},
+          {"var": "output.scope1_by_category.fugitive"}
+        ]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Scope 1总排放量不等于各类别排放量之和"
+
+dependencies: []
+
+conflicts_with: []

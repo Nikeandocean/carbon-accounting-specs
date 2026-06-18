@@ -1,0 +1,121 @@
+meta:
+  id: "scope1/cross-type-validation"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "schema"
+  description: "Scope 1 跨排放源类型一致性校验"
+
+citations:
+  - id: "cit-s1ctv-001"
+    text: "When calculating emissions from multiple GHGs, companies shall use GWP values from a single IPCC assessment report."
+    page: 30
+    section: "Chapter 4: Choosing a GWP"
+
+  - id: "cit-s1ctv-002"
+    text: "Total Scope 1 emissions shall equal the sum of emissions from all four categories: stationary combustion, mobile combustion, process emissions, and fugitive emissions."
+    page: 26
+    section: "Chapter 4: Scope 1 Emissions"
+
+  - id: "cit-s1ctv-003"
+    text: "Companies should identify and report emissions from all four categories of Scope 1 emissions."
+    page: 26
+    section: "Chapter 4: Scope 1 Emissions"
+
+  - id: "cit-s1ctv-004"
+    text: "There are two options for allocating GHG emissions from a co-generation facility: the electrical efficiency method and the energy method."
+    page: 44
+    section: "Chapter 6: Tracking and Reporting Emissions"
+
+rules:
+  - id: "s1-ctv-001"
+    name: "GWP来源一致性"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {"==": [{"var": "gwp_source"}, {"var": "input.scope1_emission_sources.0.gwp_source"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "所有Scope 1排放源必须使用同一IPCC评估报告的GWP值（如全部使用AR5或全部使用AR6）"
+    citation: "cit-s1ctv-001"
+
+  - id: "s1-ctv-002"
+    name: "排放量完整性校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.total_scope1_emissions"}, null]},
+        {"!=": [{"var": "output.scope1_by_category"}, null]}
+      ]
+    assertion:
+      {"==": [
+        {"var": "output.total_scope1_emissions"},
+        {"+": [
+          {"var": "output.scope1_by_category.stationary_combustion"},
+          {"var": "output.scope1_by_category.mobile_combustion"},
+          {"var": "output.scope1_by_category.process"},
+          {"var": "output.scope1_by_category.fugitive"}
+        ]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Scope 1总排放量不等于四类排放源之和，存在计算错误或遗漏"
+    citation: "cit-s1ctv-002"
+
+  - id: "s1-ctv-003"
+    name: "排放源类型覆盖建议"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.scope1_by_category.stationary_combustion"}, null]},
+        {"!=": [{"var": "output.scope1_by_category.mobile_combustion"}, null]},
+        {"!=": [{"var": "output.scope1_by_category.process"}, null]},
+        {"!=": [{"var": "output.scope1_by_category.fugitive"}, null]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "建议报告所有四种Scope 1排放源类型（固定燃烧、移动燃烧、工业过程、逸散排放）。未覆盖的类型应说明排除原因。"
+    citation: "cit-s1ctv-003"
+
+  - id: "s1-ctv-004"
+    name: "CHP设施排放分配校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.chp_assets"}, null]},
+        {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "type"}, "stationary_combustion"]},
+            {"==": [{"var": "chp_allocation_complete"}, true]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "CHP热电联产设施的排放须在Scope 1（热力）和Scope 2（电力）之间分配，不得将全部排放计入Scope 1"
+    citation: "cit-s1ctv-004"
+
+dependencies: []
+
+conflicts_with: []

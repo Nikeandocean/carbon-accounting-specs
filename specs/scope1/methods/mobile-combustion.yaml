@@ -1,0 +1,117 @@
+meta:
+  id: "scope1/mobile-combustion"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "schema"
+  description: "移动燃烧排放核算方法（公司拥有/控制的车辆、船舶、飞机等）"
+
+citations:
+  - id: "cit-mc-001"
+    text: "Mobile combustion includes emissions from the transportation of materials, products, waste, and employees in company-owned or controlled vehicles."
+    page: 43
+    section: "Chapter 6: Mobile Combustion"
+
+  - id: "cit-mc-002"
+    text: "To calculate emissions from mobile combustion, companies should first determine the amount and type of fuel used, or the distance traveled."
+    page: 43
+    section: "Chapter 6: Mobile Combustion"
+
+  - id: "cit-mc-003"
+    text: "When distance data is available, companies should use vehicle-specific emission factors where possible."
+    page: 44
+    section: "Chapter 6: Mobile Combustion"
+
+  - id: "cit-mc-004"
+    text: "Emissions from mobile combustion can be calculated by multiplying the distance traveled (km) by a vehicle-specific emission factor (tCO2e/km), or by multiplying fuel consumed by a fuel-specific emission factor."
+    page: 44
+    section: "Chapter 6: Mobile Combustion"
+
+  - id: "cit-mc-005"
+    text: "Outsourced transportation (e.g., contracted trucks, third-party logistics) is not included in Scope 1. These emissions belong in Scope 3 Category 4 (Upstream Transportation and Distribution)."
+    page: 31
+    section: "Chapter 4: Setting Operational Boundaries"
+
+rules:
+  - id: "s1-mc-001"
+    name: "移动燃烧活动数据校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.type"}, "mobile_combustion"]}
+    assertion:
+      "and": [
+        {">": [{"var": "input.activity_data"}, 0]},
+        {"!=": [{"var": "input.activity_unit"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "移动燃烧源须提供有效的活动数据（里程或燃料量）"
+    citation: "cit-mc-001"
+
+  - id: "s1-mc-002"
+    name: "车辆/燃料类型校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.type"}, "mobile_combustion"]}
+    assertion: {"!=": [{"var": "input.fuel_type"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "移动燃烧源须指定车辆或燃料类型"
+    citation: "cit-mc-002"
+
+  - id: "s1-mc-003"
+    name: "里程法优先"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.type"}, "mobile_combustion"]},
+        {"==": [{"var": "input.activity_unit"}, "km"]}
+      ]
+    assertion:
+      "or": [
+        {"==": [{"var": "input.emission_factor.is_vehicle_specific"}, true]},
+        {"!=": [{"var": "input.justifications.s1-mc-003"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "有里程数据时应优先使用车辆特定排放因子"
+    citation: "cit-mc-003"
+
+  - id: "s1-mc-004"
+    name: "移动燃烧计算公式"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "knowledge"
+    statement: "排放量 = 行驶里程(km) × 车辆排放因子(tCO2e/km) 或 燃料消耗量 × 燃料排放因子"
+    citation: "cit-mc-004"
+
+  - id: "s1-mc-005"
+    name: "外包运输不属于Scope 1"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition: {"!=": [{"var": "input.mobile_combustion_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.mobile_combustion_sources"},
+        {"==": [{"var": "ownership"}, "company_owned"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "外包运输排放属于Scope 3 Category 4，不属于Scope 1"
+    citation: "cit-mc-005"
+
+dependencies:
+  - ref: "principles/operational-boundary"
+    relation: "constrained_by"
+
+conflicts_with: []

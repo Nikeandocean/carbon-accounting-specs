@@ -1,0 +1,107 @@
+meta:
+  id: "scope1/process-emissions"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "hybrid"
+  description: "工艺过程排放核算规则（如水泥熟料煅烧、钢铁冶炼等工业过程直接排放）"
+
+citations:
+  - id: "cit-pe-001"
+    text: "Companies shall identify and report all process emissions from industrial processes that result in GHG emissions."
+    page: 43
+    section: "Chapter 6: Direct (Scope 1) GHG Emissions"
+
+  - id: "cit-pe-002"
+    text: "Activity data for process emissions should be based on actual production output measured in tonnes or other appropriate units."
+    page: 44
+    section: "Chapter 6: Direct (Scope 1) GHG Emissions"
+
+  - id: "cit-pe-003"
+    text: "Emission factors for process emissions shall be sourced from recognized references such as IPCC guidelines or industry-specific studies."
+    page: 44
+    section: "Chapter 6: Direct (Scope 1) GHG Emissions"
+
+  - id: "cit-pe-004"
+    text: "Process emissions are calculated by multiplying the level of production activity by an emission factor for the specific process."
+    page: 44
+    section: "Chapter 6: Direct (Scope 1) GHG Emissions"
+
+  - id: "cit-pe-005"
+    text: "Companies should report emissions by individual process type to enhance transparency and enable benchmarking."
+    page: 28
+    section: "Chapter 4: Setting Operational Boundaries"
+
+rules:
+  - id: "s1-pe-001"
+    name: "工艺类型必填"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.type"}, "process"]}
+    assertion: {"!=": [{"var": "input.process_type"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "工艺排放源须指定工艺类型（如cement_calcination、steel_production等）"
+    citation: "cit-pe-001"
+
+  - id: "s1-pe-002"
+    name: "产量数据校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.type"}, "process"]}
+    assertion: {">": [{"var": "input.activity_data"}, 0]}
+    on_fail: "raise_fatal"
+    on_fail_message: "工艺排放源须提供有效的产品产量数据"
+    citation: "cit-pe-002"
+
+  - id: "s1-pe-003"
+    name: "工艺排放因子来源"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.type"}, "process"]}
+    assertion: {"!=": [{"var": "input.emission_factor.source"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "工艺排放因子须注明来源（如IPCC指南、行业特定因子）"
+    citation: "cit-pe-003"
+
+  - id: "s1-pe-004"
+    name: "工艺排放计算公式"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "knowledge"
+    statement: "排放量 = 产品产量(t) × 工艺排放因子(tCO2e/t产品)"
+    citation: "cit-pe-004"
+
+  - id: "s1-pe-005"
+    name: "分工艺单独报告"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.process_emission_details"}, null]}
+    assertion:
+      "all": [
+        {"var": "output.process_emission_details"},
+        {"!=": [{"var": "process_type"}, null]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "建议按工艺类型分别报告排放量以提高透明度"
+    citation: "cit-pe-005"
+
+dependencies:
+  - ref: "principles/operational-boundary"
+    relation: "applies_within"
+  - ref: "constraints/data-quality-hierarchy"
+    relation: "constrained_by"
+
+conflicts_with: []

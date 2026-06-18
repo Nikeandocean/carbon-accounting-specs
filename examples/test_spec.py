@@ -10,6 +10,7 @@ GHG Protocol Scope 2 Spec 全面测试
 5. 数据回退链所有级别
 6. 边界条件和异常场景
 7. Comply or Explain 机制
+8. Scope 1 排放源分类、固定燃烧、禁止清单
 """
 
 import yaml
@@ -89,6 +90,11 @@ def jsonlogic(data, rules):
             if not isinstance(arr, list):
                 return True
             return not any(jsonlogic({**data, **item}, args[1]) for item in arr)
+        elif op == "some":
+            arr = jsonlogic(data, args[0])
+            if not isinstance(arr, list):
+                return False
+            return any(jsonlogic({**data, **item}, args[1]) for item in arr)
         elif op == "+":
             return sum(jsonlogic(data, a) for a in args)
         elif op == "-":
@@ -728,6 +734,218 @@ def test_edge_cases(specs: Dict):
 
 
 # ============================================================
+# Scope 1 测试数据生成器
+# ============================================================
+
+def make_scope1_base_data() -> Dict:
+    return {
+        "input": {
+            "entity": {"name": "测试企业", "reporting_year": 2025, "control_method": "operational_control"},
+            "scope1_emission_sources": [],
+            "assumptions": "测试假设",
+            "methodology_rationale": "测试方法论",
+            "data_sources": "测试数据源",
+            "justifications": {}
+        },
+        "output": {
+            "total_scope1_emissions": 1000.0,
+            "scope1_by_category": {
+                "stationary_combustion": 800.0,
+                "mobile_combustion": 150.0,
+                "process": 50.0,
+                "fugitive": 0.0
+            },
+            "methodology": "排放因子法",
+            "emission_factor_source": "IPCC 2006",
+            "gas_by_gas_breakdown": {"co2": 900.0, "ch4": 50.0, "n2o": 50.0},
+            "uncertainty_assessment": {"methodology": "Monte Carlo", "confidence_level": 0.95},
+            "base_year": {
+                "scope1_emissions": 950.0,
+                "recalculation_policy": "股权边界变更法"
+            }
+        },
+        "context": {
+            "region": {"country_code": "CN"},
+            "emission_factors": {"current_year": 0.5703, "previous_year": 0.5810, "latest_available": 0.5703, "latest_year": 2025}
+        }
+    }
+
+
+def make_stationary_source(id="boiler-001", fuel="natural_gas", ef_value=2.0, is_biomass=False):
+    return {
+        "id": id, "scope": "scope1", "type": "stationary_combustion",
+        "fuel_type": fuel, "activity_data": 500, "activity_unit": "tonnes",
+        "is_biomass": is_biomass,
+        "emission_factor": {"value": ef_value, "year": 2025, "source": "ipcc", "is_biomass": is_biomass},
+        "gwp_source": "IPCC_AR5"
+    }
+
+
+def make_mobile_source(id="fleet-001", fuel="diesel"):
+    return {
+        "id": id, "scope": "scope1", "type": "mobile_combustion",
+        "fuel_type": fuel, "activity_data": 100000, "activity_unit": "km",
+        "ownership": "company_owned",
+        "is_biomass": False,
+        "emission_factor": {"value": 0.0002, "year": 2025, "source": "ipcc", "is_biomass": False},
+        "gwp_source": "IPCC_AR5"
+    }
+
+
+def make_fugitive_source(id="hvac-001", refrigerant="HFC-134a"):
+    return {
+        "id": id, "scope": "scope1", "type": "fugitive",
+        "fuel_type": None, "activity_data": 50, "activity_unit": "kg",
+        "is_biomass": False,
+        "emission_factor": {"value": 1.43, "year": 2025, "source": "ipcc", "is_biomass": False},
+        "gwp_source": "IPCC_AR5"
+    }
+
+
+def make_process_source(id="cement-001", process="cement_production"):
+    return {
+        "id": id, "scope": "scope1", "type": "process",
+        "process_type": process, "activity_data": 10000, "activity_unit": "tonnes",
+        "is_biomass": False,
+        "emission_factor": {"value": 0.5, "year": 2025, "source": "ipcc", "is_biomass": False},
+        "gwp_source": "IPCC_AR5"
+    }
+
+
+# ============================================================
+# Scope 1 测试用例
+# ============================================================
+
+def test_scope1_emission_categories(specs: Dict):
+    suite = TestSuite("Scope 1 排放源分类")
+    data = make_scope1_base_data()
+    data["input"]["scope1_emission_sources"] = [make_stationary_source()]
+    for rule in specs.get("scope1/principles/emission-categories", {}).get("rules", []):
+        passed, msg = execute_rule(rule, data)
+        if passed is not None:
+            suite.assert_true(f"排放源分类 - {rule['id']}", passed, msg)
+    return suite
+
+
+def test_scope1_stationary_combustion(specs: Dict):
+    suite = TestSuite("Scope 1 固定燃烧")
+    data = make_scope1_base_data()
+    data["input"]["scope1_emission_sources"] = [make_stationary_source()]
+    for rule in specs.get("scope1/methods/stationary-combustion", {}).get("rules", []):
+        passed, msg = execute_rule(rule, data)
+        if passed is not None:
+            suite.assert_true(f"固定燃烧 - {rule['id']}", passed, msg)
+    return suite
+
+
+def test_scope1_mobile_combustion(specs: Dict):
+    suite = TestSuite("Scope 1 移动燃烧")
+    data = make_scope1_base_data()
+    mobile_src = make_mobile_source()
+    data["input"]["scope1_emission_sources"] = [mobile_src]
+    data["input"]["mobile_combustion_sources"] = [{**mobile_src, "ownership": "company_owned"}]
+    for rule in specs.get("scope1/methods/mobile-combustion", {}).get("rules", []):
+        passed, msg = execute_rule(rule, data)
+        if passed is not None:
+            suite.assert_true(f"移动燃烧 - {rule['id']}", passed, msg)
+    return suite
+
+
+def test_scope1_process_emissions(specs: Dict):
+    suite = TestSuite("Scope 1 工业过程")
+    data = make_scope1_base_data()
+    data["input"]["scope1_emission_sources"] = [make_process_source()]
+    data["output"]["process_emission_details"] = [{"process_type": "cement_production", "emissions": 5000.0}]
+    for rule in specs.get("scope1/methods/process-emissions", {}).get("rules", []):
+        passed, msg = execute_rule(rule, data)
+        if passed is not None:
+            suite.assert_true(f"工业过程 - {rule['id']}", passed, msg)
+    return suite
+
+
+def test_scope1_fugitive_emissions(specs: Dict):
+    suite = TestSuite("Scope 1 逸散排放")
+    data = make_scope1_base_data()
+    data["input"]["scope1_emission_sources"] = [make_fugitive_source()]
+    for rule in specs.get("scope1/methods/fugitive-emissions", {}).get("rules", []):
+        passed, msg = execute_rule(rule, data)
+        if passed is not None:
+            suite.assert_true(f"逸散排放 - {rule['id']}", passed, msg)
+    return suite
+
+
+def test_scope1_operational_boundary(specs: Dict):
+    suite = TestSuite("Scope 1 运营边界")
+    data = make_scope1_base_data()
+    data["input"]["scope1_emission_sources"] = [make_stationary_source()]
+    for rule in specs.get("scope1/principles/operational-boundary", {}).get("rules", []):
+        passed, msg = execute_rule(rule, data)
+        if passed is not None:
+            suite.assert_true(f"运营边界 - {rule['id']}", passed, msg)
+    return suite
+
+
+def test_scope1_data_quality(specs: Dict):
+    suite = TestSuite("Scope 1 数据质量")
+    data = make_scope1_base_data()
+    data["input"]["scope1_emission_sources"] = [make_stationary_source()]
+    for rule in specs.get("scope1/principles/data-quality-hierarchy", {}).get("rules", []):
+        passed, msg = execute_rule(rule, data)
+        if passed is not None:
+            suite.assert_true(f"数据质量 - {rule['id']}", passed, msg)
+    return suite
+
+
+def test_scope1_cross_type_validation(specs: Dict):
+    suite = TestSuite("Scope 1 跨类型校验")
+    data = make_scope1_base_data()
+    data["input"]["scope1_emission_sources"] = [
+        make_stationary_source(),
+        make_mobile_source(),
+        make_process_source(),
+        make_fugitive_source()
+    ]
+    for rule in specs.get("scope1/constraints/cross-type-validation", {}).get("rules", []):
+        passed, msg = execute_rule(rule, data)
+        if passed is not None:
+            suite.assert_true(f"跨类型校验 - {rule['id']}", passed, msg)
+    return suite
+
+
+def test_scope1_disclosure(specs: Dict):
+    suite = TestSuite("Scope 1 披露要求")
+    data = make_scope1_base_data()
+    data["input"]["scope1_emission_sources"] = [make_stationary_source()]
+    for rule in specs.get("scope1/reporting/disclosure-requirements", {}).get("rules", []):
+        passed, msg = execute_rule(rule, data)
+        if passed is not None:
+            suite.assert_true(f"披露要求 - {rule['id']}", passed, msg)
+    return suite
+
+
+def test_scope1_prohibitions(specs: Dict):
+    suite = TestSuite("Scope 1 禁止清单")
+    data = make_scope1_base_data()
+    data["input"]["scope1_emission_sources"] = [make_stationary_source()]
+    for rule in specs.get("scope1/constraints/prohibitions", {}).get("rules", []):
+        passed, msg = execute_rule(rule, data)
+        if passed is not None:
+            suite.assert_true(f"禁止清单 - {rule['id']}", passed, msg)
+    return suite
+
+
+def test_scope1_quality_criteria(specs: Dict):
+    suite = TestSuite("Scope 1 质量标准")
+    data = make_scope1_base_data()
+    data["input"]["scope1_emission_sources"] = [make_stationary_source()]
+    for rule in specs.get("scope1/constraints/quality-criteria", {}).get("rules", []):
+        passed, msg = execute_rule(rule, data)
+        if passed is not None:
+            suite.assert_true(f"质量标准 - {rule['id']}", passed, msg)
+    return suite
+
+
+# ============================================================
 # 主程序
 # ============================================================
 
@@ -760,6 +978,17 @@ def main():
         test_global_rules(specs, meta),
         test_emission_calculation(),
         test_edge_cases(specs),
+        test_scope1_emission_categories(specs),
+        test_scope1_stationary_combustion(specs),
+        test_scope1_mobile_combustion(specs),
+        test_scope1_process_emissions(specs),
+        test_scope1_fugitive_emissions(specs),
+        test_scope1_operational_boundary(specs),
+        test_scope1_data_quality(specs),
+        test_scope1_cross_type_validation(specs),
+        test_scope1_disclosure(specs),
+        test_scope1_prohibitions(specs),
+        test_scope1_quality_criteria(specs),
     ]
 
     # 输出结果

@@ -1,0 +1,123 @@
+meta:
+  id: "scope1/quality-criteria"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Standard"
+  source_ref: "https://ghgprotocol.org/corporate-standard"
+  layer: "schema"
+  description: "Scope 1排放数据质量控制准则：活动数据来源校验、排放因子来源校验、GWP一致性、不确定性评估"
+
+citations:
+  - id: "cit-qc-001"
+    text: "Companies should use the most accurate calculation approach available to them and that is appropriate for their reporting context."
+    page: 44
+    section: "Chapter 6: Identifying and Calculating GHG Emissions"
+
+  - id: "cit-qc-002"
+    text: "In most cases, if source- or facility-specific emission factors are available, they are preferable to more generic or general emission factors."
+    page: 44
+    section: "Chapter 6: Collect Activity Data and Choose Emission Factors"
+
+  - id: "cit-qc-003"
+    text: "In most cases, if source- or facility-specific emission factors are available, they are preferable to more generic or general emission factors."
+    page: 44
+    section: "Chapter 6: Collect Activity Data and Choose Emission Factors"
+
+  - id: "cit-qc-004"
+    text: "The emissions of each GHG (CO2, CH4, N2O, etc.) are calculated separately and then converted to CO2 equivalents on the basis of their global warming potential."
+    page: 47
+    section: "Chapter 6: Identifying and Calculating GHG Emissions"
+
+  - id: "cit-qc-005"
+    text: "A quality management system provides a systematic process for preventing and correcting errors, and identifies areas where investments will likely lead to the greatest improvement in overall inventory quality."
+    page: 49
+    section: "Chapter 7: Managing Inventory Quality"
+
+rules:
+  - id: "s1-qc-001"
+    name: "活动数据来源校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {">": [{"var": "activity_data"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "活动数据须来自计量或实测数据"
+    citation: "cit-qc-001"
+
+  - id: "s1-qc-002"
+    name: "排放因子来源校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {"in": [{"var": "emission_factor.source"}, ["ipcc", "national_inventory", "manufacturer", "facility_measured", "industry_association"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "排放因子须来自国家或国际认可来源（如IPCC、国家清单指南）"
+    citation: "cit-qc-002"
+
+  - id: "s1-qc-003"
+    name: "优先使用设施特定因子"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.emission_factor.type"}, "default"]}
+    assertion:
+      {"!=": [{"var": "input.justifications.s1-qc-003"}, null]}
+    on_fail: "require_justification"
+    on_fail_message: "应优先使用设施特定排放因子而非国家缺省因子"
+    citation: "cit-qc-003"
+
+  - id: "s1-qc-004"
+    name: "GWP版本一致性"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {"==": [{"var": "gwp_source"}, {"var": "input.scope1_emission_sources.0.gwp_source"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "所有温室气体须使用同一IPCC评估报告版本的GWP值"
+    citation: "cit-qc-004"
+
+  - id: "s1-qc-005"
+    name: "不确定性评估建议"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "or": [
+        {"!=": [{"var": "output.uncertainty_assessment"}, null]},
+        {"!=": [{"var": "input.justifications.s1-qc-005"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "建议进行排放数据的不确定性评估"
+    citation: "cit-qc-005"
+
+dependencies:
+  - ref: "principles/operational-boundary"
+    relation: "constrained_by"
+
+conflicts_with: []

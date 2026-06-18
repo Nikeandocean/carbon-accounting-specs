@@ -38,6 +38,10 @@ expression_engines:
         description: "检测Scope 1与Scope 2的能源边界重叠（含CHP自发电、热电联产等场景）"
         input_schema: "schemas/boundary-overlap-input.json"
         output_schema: "schemas/boundary-overlap-output.json"
+      - id: "calc.chp_emission_split"
+        description: "CHP热电联产排放分配：按能量法/㶲值法/常数法将总排放分配到电力和热力"
+        input_schema: "schemas/chp-emission-split-input.json"
+        output_schema: "schemas/chp-emission-split-output.json"
 
 # 规则生命周期分层
 rule_lifecycle:
@@ -211,6 +215,58 @@ input_schema:
       examples:
         - "proh-006": "全局理由：2026年官方因子尚未发布"
         - "proh-006@emission_sources[1].id": "该网点位于偏远地区，仅能获取2024年因子"
+    scope1_emission_sources:
+      type: "array"
+      description: "Scope 1直接排放源"
+      items:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+          type:
+            type: "string"
+            enum: ["stationary_combustion", "mobile_combustion", "process", "fugitive"]
+          fuel_type:
+            type: "string"
+            nullable: true
+            description: "燃料类型（燃烧源必填）"
+          process_type:
+            type: "string"
+            nullable: true
+            description: "工艺类型（工艺排放源必填）"
+          activity_data:
+            type: "number"
+            description: "活动数据"
+          activity_unit:
+            type: "string"
+            enum: ["tonnes", "litres", "cubic_metres", "GJ", "kWh", "km"]
+            description: "活动数据单位"
+          emission_factor:
+            type: "object"
+            properties:
+              value:
+                type: "number"
+                description: "排放因子值（tCO2e/单位）"
+              co2_component:
+                type: "number"
+                nullable: true
+              ch4_component:
+                type: "number"
+                nullable: true
+              n2o_component:
+                type: "number"
+                nullable: true
+              year:
+                type: "integer"
+              source:
+                type: "string"
+              is_biomass:
+                type: "boolean"
+                default: false
+          gwp_source:
+            type: "string"
+            enum: ["IPCC_AR4", "IPCC_AR5", "IPCC_AR6"]
+            description: "GWP值来源的IPCC评估报告版本"
 
 load_order:
   - principles/organizational-boundary
@@ -224,6 +280,18 @@ load_order:
   - constraints/prohibitions
   - constraints/scope2-quality-criteria
   - constraints/certificate-management
+  # Scope 1 (new)
+  - scope1/principles/emission-categories
+  - scope1/principles/operational-boundary
+  - scope1/principles/data-quality-hierarchy
+  - scope1/methods/stationary-combustion
+  - scope1/methods/mobile-combustion
+  - scope1/methods/process-emissions
+  - scope1/methods/fugitive-emissions
+  - scope1/reporting/disclosure-requirements
+  - scope1/constraints/prohibitions
+  - scope1/constraints/quality-criteria
+  - scope1/constraints/cross-type-validation
 
 global_rules:
   - id: "global-001"
@@ -305,6 +373,62 @@ global_rules:
     on_fail: "raise_warning"
     on_fail_message: "GHG排放量化应系统性地既不高估也不低估实际排放。请确认排放因子和活动数据的不确定性已在合理范围内。"
     citation: "GHG Protocol Scope 2 Guidance, Chapter 3"
+
+  - id: "global-s1-001"
+    name: "Scope 1完整性原则"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    scope: "scope1_only"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {
+          "and": [
+            {"!=": [{"var": "activity_data"}, null]},
+            {">": [{"var": "activity_data"}, 0]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Scope 1排放源缺少活动数据"
+    citation: "GHG Protocol Corporate Standard, Chapter 4"
+
+  - id: "global-s1-002"
+    name: "Scope 1排放源类型校验"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    scope: "scope1_only"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {"in": [{"var": "type"}, ["stationary_combustion", "mobile_combustion", "process", "fugitive"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Scope 1排放源类型必须为stationary_combustion、mobile_combustion、process或fugitive"
+    citation: "GHG Protocol Corporate Standard, Chapter 6"
+
+  - id: "global-s1-003"
+    name: "Scope 1气体来源一致性"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    scope: "scope1_only"
+    condition: {"!=": [{"var": "input.scope1_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope1_emission_sources"},
+        {"!=": [{"var": "gwp_source"}, null]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "所有Scope 1排放源应使用同一IPCC评估报告的GWP值"
+    citation: "GHG Protocol Corporate Standard, Chapter 6"
 
 versioning:
   scheme: "semver"

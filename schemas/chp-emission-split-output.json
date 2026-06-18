@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CHP Emission Split Output",
+  "description": "Output schema for CHP heat/electricity emission allocation",
+  "type": "object",
+  "required": ["scope1_emissions", "scope2_emissions", "allocation_ratio"],
+  "properties": {
+    "scope1_emissions": {
+      "type": "number",
+      "description": "Emissions allocated to heat (Scope 1 for facility owner)"
+    },
+    "scope2_emissions": {
+      "type": "number",
+      "description": "Emissions allocated to electricity (Scope 2 for electricity purchaser)"
+    },
+    "allocation_ratio": {
+      "type": "object",
+      "properties": {
+        "electricity_share": {"type": "number"},
+        "heat_share": {"type": "number"}
+      }
+    },
+    "allocation_method_used": {
+      "type": "string"
+    }
+  }
+}
