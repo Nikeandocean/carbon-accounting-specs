@@ -1,0 +1,368 @@
+# ============================================================
+# Scope 3 Category 3: Fuel- and Energy-Related Activities
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, pp. 36-37
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 3, pp. 38-48
+
+meta:
+  id: "scope3/cat3-fuel-energy"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 3 燃料和能源相关活动排放核算规则（4种活动：采购燃料上游排放、采购电力上游排放、输配电损耗、售出电力生命周期排放）"
+
+citations:
+  # Category description
+  - id: "cit-cat3-001"
+    text: "Category 3 includes emissions related to the production of fuels and energy purchased and consumed by the reporting company in the reporting year that are not included in scope 1 or scope 2."
+    page: 38
+    section: "Technical Guidance, Category 3"
+
+  - id: "cit-cat3-002"
+    text: "Category 3 excludes emissions from the combustion of fuels or electricity consumed by the reporting company because they are already included in scope 1 or scope 2. Scope 1 includes emissions from the combustion of fuels by sources owned or controlled by the reporting company. Scope 2 includes the emissions from the combustion of fuels to generate electricity, steam, heating, and cooling purchased and consumed by the reporting company."
+    page: 38
+    section: "Technical Guidance, Category 3"
+
+  # Activities included
+  - id: "cit-cat3-003"
+    text: "This category includes emissions from four activities: A. Upstream emissions of purchased fuels (extraction, production, and transportation of fuels consumed by the reporting company); B. Upstream emissions of purchased electricity (extraction, production, and transportation of fuels consumed in the generation of electricity, steam, heating, and cooling that is consumed by the reporting company); C. Transmission and distribution (T&D) losses (generation of electricity, steam, heating, and cooling that is consumed (i.e., lost) in a T&D system – reported by end user); D. Generation of purchased electricity that is sold to end users (generation of electricity, steam, heating, and cooling that is purchased by the reporting company and sold to end users – reported by utility company or energy retailer)."
+    page: 39
+    section: "Technical Guidance, Category 3, Table 3.1"
+
+  # Activity A: Upstream emissions of purchased fuels
+  - id: "cit-cat3-004"
+    text: "This activity includes the extraction, production, and transportation of fuels consumed by the reporting company. Companies may use either of the following methods: Supplier-specific method, which involves collecting data from fuel providers on upstream emissions (extraction, production and transportation) of fuel consumed by the reporting company; Average-data method, which involves estimating emissions by using secondary (e.g., industry average) emission factors for upstream emissions per unit of consumption (e.g., kg CO2e/kWh)."
+    page: 40
+    section: "Technical Guidance, Category 3, Activity A"
+
+  - id: "cit-cat3-005"
+    text: "Activity data needed: Quantities and types of fuel consumed."
+    page: 41
+    section: "Technical Guidance, Category 3, Activity A"
+
+  - id: "cit-cat3-006"
+    text: "To calculate emissions from this activity, companies should use life cycle emission factors that exclude emissions from combustion, since emissions from combustion are accounted for in scope 1 (in the case of fossil fuels) or in a separate memo item (in the case of direct CO2 emissions from combustion of biomass or biofuels)."
+    page: 41
+    section: "Technical Guidance, Category 3, Activity A"
+
+  - id: "cit-cat3-007"
+    text: "Upstream CO2e emissions of purchased fuels (extraction, production, and transportation of fuels consumed by the reporting company) = sum across each fuel type consumed: ∑ (fuel consumed (e.g., kWh) × upstream fuel emission factor (kg CO2e)/kWh)). Formula 3.1. Where: upstream fuel emission factor = life cycle emission factor – combustion emission factor."
+    page: 41
+    section: "Technical Guidance, Category 3, Formula 3.1"
+
+  # Activity B: Upstream emissions of purchased electricity
+  - id: "cit-cat3-008"
+    text: "This activity includes the extraction, production, and transportation of fuels consumed in the generation of electricity, steam, heating, and cooling that is consumed by the reporting company. Companies may use either of the following methods: Supplier-specific method, which involves collecting data from electricity providers on upstream emissions (extraction, production and transportation) of electricity consumed by the reporting company; Average-data method, which involves estimating emissions by using secondary (e.g., industry average) emission factors for upstream emissions per unit of consumption (e.g., kg CO2e/kWh)."
+    page: 42
+    section: "Technical Guidance, Category 3, Activity B"
+
+  - id: "cit-cat3-009"
+    text: "Activity data needed: Total quantities of electricity, steam, heating, and cooling purchased and consumed per unit of consumption (e.g., MWh), broken down by supplier, grid region, or country."
+    page: 42
+    section: "Technical Guidance, Category 3, Activity B"
+
+  - id: "cit-cat3-010"
+    text: "To calculate emissions from this activity, companies should use life cycle emission factors that exclude emissions from combustion, since emissions from combustion are accounted for in scope 2 (in the case of electricity)."
+    page: 42
+    section: "Technical Guidance, Category 3, Activity B"
+
+  - id: "cit-cat3-011"
+    text: "Upstream CO2e emissions of purchased electricity = sum across suppliers, regions, or countries: ∑ (electricity consumed (kWh) × upstream electricity emission factor (kgCO2e)/kWh)) + (steam consumed (kWh) × upstream steam emission factor (kg CO2e)/kWh)) + (heating consumed (kWh) × upstream heating emission factor (kg CO2e)/kWh)) + (cooling consumed (kWh) × upstream cooling emission factor (kg CO2e)/kWh)). Formula 3.2. Where: upstream emission factor = life cycle emission factor – combustion emissions factor – T&D losses."
+    page: 44
+    section: "Technical Guidance, Category 3, Formula 3.2"
+
+  # Activity C: T&D losses
+  - id: "cit-cat3-012"
+    text: "This activity includes the lifecycle emissions of electricity, steam, heating, and cooling that is consumed (i.e., lost) in a transmission and distribution (T&D) system. Companies may use the following methods: Supplier-specific method, which involves collecting data from electricity providers on T&D loss rates of grids where electricity is consumed by the reporting company; Average-data method, which involves estimating emissions by using country, regional, or global average T&D loss rates."
+    page: 44
+    section: "Technical Guidance, Category 3, Activity C"
+
+  - id: "cit-cat3-013"
+    text: "Activity data needed: Electricity, steam, heating, and cooling per unit of consumption (e.g., MWh), broken down by grid region or country."
+    page: 45
+    section: "Technical Guidance, Category 3, Activity C"
+
+  - id: "cit-cat3-014"
+    text: "CO2e emissions from energy (generation of electricity, steam, heating, and cooling that is consumed (i.e., lost) in a T&D system) = sum across suppliers, regions, or countries: ∑ (electricity consumed (kWh) × electricity life cycle emission factor ((kg CO2e)/kWh) × T&D loss rate (%)) + (steam consumed × steam life cycle emission factor × T&D loss rate) + (heating consumed × heating life cycle emission factor × T&D loss rate) + (cooling consumed × cooling life cycle emission factor × T&D loss rate). Formula 3.3."
+    page: 45
+    section: "Technical Guidance, Category 3, Formula 3.3"
+
+  # Activity D: Generation of purchased electricity sold to end users
+  - id: "cit-cat3-015"
+    text: "This activity includes the generation of electricity, steam, heating, and cooling that is purchased by the reporting company and sold to end users (reported by a utility company or energy retailer). Companies may use the following methods: Supplier-specific method, which involves collecting emissions data from power generators; Average-data method, which involves estimating emissions by using grid average emission rates."
+    page: 47
+    section: "Technical Guidance, Category 3, Activity D"
+
+  - id: "cit-cat3-016"
+    text: "Activity data needed: Quantities and specific source (e.g., generation unit) of electricity purchased and re-sold."
+    page: 47
+    section: "Technical Guidance, Category 3, Activity D"
+
+  - id: "cit-cat3-017"
+    text: "CO2e emissions from power that is purchased and sold = sum across suppliers, regions or countries: ∑ (electricity purchased for resale (kWh) × electricity life cycle emission factor (kg CO2e)/kWh)) + (steam purchased for resale × steam life cycle emission factor) + (heating purchased for resale × heating life cycle emission factor) + (cooling purchased for resale × cooling life cycle emission factor). Formula 3.4."
+    page: 48
+    section: "Technical Guidance, Category 3, Formula 3.4"
+
+  # Emission factor guidance
+  - id: "cit-cat3-018"
+    text: "Companies should ensure that emission factors used to calculate upstream emissions of purchased electricity do not include emissions from combustion because emissions from combustion to generate electricity are accounted for in scope 2."
+    page: 43
+    section: "Technical Guidance, Category 3, Figure 3.1"
+
+  - id: "cit-cat3-019"
+    text: "Scope 2 includes emissions from the generation of purchased electricity, steam, heating, and cooling consumed by the reporting company. In some regions, electricity emission factors include life cycle activities related to electricity, such as transmission and distribution of electricity, or extraction, processing and transportation of fuels used to generate electricity. Non-generation activities related to electricity are accounted for in scope 3, category 3 (Fuel- and energy-related activities not included in scope 1 or scope 2), rather than in scope 2."
+    page: 44
+    section: "Technical Guidance, Category 3"
+
+  # Reporting
+  - id: "cit-cat3-020"
+    text: "Companies should report scope 3 emissions from category 3 separately for each of the four activities (A, B, C, D) to enhance transparency."
+    page: 39
+    section: "Technical Guidance, Category 3"
+
+rules:
+  # === 前置约束 (pre_calculation) ===
+
+  - id: "s3-c3-001"
+    name: "Energy consumption data validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.energy_consumption"}, null]},
+        {"!!": [{"var": "input.energy_consumption"}]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.energy_consumption"}, null]},
+        {"!!": [{"var": "input.energy_consumption"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Energy consumption data must be provided for Category 3"
+    citation: "cit-cat3-005"
+
+  - id: "s3-c3-002"
+    name: "Activity type specification"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"!=": [{"var": "input.activity_type"}, null]}
+    assertion:
+      {"in": [{"var": "input.activity_type"}, ["A", "B", "C", "D"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Activity type must be specified (A: upstream fuels, B: upstream electricity, C: T&D losses, D: sold power)"
+    citation: "cit-cat3-003"
+
+  - id: "s3-c3-003"
+    name: "Scope 1/2 exclusion check"
+    type: "validation"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"!=": [{"var": "input.scope1_scope2_exclusion_verified"}, null]}
+    assertion:
+      {"==": [{"var": "input.scope1_scope2_exclusion_verified"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Must verify that emissions are not already included in scope 1 or scope 2"
+    citation: "cit-cat3-002"
+
+  # === 运行时推断 (runtime_inference) ===
+
+  - id: "s3-c3-004"
+    name: "Activity A calculation method"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.activity_type"}, "A"]}
+    assertion:
+      {"in": [{"var": "input.selected_method"}, ["supplier_specific", "average_data"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Activity A supports supplier_specific or average_data methods"
+    citation: "cit-cat3-004"
+
+  - id: "s3-c3-005"
+    name: "Activity A emission factor requirement"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.activity_type"}, "A"]}
+    assertion:
+      {"!=": [{"var": "input.upstream_fuel_emission_factors"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Activity A requires upstream fuel emission factors (excluding combustion)"
+    citation: "cit-cat3-006"
+
+  - id: "s3-c3-006"
+    name: "Activity B calculation method"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.activity_type"}, "B"]}
+    assertion:
+      {"in": [{"var": "input.selected_method"}, ["supplier_specific", "average_data"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Activity B supports supplier_specific or average_data methods"
+    citation: "cit-cat3-008"
+
+  - id: "s3-c3-007"
+    name: "Activity B emission factor requirement"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.activity_type"}, "B"]}
+    assertion:
+      {"!=": [{"var": "input.upstream_electricity_emission_factors"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Activity B requires upstream electricity emission factors (excluding combustion)"
+    citation: "cit-cat3-010"
+
+  - id: "s3-c3-008"
+    name: "Activity C calculation method"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.activity_type"}, "C"]}
+    assertion:
+      {"in": [{"var": "input.selected_method"}, ["supplier_specific", "average_data"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Activity C supports supplier_specific or average_data methods"
+    citation: "cit-cat3-012"
+
+  - id: "s3-c3-009"
+    name: "Activity C T&D loss rate requirement"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.activity_type"}, "C"]}
+    assertion:
+      {"!=": [{"var": "input.td_loss_rate"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Activity C requires T&D loss rate data"
+    citation: "cit-cat3-013"
+
+  - id: "s3-c3-010"
+    name: "Activity D calculation method"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.activity_type"}, "D"]}
+    assertion:
+      {"in": [{"var": "input.selected_method"}, ["supplier_specific", "average_data"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Activity D supports supplier_specific or average_data methods"
+    citation: "cit-cat3-015"
+
+  - id: "s3-c3-011"
+    name: "Activity D applicability check"
+    type: "validation"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.activity_type"}, "D"]}
+    assertion:
+      {"==": [{"var": "input.entity_type"}, "utility_or_retailer"]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Activity D is only applicable to utility companies and energy retailers"
+    citation: "cit-cat3-003"
+
+  - id: "s3-c3-012"
+    name: "Emission factor combustion exclusion"
+    type: "validation"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"in": [{"var": "input.activity_type"}, ["A", "B"]]}
+    assertion:
+      {"==": [{"var": "input.emission_factors_exclude_combustion"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Emission factors for Activities A and B must exclude combustion emissions"
+    citation: "cit-cat3-018"
+
+  # === 后审计 (post_audit) ===
+
+  - id: "s3-c3-013"
+    name: "Total emissions validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Total CO2e emissions must be non-negative"
+    citation: "cit-cat3-007"
+
+  - id: "s3-c3-014"
+    name: "Activity-level reporting"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.activity_breakdown"}, null]}
+    assertion:
+      {"!=": [{"var": "output.activity_breakdown"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Emissions should be reported separately for each activity (A, B, C, D)"
+    citation: "cit-cat3-020"
+
+  - id: "s3-c3-015"
+    name: "Calculation methodology documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.calculation_methodology"}, null]}
+    assertion:
+      {"!=": [{"var": "output.calculation_methodology"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "Calculation methodology should be documented for reporting"
+    citation: "cit-cat3-001"

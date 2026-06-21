@@ -350,6 +350,8 @@ load_order:
   - scope3/principles/category-definitions
   - scope3/principles/data-quality-hierarchy
   - scope3/methods/cat1-purchased-goods
+  - scope3/methods/cat2-capital-goods
+  - scope3/methods/cat3-fuel-energy
   - scope3/methods/cat5-waste
   - scope3/methods/cat6-business-travel
   - scope3/methods/cat7-employee-commuting

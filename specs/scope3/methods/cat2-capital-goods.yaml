@@ -1,0 +1,324 @@
+# ============================================================
+# Scope 3 Category 2: Capital Goods
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, pp. 39-40
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 2, pp. 36-37
+
+meta:
+  id: "scope3/cat2-capital-goods"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 2 资本品排放核算规则（4种计算方法：供应商特定法、混合法、平均产品法、平均支出法）"
+
+citations:
+  # Category description
+  - id: "cit-cat2-001"
+    text: "Category 2 (Capital goods) includes all upstream (i.e., cradle-to-gate) emissions from the production of capital goods purchased or acquired by the reporting company in the reporting year. Emissions from the use of capital goods by the reporting company are accounted for in either scope 1 (e.g., for fuel use) or scope 2 (e.g., for electricity use), rather than in scope 3."
+    page: 36
+    section: "Technical Guidance, Category 2"
+
+  - id: "cit-cat2-002"
+    text: "This category includes all upstream (i.e., cradle-to-gate) emissions from the production of capital goods purchased or acquired by the reporting company in the reporting year. Emissions from the use of capital goods by the reporting company are accounted for in either scope 1 (e.g., for fuel use) or scope 2 (e.g., for electricity use), rather than scope 3."
+    page: 39
+    section: "Scope 3 Standard, Chapter 5"
+
+  # Capital goods definition
+  - id: "cit-cat2-003"
+    text: "Capital goods are final products that have an extended life and are used by the company to manufacture a product; provide a service; or sell, store, and deliver merchandise. In financial accounting, capital goods are treated as fixed assets or as plant, property, and equipment (PP&E). Examples of capital goods include equipment, machinery, buildings, facilities, and vehicles."
+    page: 36
+    section: "Technical Guidance, Category 2"
+
+  - id: "cit-cat2-004"
+    text: "Capital goods are final products that have an extended life and are used by the company to manufacture a product, provide a service, or sell, store, and deliver merchandise. In financial accounting, capital goods are treated as fixed assets or as plant, property, and equipment (PP&E). Examples of capital goods include equipment, machinery, buildings, facilities, and vehicles."
+    page: 39
+    section: "Scope 3 Standard, Chapter 5"
+
+  # Category 1 vs 2 boundary
+  - id: "cit-cat2-005"
+    text: "In certain cases, there may be ambiguity over whether a particular purchased product is a capital good (to be reported in category 2) or a purchased good (to be reported in category 1). Companies should follow their own financial accounting procedures to determine whether to account for a purchased product as a capital good in this category or as a purchased good or service in category 1. Companies should not double count emissions between category 1 and category 2."
+    page: 36
+    section: "Technical Guidance, Category 2"
+
+  - id: "cit-cat2-006"
+    text: "In certain cases, there may be ambiguity over whether a particular purchased product is a capital good (to be reported in category 2) or a purchased good (to be reported in category 1). Companies should follow their own financial accounting procedures to determine whether to account for a purchased product as a capital good in this category or as a purchased good or service in category 1. Companies should not double count emissions between category 1 and category 2."
+    page: 39
+    section: "Scope 3 Standard, Chapter 5"
+
+  # Time boundary
+  - id: "cit-cat2-007"
+    text: "In financial accounting, capital goods (sometimes called 'capital assets') are typically depreciated or amortized over the life of the asset. For purposes of accounting for scope 3 emissions, companies should not depreciate, discount, or amortize the emissions from the production of capital goods over time. Instead companies should account for the total cradle-to-gate emissions of purchased capital goods in the year of acquisition, the same way the company accounts for emissions from other purchased products in category 1."
+    page: 37
+    section: "Technical Guidance, Category 2, Box 2.1"
+
+  - id: "cit-cat2-008"
+    text: "If major capital purchases occur only once every few years, scope 3 emissions from capital goods may fluctuate significantly from year to year. Companies should provide appropriate context in the public report (e.g., by highlighting exceptional or non-recurring capital investments)."
+    page: 37
+    section: "Technical Guidance, Category 2, Box 2.1"
+
+  # Calculation methods
+  - id: "cit-cat2-009"
+    text: "Companies may use the following methods to calculate scope 3 emissions from capital goods: Supplier-specific method, which involves collecting product-level cradle-to-gate GHG inventory data from goods suppliers."
+    page: 37
+    section: "Technical Guidance, Category 2"
+
+  - id: "cit-cat2-010"
+    text: "Hybrid method, which involves a combination of supplier-specific activity data (as available) and using secondary data to fill the gaps. This method involves: collecting allocated scope 1 and scope 2 emissions from suppliers; calculating upstream emissions of goods by collecting available data from suppliers on the amount of materials, fuel, electricity used, distance transported, and waste generated from the production of goods and applying appropriate emission factors; using secondary data to calculate upstream emissions wherever supplier-specific data is not available."
+    page: 37
+    section: "Technical Guidance, Category 2"
+
+  - id: "cit-cat2-011"
+    text: "Average-product method, which involves estimating emissions for goods by collecting data on the mass or other relevant units of goods purchased and multiplying by relevant secondary (e.g., industry average) emission factors (e.g., average emissions per unit of good)."
+    page: 37
+    section: "Technical Guidance, Category 2"
+
+  - id: "cit-cat2-012"
+    text: "Average spend-based method, which involves estimating emissions for goods by collecting data on the economic value of goods purchased and multiplying by relevant secondary (e.g., industry average) emission factors (e.g., average emissions per monetary value of goods)."
+    page: 37
+    section: "Technical Guidance, Category 2"
+
+  - id: "cit-cat2-013"
+    text: "The calculation methods for category 1 (Purchased goods and services) and category 2 (Capital goods) are the same. For guidance on calculating emissions from category 2 (Capital goods), refer to the guidance in the previous section for category 1 (Purchased goods and services)."
+    page: 37
+    section: "Technical Guidance, Category 2"
+
+  # Formulas
+  - id: "cit-cat2-014"
+    text: "Supplier-specific method: sum across capital goods: ∑ (quantities of capital good purchased (e.g., kg) × supplier-specific product emission factor of capital good (e.g., kg CO2e/kg)). Formula 2.1."
+    page: 164
+    section: "Technical Guidance, Appendix D, Formula 2.1"
+
+  - id: "cit-cat2-015"
+    text: "Hybrid method: sum across capital goods: ∑ scope 1 and 2 emissions of tier 1 supplier relating to capital good (kg CO2e) + sum across material inputs: ∑ (mass or quantity of material inputs × cradle-to-gate emission factor for the material) + sum across transport: ∑ (distance × mass or volume × emission factor for vehicle type) + sum across waste outputs: ∑ (mass of waste × emission factor for waste activity) + other emissions. Formula 2.2."
+    page: 164
+    section: "Technical Guidance, Appendix D, Formula 2.2"
+
+  - id: "cit-cat2-016"
+    text: "Average-product method: sum across capital goods: ∑ (mass or units of capital good purchased × secondary (e.g., industry average) emission factor (e.g., kg CO2e/kg or kg CO2e/unit)). Formula 2.3."
+    page: 165
+    section: "Technical Guidance, Appendix D, Formula 2.3"
+
+  - id: "cit-cat2-017"
+    text: "Average spend-based method: sum across capital goods: ∑ (economic value of capital good purchased ($) × secondary (e.g., industry average) emission factor (e.g., kg CO2e/$)). Formula 2.4."
+    page: 165
+    section: "Technical Guidance, Appendix D, Formula 2.4"
+
+  # Cradle-to-gate emissions
+  - id: "cit-cat2-018"
+    text: "Cradle-to-gate emissions include all emissions that occur in the life cycle of purchased products, up to the point of receipt by the reporting company (excluding emissions from sources that are owned or controlled by the reporting company). Cradle-to-gate emissions may include: Extraction of raw materials; Agricultural activities; Manufacturing, production, and processing; Generation of electricity consumed by upstream activities; Disposal/treatment of waste generated by upstream activities; Land use and land-use change; Transportation of materials and products between suppliers; Any other activities prior to acquisition by the reporting company."
+    page: 40
+    section: "Scope 3 Standard, Chapter 5"
+
+  # Reporting
+  - id: "cit-cat2-019"
+    text: "Companies should not depreciate, discount, or amortize the emissions from the production of capital goods over time. Instead companies should account for the total cradle-to-gate emissions of purchased capital goods in the year of acquisition."
+    page: 37
+    section: "Technical Guidance, Category 2, Box 2.1"
+
+rules:
+  # === 前置约束 (pre_calculation) ===
+
+  - id: "s3-c2-001"
+    name: "Capital goods inventory validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.capital_goods"}, null]},
+        {"!!": [{"var": "input.capital_goods"}]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.capital_goods"}, null]},
+        {"!!": [{"var": "input.capital_goods"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Capital goods inventory must be provided for Category 2"
+    citation: "cit-cat2-001"
+
+  - id: "s3-c2-002"
+    name: "Capital goods classification check"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"!=": [{"var": "input.capital_goods_classification"}, null]}
+    assertion:
+      {"!=": [{"var": "input.capital_goods_classification"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Capital goods classification must be specified (fixed assets or PP&E)"
+    citation: "cit-cat2-003"
+
+  - id: "s3-c2-003"
+    name: "Double counting prevention"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"!=": [{"var": "input.double_counting_check"}, null]}
+    assertion:
+      {"!=": [{"var": "input.double_counting_check"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Double counting check must be performed to avoid overlap with Category 1"
+    citation: "cit-cat2-005"
+
+  # === 运行时推断 (runtime_inference) ===
+
+  - id: "s3-c2-004"
+    name: "Calculation method selection"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"in": [{"var": "input.selected_method"}, ["supplier_specific", "hybrid", "average_product", "average_spend"]]}
+    assertion:
+      {"in": [{"var": "input.selected_method"}, ["supplier_specific", "hybrid", "average_product", "average_spend"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 2 supports supplier_specific, hybrid, average_product, or average_spend methods"
+    citation: "cit-cat2-009"
+
+  - id: "s3-c2-005"
+    name: "Supplier-specific data requirement"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "supplier_specific"]}
+    assertion:
+      {"!=": [{"var": "input.supplier_emission_data"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Supplier-specific method requires product-level cradle-to-gate GHG data from suppliers"
+    citation: "cit-cat2-009"
+
+  - id: "s3-c2-006"
+    name: "Hybrid method data requirement"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "hybrid"]}
+    assertion:
+      {"!=": [{"var": "input.supplier_activity_data"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Hybrid method requires supplier-specific activity data (materials, fuel, electricity, transport, waste)"
+    citation: "cit-cat2-010"
+
+  - id: "s3-c2-007"
+    name: "Average-product method data requirement"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "average_product"]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.goods_quantity"}, null]},
+        {"!=": [{"var": "input.industry_average_emission_factors"}, null]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "Average-product method requires quantity data and industry average emission factors"
+    citation: "cit-cat2-011"
+
+  - id: "s3-c2-008"
+    name: "Average spend-based method data requirement"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "average_spend"]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.economic_value"}, null]},
+        {"!=": [{"var": "input.spend_based_emission_factors"}, null]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "Average spend-based method requires economic value data and spend-based emission factors"
+    citation: "cit-cat2-012"
+
+  # === 后审计 (post_audit) ===
+
+  - id: "s3-c2-009"
+    name: "Total emissions validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Total CO2e emissions must be non-negative"
+    citation: "cit-cat2-014"
+
+  - id: "s3-c2-010"
+    name: "Time boundary documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.time_boundary"}, null]}
+    assertion:
+      {"!=": [{"var": "output.time_boundary"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Time boundary should be documented (emissions reported in year of acquisition, not depreciated)"
+    citation: "cit-cat2-019"
+
+  - id: "s3-c2-011"
+    name: "Emissions fluctuation context"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.emissions_fluctuation_context"}, null]}
+    assertion:
+      {"!=": [{"var": "output.emissions_fluctuation_context"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "If major capital purchases are infrequent, context should be provided for emissions fluctuations"
+    citation: "cit-cat2-008"
+
+  - id: "s3-c2-012"
+    name: "Calculation methodology documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.calculation_methodology"}, null]}
+    assertion:
+      {"!=": [{"var": "output.calculation_methodology"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "Calculation methodology should be documented for reporting"
+    citation: "cit-cat2-013"
