@@ -1,0 +1,662 @@
+meta:
+  id: "scope3/cat4-upstream-transport"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 4 上游运输和配送排放核算规则（运输：燃料法/距离法/支出法；配送：场地特定法/平均数据法）"
+
+citations:
+  # Category description and boundary
+  - id: "cit-cat4-001"
+    text: "Category 4 includes emissions from transportation and distribution of products purchased in the reporting year, between a company's tier 1 suppliers and its own operations in vehicles not owned or operated by the reporting company."
+    page: 49
+    section: "Technical Guidance, Category 4"
+
+  - id: "cit-cat4-002"
+    text: "Category 4 includes third-party transportation and distribution services purchased by the reporting company in the reporting year (either directly or through an intermediary), including inbound logistics, outbound logistics (e.g., of sold products), and third-party transportation and distribution between a company's own facilities."
+    page: 49
+    section: "Technical Guidance, Category 4"
+
+  - id: "cit-cat4-003"
+    text: "Emissions may arise from: Air transport, Rail transport, Road transport, Marine transport, Storage of purchased products in warehouses, distribution centers, and retail facilities."
+    page: 49
+    section: "Technical Guidance, Category 4"
+
+  # Boundary rules from Table 5.7
+  - id: "cit-cat4-004"
+    text: "Transportation and distribution in vehicles and facilities owned or controlled by the reporting company: Scope 1 (for fuel use) or Scope 2 (for electricity use)."
+    page: 50
+    section: "Technical Guidance, Category 4, Table 4.1"
+
+  - id: "cit-cat4-005"
+    text: "Transportation and distribution in vehicles and facilities leased by and operated by the reporting company (and not already included in scope 1 or scope 2): Scope 3, category 8 (Upstream leased assets)."
+    page: 50
+    section: "Technical Guidance, Category 4, Table 4.1"
+
+  - id: "cit-cat4-006"
+    text: "Transportation and distribution of purchased products, upstream of the reporting company's tier 1 suppliers: Scope 3, category 1 (Purchased goods and services), since emissions from transportation are already included in the cradle-to-gate emissions of purchased products."
+    page: 50
+    section: "Technical Guidance, Category 4, Table 4.1"
+
+  - id: "cit-cat4-007"
+    text: "Transportation and distribution of products sold by the reporting company between the reporting company's operations and the end consumer (if not paid for by the reporting company): Scope 3, category 9 (Downstream transportation and distribution)."
+    page: 50
+    section: "Technical Guidance, Category 4, Table 4.1"
+
+  # Fuel-based method
+  - id: "cit-cat4-008"
+    text: "Fuel-based method: determining the amount of fuel consumed (i.e., scope 1 and scope 2 emissions of transport providers) and applying the appropriate emission factor for that fuel."
+    page: 51
+    section: "Technical Guidance, Category 4"
+
+  - id: "cit-cat4-009"
+    text: "Formula 4.1: CO2e emissions from transportation = ∑ (quantity of fuel consumed × emission factor for the fuel) + ∑ (quantity of electricity consumed × emission factor for electricity grid) + ∑ (quantity of refrigerant leakage × GWP for the refrigerant)."
+    page: 54
+    section: "Technical Guidance, Category 4, Formula 4.1"
+
+  - id: "cit-cat4-010"
+    text: "For calculating CO2, the fuel-based method is more accurate than the distance-based method because fuel consumption is directly related to emissions."
+    page: 52
+    section: "Technical Guidance, Category 4"
+
+  - id: "cit-cat4-011"
+    text: "Companies should allocate emissions based on default limiting factors: Road transport: mass-based allocation; Marine transport: volume-based allocation; Air transport: mass-based allocation; Rail transport: mass-based allocation."
+    page: 52
+    section: "Technical Guidance, Category 4"
+
+  # Distance-based method
+  - id: "cit-cat4-012"
+    text: "Distance-based method: determining the mass, distance, and mode of each shipment, then applying the appropriate mass-distance emission factor for the vehicle used."
+    page: 51
+    section: "Technical Guidance, Category 4"
+
+  - id: "cit-cat4-013"
+    text: "Formula 4.6: CO2e emissions from transportation = ∑ (mass of goods purchased (tonnes or volume) × distance travelled in transport leg (km) × emission factor of transport mode or vehicle type (kg CO2e/tonne or volume/km))."
+    page: 61
+    section: "Technical Guidance, Category 4, Formula 4.6"
+
+  - id: "cit-cat4-014"
+    text: "Emission factors are typically represented in grams or kilograms of carbon dioxide equivalent per tonne-kilometer or TEU-kilometer. Tonne-kilometer is a unit of measure representing one tonne of goods transported over 1 kilometer."
+    page: 57
+    section: "Technical Guidance, Category 4"
+
+  - id: "cit-cat4-015"
+    text: "The distance-based method is especially useful for an organization that does not have access to fuel or mileage records from the transport vehicles, or has shipments smaller than those that would consume an entire vehicle or vessel."
+    page: 57
+    section: "Technical Guidance, Category 4"
+
+  # Spend-based method
+  - id: "cit-cat4-016"
+    text: "Spend-based method: determining the amount of money spent on each mode of business travel transport and applying secondary (EEIO) emission factors."
+    page: 51
+    section: "Technical Guidance, Category 4"
+
+  - id: "cit-cat4-017"
+    text: "Formula 4.7: CO2e emissions from transportation = ∑ (amount spent on transportation by type ($) × relevant EEIO emission factors per unit of economic value (kg CO2e/$))."
+    page: 65
+    section: "Technical Guidance, Category 4, Formula 4.7"
+
+  - id: "cit-cat4-018"
+    text: "The spend-based method is effective for screening purposes; however it has high levels of uncertainty and the fuel-based and distance-based methods are recommended for accounting for transportation emissions."
+    page: 65
+    section: "Technical Guidance, Category 4"
+
+  # Distribution methods
+  - id: "cit-cat4-019"
+    text: "Site-specific method: involves collecting site-specific fuel, electricity, and fugitive emissions data and applying the appropriate emission factors."
+    page: 67
+    section: "Technical Guidance, Category 4"
+
+  - id: "cit-cat4-020"
+    text: "Formula 4.8: CO2e emissions from distribution = (fuel consumed × fuel EF) + (electricity consumed × electricity EF) + (refrigerant leakage × refrigerant EF), then allocate by volume of company's goods vs total volume."
+    page: 68
+    section: "Technical Guidance, Category 4, Formula 4.8"
+
+  - id: "cit-cat4-021"
+    text: "Average-data method: estimating emissions for each distribution activity, based on average data (such as average emissions per pallet or cubic meter stored per day)."
+    page: 67
+    section: "Technical Guidance, Category 4"
+
+  - id: "cit-cat4-022"
+    text: "Formula 4.9: CO2e emissions from distribution = ∑ (volume of stored goods × average number of days stored × emission factor for storage facility)."
+    page: 70
+    section: "Technical Guidance, Category 4, Formula 4.9"
+
+  # Emission factor guidance
+  - id: "cit-cat4-023"
+    text: "When calculating emissions from transportation in scope 3, companies should use life cycle emission factors (not just combustion emission factors)."
+    page: 51
+    section: "Technical Guidance, Category 4"
+
+  - id: "cit-cat4-024"
+    text: "For air travel emission factors, multipliers or other corrections to account for radiative forcing may be applied to the GWP of emissions arising from aircraft transport. If applied, companies should disclose the specific factor used."
+    page: 53
+    section: "Technical Guidance, Category 4"
+
+  - id: "cit-cat4-025"
+    text: "Tier 1 suppliers are companies with which the reporting company has a purchase order for goods or services. Tier 2 suppliers are companies with which tier 1 suppliers have a purchase order for goods or services."
+    page: 49
+    section: "Technical Guidance, Category 4"
+
+# 运输模式定义
+transport_modes:
+  - id: "road"
+    name: "Road transport"
+    name_zh: "公路运输"
+    allocation_default: "mass"
+    vehicle_types:
+      - id: "van_lt_3.5t"
+        name: "Van <3.5t"
+        unit: "kg CO2e/t-km"
+      - id: "truck_3.5_7.5t"
+        name: "Truck 3.5-7.5t"
+        unit: "kg CO2e/t-km"
+      - id: "truck_7.5_16t"
+        name: "Truck 7.5t-16t"
+        unit: "kg CO2e/t-km"
+      - id: "truck_16_32t"
+        name: "Truck 16t-32t single axle"
+        unit: "kg CO2e/t-km"
+      - id: "truck_gt_32t"
+        name: "Truck >32t tractor and trailer"
+        unit: "kg CO2e/t-km"
+
+  - id: "rail"
+    name: "Rail transport"
+    name_zh: "铁路运输"
+    allocation_default: "mass"
+    vehicle_types:
+      - id: "rail_electric"
+        name: "Electric rail"
+        unit: "kg CO2e/t-km"
+      - id: "rail_diesel"
+        name: "Diesel rail"
+        unit: "kg CO2e/t-km"
+
+  - id: "air"
+    name: "Air transport"
+    name_zh: "航空运输"
+    allocation_default: "mass"
+    note: "May apply radiative forcing multiplier - must disclose if used"
+    vehicle_types:
+      - id: "freighter_short_haul"
+        name: "Freighter short-haul"
+        unit: "kg CO2e/t-km"
+      - id: "freighter_long_haul"
+        name: "Freighter long-haul"
+        unit: "kg CO2e/t-km"
+      - id: "belly_freight_short_haul"
+        name: "Belly-freight short-haul"
+        unit: "kg CO2e/t-km"
+      - id: "belly_freight_long_haul"
+        name: "Belly-freight long-haul"
+        unit: "kg CO2e/t-km"
+      - id: "passenger_short_haul"
+        name: "Passenger plane short-haul"
+        unit: "kg CO2e/t-km"
+      - id: "passenger_long_haul"
+        name: "Passenger plane long-haul"
+        unit: "kg CO2e/t-km"
+
+  - id: "marine"
+    name: "Marine transport"
+    name_zh: "海运"
+    allocation_default: "volume"
+    vehicle_types:
+      - id: "container_lt_2000_teu"
+        name: "Container vessel <2000 TEU"
+        unit: "kg CO2e/TEU-km"
+      - id: "container_2000_5000_teu"
+        name: "Container vessel 2000-5000 TEU"
+        unit: "kg CO2e/TEU-km"
+      - id: "container_5000_8000_teu"
+        name: "Container vessel 5000-8000 TEU"
+        unit: "kg CO2e/TEU-km"
+      - id: "container_gt_8000_teu"
+        name: "Container vessel >8000 TEU"
+        unit: "kg CO2e/TEU-km"
+      - id: "bulk_lt_20000_dwt"
+        name: "Bulk vessel <20000 dwt"
+        unit: "kg CO2e/t-km"
+      - id: "bulk_gt_20000_dwt"
+        name: "Bulk vessel >20000 dwt"
+        unit: "kg CO2e/t-km"
+
+# 配送设施类型
+distribution_facility_types:
+  - id: "dry_warehouse"
+    name: "Dry warehouse"
+    name_zh: "干货仓库"
+    units: ["kg CO2e/pallet-day", "kg CO2e/TEU-day", "kg CO2e/cbm-day", "kg CO2e/kg-day"]
+    default_assumption: "1 pallet = 1 square meter of floor space"
+
+  - id: "refrigerated_warehouse"
+    name: "Refrigerated warehouse"
+    name_zh: "冷藏仓库"
+    units: ["kg CO2e/pallet-day", "kg CO2e/TEU-day", "kg CO2e/cbm-day", "kg CO2e/kg-day"]
+
+  - id: "terminal"
+    name: "Terminal"
+    name_zh: "码头/中转站"
+    units: ["kg CO2e/t", "kg CO2e/TEU"]
+    default_assumption: "1 TEU = 10 tonnes"
+
+# 常量
+constants:
+  teu_to_tonnes: 10
+  note: "Default 1 TEU = 10 tonnes"
+
+rules:
+  # === 前置约束 (pre_calculation) ===
+
+  - id: "s3-c4-001"
+    name: "Category 4类别归属校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat4"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "category"}, "cat4"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 4排放源的category字段必须为cat4"
+    citation: "cit-cat4-001"
+
+  - id: "s3-c4-002"
+    name: "运输模式必填"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat4"]},
+        {"==": [{"var": "input.activity_type"}, "transportation"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"in": [{"var": "transport_mode"}, ["road", "rail", "air", "marine"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "运输排放源必须指定运输模式（road、rail、air或marine）"
+    citation: "cit-cat4-003"
+
+  - id: "s3-c4-003"
+    name: "车辆所有权校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat4"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"!=": [{"var": "vehicle_ownership"}, "reporting_company"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 4仅适用于非报告公司自有或控制的车辆/设施，自有车辆应计入Scope 1或Scope 2"
+    citation: "cit-cat4-004"
+
+  # === 运行时推导 (runtime_inference) ===
+
+  - id: "s3-c4-004"
+    name: "运输计算方法选择校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat4"]},
+        {"==": [{"var": "input.activity_type"}, "transportation"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"in": [{"var": "calculation_method"}, ["fuel_based", "distance_based", "spend_based"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "运输排放必须指定计算方法：fuel_based、distance_based或spend_based"
+    citation: "cit-cat4-008"
+
+  - id: "s3-c4-005"
+    name: "燃料法数据要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "fuel_based"]},
+        {"==": [{"var": "input.category"}, "cat4"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.fuel_consumption"}, null]},
+        {">": [{"var": "input.fuel_consumption"}, 0]},
+        {"!=": [{"var": "input.fuel_type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "燃料法要求提供燃料消耗量和燃料类型"
+    citation: "cit-cat4-009"
+
+  - id: "s3-c4-006"
+    name: "距离法数据要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "distance_based"]},
+        {"==": [{"var": "input.category"}, "cat4"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.mass_of_goods"}, null]},
+        {">": [{"var": "input.mass_of_goods"}, 0]},
+        {"!=": [{"var": "input.distance"}, null]},
+        {">": [{"var": "input.distance"}, 0]},
+        {"!=": [{"var": "input.transport_mode"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "距离法要求提供货物质量、运输距离和运输模式"
+    citation: "cit-cat4-013"
+
+  - id: "s3-c4-007"
+    name: "支出法数据要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "spend_based"]},
+        {"==": [{"var": "input.category"}, "cat4"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.spend_value"}, null]},
+        {">": [{"var": "input.spend_value"}, 0]},
+        {"!=": [{"var": "input.currency"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "支出法要求提供运输支出金额和货币单位"
+    citation: "cit-cat4-017"
+
+  - id: "s3-c4-008"
+    name: "配送计算方法选择校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat4"]},
+        {"==": [{"var": "input.activity_type"}, "distribution"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"in": [{"var": "calculation_method"}, ["site_specific", "average_data"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "配送排放必须指定计算方法：site_specific或average_data"
+    citation: "cit-cat4-019"
+
+  - id: "s3-c4-009"
+    name: "场地特定法数据要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "site_specific"]},
+        {"==": [{"var": "input.category"}, "cat4"]},
+        {"==": [{"var": "input.activity_type"}, "distribution"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.facility_energy_use"}, null]},
+        {"!=": [{"var": "input.company_goods_volume"}, null]},
+        {"!=": [{"var": "input.total_facility_volume"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "场地特定法要求提供设施能耗、公司货物体积和设施总体积"
+    citation: "cit-cat4-020"
+
+  - id: "s3-c4-010"
+    name: "平均数据法数据要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "average_data"]},
+        {"==": [{"var": "input.category"}, "cat4"]},
+        {"==": [{"var": "input.activity_type"}, "distribution"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.stored_volume"}, null]},
+        {">": [{"var": "input.stored_volume"}, 0]},
+        {"!=": [{"var": "input.days_stored"}, null]},
+        {">": [{"var": "input.days_stored"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "平均数据法要求提供存储体积和存储天数"
+    citation: "cit-cat4-022"
+
+  - id: "s3-c4-011"
+    name: "距离法排放因子单位校验"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "distance_based"]},
+        {"==": [{"var": "input.category"}, "cat4"]}
+      ]
+    assertion:
+      "or": [
+        {"in": [{"var": "input.emission_factor.unit"}, ["kg CO2e/t-km", "kg CO2e/TEU-km"]]},
+        {"!=": [{"var": "input.justifications.s3-c4-011"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "距离法排放因子应使用kg CO2e/t-km或kg CO2e/TEU-km单位"
+    citation: "cit-cat4-014"
+
+  - id: "s3-c4-012"
+    name: "运输分配因子校验"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "fuel_based"]},
+        {"==": [{"var": "input.category"}, "cat4"]},
+        {"==": [{"var": "input.is_exclusive_use"}, false]}
+      ]
+    assertion:
+      {"!=": [{"var": "input.allocation_method"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "非专用车辆运输应指定分配方法（mass-based或volume-based）"
+    citation: "cit-cat4-011"
+
+  # === 后置审计 (post_audit) ===
+
+  - id: "s3-c4-013"
+    name: "上游供应商运输排除校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat4"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "transport_leg"}, "upstream_of_tier1"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "tier 1供应商上游的运输排放应计入Category 1（已包含在cradle-to-gate排放中），不得计入Category 4"
+    citation: "cit-cat4-006"
+
+  - id: "s3-c4-014"
+    name: "自有车辆运输排除校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat4"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "vehicle_ownership"}, "reporting_company"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "报告公司自有或控制的车辆运输排放应计入Scope 1或Scope 2，不得计入Category 4"
+    citation: "cit-cat4-004"
+
+  - id: "s3-c4-015"
+    name: "租赁车辆运输排除校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat4"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "vehicle_ownership"}, "leased_by_reporting_company"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "报告公司租赁并运营的车辆运输排放应计入Category 8（上游租赁资产），不得计入Category 4"
+    citation: "cit-cat4-005"
+
+  - id: "s3-c4-016"
+    name: "下游运输排除校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat4"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "transport_direction"}, "to_end_consumer_not_paid_by_company"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "非报告公司付费的、从报告公司到最终消费者的运输排放应计入Category 9（下游运输），不得计入Category 4"
+    citation: "cit-cat4-007"
+
+  - id: "s3-c4-017"
+    name: "使用生命周期排放因子"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat4"]}
+      ]
+    assertion:
+      "or": [
+        {"==": [{"var": "input.emission_factor.type"}, "life_cycle"]},
+        {"!=": [{"var": "input.justifications.s3-c4-017"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "Scope 3运输排放应使用生命周期排放因子（而非仅燃烧排放因子）"
+    citation: "cit-cat4-023"
+
+  - id: "s3-c4-018"
+    name: "航空辐射强迫校正披露"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.transport_mode"}, "air"]},
+        {"==": [{"var": "input.category"}, "cat4"]},
+        {"==": [{"var": "input.radiative_forcing_applied"}, true]}
+      ]
+    assertion:
+      {"!=": [{"var": "input.radiative_forcing_factor"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "应用航空辐射强迫乘数时，应披露所使用的具体因子"
+    citation: "cit-cat4-024"
+
+  - id: "s3-c4-019"
+    name: "支出法不确定性说明"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "支出法具有较高的不确定性，建议仅用于筛选目的。对于物质性较高的运输排放，应优先使用燃料法或距离法。"
+    on_fail: "raise_warning"
+    on_fail_message: "建议对物质性较高的运输排放使用更精确的计算方法"
+    citation: "cit-cat4-018"
+
+dependencies:
+  - ref: "scope3/category-definitions"
+    relation: "constrained_by"
+  - ref: "scope3/data-quality-hierarchy"
+    relation: "constrained_by"
+
+conflicts_with: []

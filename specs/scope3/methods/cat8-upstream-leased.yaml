@@ -1,0 +1,448 @@
+# ============================================================
+# Scope 3 Category 8: Upstream Leased Assets
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, p. 49
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 8, pp. 94-101
+
+meta:
+  id: "scope3/cat8-upstream-leased"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 8 上游租赁资产排放核算规则（3种计算方法：资产特定法、出租方特定法、平均数据法）"
+
+citations:
+  # Category description
+  - id: "cit-cat8-001"
+    text: "This category includes emissions from the operation of assets that are leased by the reporting company in the reporting year and not already included in the reporting company's scope 1 or scope 2 inventories."
+    page: 94
+    section: "Technical Guidance, Category 8"
+
+  # Lessee applicability
+  - id: "cit-cat8-002"
+    text: "This category is only applicable to companies that operate leased assets (i.e., lessees). For companies that own and lease assets to others (i.e., lessors), see category 13 (Downstream leased assets)."
+    page: 94
+    section: "Technical Guidance, Category 8"
+
+  # Scope 1/2 inclusion
+  - id: "cit-cat8-003"
+    text: "Leased assets may be included in a company's scope 1 or scope 2 inventory depending on the type of lease and the consolidation approach the company uses to define its organizational boundaries."
+    page: 94
+    section: "Technical Guidance, Category 8"
+
+  # Partial year leasing
+  - id: "cit-cat8-004"
+    text: "If the reporting company leases an asset for only part of the reporting year, it should account for emissions for the portion of the year that the asset was leased."
+    page: 94
+    section: "Technical Guidance, Category 8"
+
+  # Lessor emissions
+  - id: "cit-cat8-005"
+    text: "A reporting company's scope 3 emissions from upstream leased assets include the scope 1 and scope 2 emissions of lessors (depending on the lessor's consolidation approach)."
+    page: 94
+    section: "Technical Guidance, Category 8"
+
+  # Calculation methods
+  - id: "cit-cat8-006"
+    text: "Companies may use one of the following methods: Asset-specific method; Lessor-specific method; Average-data method."
+    page: 94
+    section: "Technical Guidance, Category 8"
+
+  # Asset-specific method
+  - id: "cit-cat8-007"
+    text: "The asset-specific method involves collecting asset-specific (e.g., site-specific) fuel and energy use data and process and fugitive emissions data or scope 1 and scope 2 emissions data from individual leased assets."
+    page: 95
+    section: "Technical Guidance, Category 8"
+
+  # Asset-specific formula
+  - id: "cit-cat8-008"
+    text: "Formula 8.1: CO2e = Σ scope 1 and scope 2 emissions of each leased asset. Scope 1 = Σ (fuel consumed × fuel EF) + Σ (refrigerant leakage × refrigerant EF) + process emissions. Scope 2 = Σ (electricity/steam/heating/cooling consumed × EF)."
+    page: 96
+    section: "Technical Guidance, Category 8, Formula 8.1"
+
+  # Building allocation formula
+  - id: "cit-cat8-009"
+    text: "Formula 8.2: Energy use from leased space (kWh) = (company area / (building total area × occupancy rate)) × building total energy use."
+    page: 97
+    section: "Technical Guidance, Category 8, Formula 8.2"
+
+  # Lessor-specific method
+  - id: "cit-cat8-010"
+    text: "The lessor-specific method involves collecting the scope 1 and scope 2 emissions from lessor(s) and allocating emissions to the relevant leased asset(s). Formula 8.3: CO2e = Σ (lessor scope 1 and 2 emissions × (leased asset area / total lessor asset area))."
+    page: 100
+    section: "Technical Guidance, Category 8, Formula 8.3"
+
+  # Average-data method for buildings
+  - id: "cit-cat8-011"
+    text: "Formula 8.4: CO2e = Σ (total floor space of building type × average emission factor for building type (kg CO2e/m2/year))."
+    page: 101
+    section: "Technical Guidance, Category 8, Formula 8.4"
+
+  # Average-data method for other assets
+  - id: "cit-cat8-012"
+    text: "Formula 8.5: CO2e = Σ (number of assets × average emissions per asset type (kg CO2e/asset type/year))."
+    page: 101
+    section: "Technical Guidance, Category 8, Formula 8.5"
+
+  # Activity data - asset-specific
+  - id: "cit-cat8-013"
+    text: "Companies should collect scope 1 and scope 2 emissions data, or activity data on: Asset-specific fuel use and electricity, steam, heating and cooling use; If applicable, activity data related to non-combustion emissions (i.e., industrial process or fugitive emissions)."
+    page: 95
+    section: "Technical Guidance, Category 8"
+
+  # Activity data - lessor-specific
+  - id: "cit-cat8-014"
+    text: "Companies should collect lessors' total scope 1 and scope 2 emissions data, or activity data on: Lessor's total fuel use and electricity use; Lessor's fugitive emissions; Lessor's process emissions."
+    page: 99
+    section: "Technical Guidance, Category 8"
+
+  # Activity data - average-data for buildings
+  - id: "cit-cat8-015"
+    text: "Companies should collect data on: Floor space of each leased building; Number of leased buildings, by building type (e.g., office, retail, warehouse, factory, etc.)."
+    page: 100
+    section: "Technical Guidance, Category 8"
+
+  # Activity data - average-data for other assets
+  - id: "cit-cat8-016"
+    text: "Companies should collect data on: Number and type of leased assets other than buildings that give rise to scope 1 or scope 2 emissions (e.g., company cars, trucks)."
+    page: 100
+    section: "Technical Guidance, Category 8"
+
+  # Emission factor sources
+  - id: "cit-cat8-017"
+    text: "Data sources for emission factors include: Life cycle databases; Company-developed emission factors; Government agencies; Industry associations."
+    page: 96
+    section: "Technical Guidance, Category 8"
+
+  # Decision tree
+  - id: "cit-cat8-018"
+    text: "Decision tree: If asset-specific fuel and energy data or scope 1 and 2 emissions data available → asset-specific method. If lessor can provide scope 1 and 2 emissions data allocated to leased asset → lessor-specific method. Otherwise → average-data method."
+    page: 95
+    section: "Technical Guidance, Category 8, Figure 8.1"
+
+  # Life cycle emissions (optional)
+  - id: "cit-cat8-019"
+    text: "Companies may also calculate the life cycle emissions associated with manufacturing or constructing leased assets."
+    page: 96
+    section: "Technical Guidance, Category 8"
+
+rules:
+  # === Attribution rules ===
+  - id: "s3-c8-001"
+    name: "Category 8 attribution"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.asset_type"}, null]}
+      ]
+    assertion:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.asset_type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 8排放源的category字段必须为cat8"
+    citation: "cit-cat8-001"
+
+  # === Lessee applicability ===
+  - id: "s3-c8-002"
+    name: "Lessee applicability"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.company_role"}, "lessee"]}
+      ]
+    assertion:
+      "==": [{"var": "input.scope3_emission_sources.leased_assets.company_role"}, "lessee"]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 8仅适用于承租方（运营租赁资产的公司），出租方应使用Category 13"
+    citation: "cit-cat8-002"
+
+  # === Scope 1/2 exclusion check ===
+  - id: "s3-c8-003"
+    name: "Scope 1/2 exclusion check"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"==": [{"var": "input.scope3_emission_sources.leased_assets.included_in_scope1_or_scope2"}, true]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.leased_assets.included_in_scope1_or_scope2"}, true]
+    on_fail: "raise_fatal"
+    on_fail_message: "已计入Scope 1或Scope 2的租赁资产不应在Category 8中重复计算"
+    citation: "cit-cat8-003"
+
+  # === Lease period validation ===
+  - id: "s3-c8-004"
+    name: "Lease period validation"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.lease_duration_months"}, 12]}
+      ]
+    assertion:
+      "or": [
+        {"==": [{"var": "input.scope3_emission_sources.leased_assets.lease_duration_months"}, 12]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.lease_start_date"}, null]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "如果租赁期不足全年，应按比例计算排放"
+    citation: "cit-cat8-004"
+
+  # === Calculation method selection ===
+  - id: "s3-c8-005"
+    name: "Calculation method selection"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.calculation_method"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.leased_assets.calculation_method"},
+        ["asset_specific", "lessor_specific", "average_data"]
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "必须指定计算方法：asset_specific、lessor_specific或average_data"
+    citation: "cit-cat8-006"
+
+  # === Asset-specific method requirements ===
+  - id: "s3-c8-006"
+    name: "Asset-specific method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"==": [{"var": "input.scope3_emission_sources.leased_assets.calculation_method"}, "asset_specific"]}
+      ]
+    assertion:
+      "or": [
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.fuel_energy_data"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.scope1_2_emissions"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "资产特定法需要燃料/能源使用数据或scope 1和2排放数据"
+    citation: "cit-cat8-007"
+
+  # === Lessor-specific method requirements ===
+  - id: "s3-c8-007"
+    name: "Lessor-specific method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"==": [{"var": "input.scope3_emission_sources.leased_assets.calculation_method"}, "lessor_specific"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.lessor_scope1_2_emissions"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.allocation_basis"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "出租方特定法需要出租方的scope 1和2排放数据及分配基础"
+    citation: "cit-cat8-010"
+
+  # === Average-data method requirements - buildings ===
+  - id: "s3-c8-008"
+    name: "Average-data method for buildings"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"==": [{"var": "input.scope3_emission_sources.leased_assets.calculation_method"}, "average_data"]},
+        {"==": [{"var": "input.scope3_emission_sources.leased_assets.asset_category"}, "building"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.floor_space"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.building_type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "建筑物平均数据法需要建筑面积和建筑类型数据"
+    citation: "cit-cat8-011"
+
+  # === Average-data method requirements - other assets ===
+  - id: "s3-c8-009"
+    name: "Average-data method for other assets"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"==": [{"var": "input.scope3_emission_sources.leased_assets.calculation_method"}, "average_data"]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.asset_category"}, "building"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.number_of_assets"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.asset_type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "非建筑物平均数据法需要资产数量和资产类型数据"
+    citation: "cit-cat8-012"
+
+  # === Building allocation validation ===
+  - id: "s3-c8-010"
+    name: "Building allocation validation"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"==": [{"var": "input.scope3_emission_sources.leased_assets.asset_category"}, "building"]},
+        {"==": [{"var": "input.scope3_emission_sources.leased_assets.sub_metered"}, false]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.company_area"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.building_total_area"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.building_occupancy_rate"}, null]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "对于未分表的部分租赁建筑，需要公司面积、建筑总面积和入住率进行分配"
+    citation: "cit-cat8-009"
+
+  # === Unit validation - floor space ===
+  - id: "s3-c8-011"
+    name: "Floor space unit validation"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.floor_space"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.leased_assets.floor_space_unit"},
+        ["m2", "ft2"]
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "建筑面积应使用适当单位（平方米或平方英尺）"
+    citation: "cit-cat8-015"
+
+  # === Emission factor quality ===
+  - id: "s3-c8-012"
+    name: "Emission factor source requirement"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"!=": [{"var": "input.scope3_emission_sources.leased_assets.calculation_method"}, "lessor_specific"]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.leased_assets.emission_factor_source"}, null]
+    on_fail: "raise_warning"
+    on_fail_message: "排放因子应来自认可的数据库"
+    citation: "cit-cat8-017"
+
+  # === Lessor emissions inclusion ===
+  - id: "s3-c8-013"
+    name: "Lessor emissions reporting"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "报告出租方的scope 1和scope 2排放。"
+    on_fail: "log_info"
+    on_fail_message: "建议报告出租方的scope 1和scope 2排放"
+    citation: "cit-cat8-005"
+
+  # === Life cycle emissions (optional) ===
+  - id: "s3-c8-014"
+    name: "Life cycle emissions disclosure"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"==": [{"var": "input.scope3_emission_sources.leased_assets.life_cycle_emissions_included"}, true]}
+      ]
+    statement: "如果包含租赁资产制造/建造的生命周期排放，应披露此信息。"
+    on_fail: "log_info"
+    on_fail_message: "如果包含生命周期排放，应披露相关来源"
+    citation: "cit-cat8-019"
+
+  # === Asset type validation ===
+  - id: "s3-c8-015"
+    name: "Asset type validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat8"]},
+        {"==": [{"var": "input.scope3_emission_sources.leased_assets.asset_type"}, null]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.leased_assets.asset_type"}, null]
+    on_fail: "raise_fatal"
+    on_fail_message: "必须指定租赁资产类型（建筑物、车辆、设备等）"
+    citation: "cit-cat8-001"
+
+dependencies:
+  - ref: "scope3/category-definitions"
+    relation: "constrained_by"
+  - ref: "principles/organizational-boundary"
+    relation: "applies_within"
+
+conflicts_with: []

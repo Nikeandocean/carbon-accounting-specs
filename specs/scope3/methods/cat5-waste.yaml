@@ -1,0 +1,453 @@
+# ============================================================
+# Scope 3 Category 5: Waste Generated in Operations
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, p. 46
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 5, pp. 72-80
+
+meta:
+  id: "scope3/cat5-waste"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 5 废弃物处理排放核算规则（3种计算方法：供应商特定法、废弃物类型特定法、平均数据法）"
+
+citations:
+  # Category description
+  - id: "cit-cat5-001"
+    text: "This category includes emissions from third-party disposal and treatment of waste that is generated in the reporting company's owned or controlled operations in the reporting year. This category includes emissions from disposal of both solid waste and wastewater."
+    page: 72
+    section: "Technical Guidance, Category 5"
+
+  - id: "cit-cat5-002"
+    text: "Only waste treatment in facilities owned or operated by third parties is included in scope 3. Waste treatment at facilities owned or controlled by the reporting company is accounted for in scope 1 and scope 2."
+    page: 72
+    section: "Technical Guidance, Category 5"
+
+  - id: "cit-cat5-003"
+    text: "Treatment of waste generated in operations is categorized as an upstream scope 3 category because waste management services are purchased by the reporting company."
+    page: 72
+    section: "Technical Guidance, Category 5"
+
+  # Waste treatment activities
+  - id: "cit-cat5-004"
+    text: "Waste treatment activities may include: Disposal in a landfill; Disposal in a landfill with landfill-gas-to-energy (LFGTE); Recovery for recycling; Incineration; Composting; Waste-to-energy (WTE) or energy-from-waste (EfW); Wastewater treatment."
+    page: 72
+    section: "Technical Guidance, Category 5"
+
+  # Time boundary
+  - id: "cit-cat5-005"
+    text: "This category includes all future emissions that result from waste generated in the reporting year."
+    page: 72
+    section: "Technical Guidance, Category 5"
+
+  # Third-party scope 1 and 2
+  - id: "cit-cat5-006"
+    text: "A reporting company's scope 3 emissions from waste generated in operations include the scope 1 and scope 2 emissions of solid waste and wastewater management companies."
+    page: 72
+    section: "Technical Guidance, Category 5"
+
+  # Calculation methods
+  - id: "cit-cat5-007"
+    text: "Companies may use any one of the following methods: Supplier-specific method; Waste-type-specific method; Average-data method."
+    page: 73
+    section: "Technical Guidance, Category 5"
+
+  # Supplier-specific method
+  - id: "cit-cat5-008"
+    text: "The supplier-specific method involves collecting waste-specific scope 1 and scope 2 emissions data directly from waste treatment companies. Formula 5.1: CO2e = Σ allocated scope 1 and scope 2 emissions of waste treatment company."
+    page: 74
+    section: "Technical Guidance, Category 5, Formula 5.1"
+
+  # Waste-type-specific method
+  - id: "cit-cat5-009"
+    text: "The waste-type-specific method involves using emission factors for specific waste types and waste treatment methods. Formula 5.2: CO2e = Σ (waste produced × waste type and waste treatment specific emission factor)."
+    page: 75
+    section: "Technical Guidance, Category 5, Formula 5.2"
+
+  # Average-data method
+  - id: "cit-cat5-010"
+    text: "The average-data method involves estimating emissions based on total waste going to each disposal method and average emission factors. Formula 5.3: CO2e = Σ (total mass of waste × proportion × emission factor of waste treatment method)."
+    page: 77
+    section: "Technical Guidance, Category 5, Formula 5.3"
+
+  # Recycling accounting
+  - id: "cit-cat5-011"
+    text: "If a company purchases a product or material that contains recycled content, the upstream emissions of the recycling processes are built into the cradle-to-gate emission factor for that product and would be reflected in category 1. A company may recycle some of its operational waste, reported under category 5."
+    page: 78
+    section: "Technical Guidance, Category 5, Table 5.1"
+
+  # Recycled content method
+  - id: "cit-cat5-012"
+    text: "To allocate the emissions from the recycling process between the disposer of the waste and the user of the recycled material, the recommended allocation method is the recycled content method. This method allocates the emissions to the company that uses the recycled material (reported as category 1)."
+    page: 78
+    section: "Technical Guidance, Category 5"
+
+  # Waste-to-energy accounting
+  - id: "cit-cat5-013"
+    text: "A company should account for upstream emissions from purchased energy generated from waste in scope 2. Companies should account for emissions from preparing and transporting waste that will be combusted in a waste-to-energy facility in category 5, but should not account for emissions from the waste-to-energy combustion process itself."
+    page: 80
+    section: "Technical Guidance, Category 5"
+
+  # WTE on-site
+  - id: "cit-cat5-014"
+    text: "If waste from operations is incinerated and used for energy on-site and under operational or financial control, the emissions associated with the incineration are included as scope 1."
+    page: 80
+    section: "Technical Guidance, Category 5"
+
+  # Wastewater
+  - id: "cit-cat5-015"
+    text: "Emissions from wastewater are highly variable depending on how much processing is needed to treat the water (determined by biological oxygen demand [BOD] and/or chemical oxygen demand [COD])."
+    page: 80
+    section: "Technical Guidance, Category 5"
+
+  # Avoided emissions
+  - id: "cit-cat5-016"
+    text: "Claims of negative or avoided emissions associated with recycling should not be included in, or deducted from, the scope 3 inventory, but may instead be reported separately from scope 1, scope 2, and scope 3 emissions."
+    page: 79
+    section: "Technical Guidance, Category 5"
+
+  # Emission factor sources
+  - id: "cit-cat5-017"
+    text: "Data sources for emission factors include: Calculated emission factors using IPCC Guidelines (2006 IPCC Guidelines for National Greenhouse Gas Inventories Volume 5); Life cycle databases; Industry associations."
+    page: 75
+    section: "Technical Guidance, Category 5"
+
+  # GHG types
+  - id: "cit-cat5-018"
+    text: "Depending on the type of waste, the following greenhouse gases may be generated: CO2 (from degradation of both fossil and biogenic carbon contained in waste); CH4 (principally from decomposition of biogenic materials in landfill or WTE technologies); HFCs (from the disposal of refrigeration and air conditioning units)."
+    page: 73
+    section: "Technical Guidance, Category 5"
+
+  # Transportation of waste (optional)
+  - id: "cit-cat5-019"
+    text: "Companies may optionally include emissions from transportation of waste."
+    page: 72
+    section: "Technical Guidance, Category 5"
+
+  # Decision tree
+  - id: "cit-cat5-020"
+    text: "Decision tree: If waste treatment company can provide waste-specific scope 1 and 2 data → supplier-specific method. If reporting company can differentiate waste streams → waste-type-specific method. Otherwise → average-data method."
+    page: 73
+    section: "Technical Guidance, Category 5, Figure 5.2"
+
+rules:
+  # === Attribution rules ===
+  - id: "s3-c5-001"
+    name: "Category 5 attribution"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.source_type"}, null]}
+      ]
+    assertion:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.source_type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 5排放源的category字段必须为cat5"
+    citation: "cit-cat5-001"
+
+  - id: "s3-c5-002"
+    name: "Third-party facility requirement"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.facility_ownership"}, null]}
+      ]
+    assertion:
+      "or": [
+        {"==": [{"var": "input.scope3_emission_sources.waste.facility_ownership"}, "third_party"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.facility_ownership"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "仅第三方设施的废弃物处理计入Category 5，自有设施计入Scope 1/2"
+    citation: "cit-cat5-002"
+
+  # === Waste treatment type validation ===
+  - id: "s3-c5-003"
+    name: "Waste treatment method validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.treatment_method"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.waste.treatment_method"},
+        ["landfill", "landfill_lfgte", "recycling", "incineration", "incineration_with_energy_recovery", "composting", "waste_to_energy", "wastewater_treatment"]
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "废弃物处理方法必须是已识别的处理方式"
+    citation: "cit-cat5-004"
+
+  # === Calculation method selection ===
+  - id: "s3-c5-004"
+    name: "Calculation method selection"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.calculation_method"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.waste.calculation_method"},
+        ["supplier_specific", "waste_type_specific", "average_data"]
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "必须指定计算方法：supplier_specific、waste_type_specific或average_data"
+    citation: "cit-cat5-007"
+
+  # === Supplier-specific method requirements ===
+  - id: "s3-c5-005"
+    name: "Supplier-specific method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.calculation_method"}, "supplier_specific"]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.waste.supplier_allocated_emissions"}, null]
+    on_fail: "raise_fatal"
+    on_fail_message: "供应商特定法需要废弃物处理公司分配的scope 1和scope 2排放数据"
+    citation: "cit-cat5-008"
+
+  # === Waste-type-specific method requirements ===
+  - id: "s3-c5-006"
+    name: "Waste-type-specific method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.calculation_method"}, "waste_type_specific"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.waste.quantity"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.waste_type"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.emission_factor"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "废弃物类型特定法需要废弃物数量、类型和类型特定排放因子"
+    citation: "cit-cat5-009"
+
+  # === Average-data method requirements ===
+  - id: "s3-c5-007"
+    name: "Average-data method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.calculation_method"}, "average_data"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.waste.total_waste_mass"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.treatment_proportion"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.average_emission_factor"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "平均数据法需要废弃物总量、处理方法比例和平均排放因子"
+    citation: "cit-cat5-010"
+
+  # === Unit requirements ===
+  - id: "s3-c5-008"
+    name: "Waste quantity unit validation"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.quantity"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.waste.quantity_unit"},
+        ["tonnes", "cubic_meters"]
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "废弃物数量应使用适当单位（吨或立方米）"
+    citation: "cit-cat5-009"
+
+  # === WTE combustion exclusion ===
+  - id: "s3-c5-009"
+    name: "WTE combustion emissions exclusion"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.treatment_method"}, "waste_to_energy"]}
+      ]
+    assertion:
+      "or": [
+        {"!=": [{"var": "input.scope3_emission_sources.waste.treatment_method"}, "waste_to_energy"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.wte_combustion_excluded"}, true]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "废弃物转能源的燃烧排放不应计入Category 5，应计入Scope 2"
+    citation: "cit-cat5-013"
+
+  # === On-site incineration exclusion ===
+  - id: "s3-c5-010"
+    name: "On-site incineration scope 1 classification"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.treatment_method"}, "incineration"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.facility_ownership"}, "reporting_company"]}
+      ]
+    assertion:
+      "or": [
+        {"!=": [{"var": "input.scope3_emission_sources.waste.treatment_method"}, "incineration"]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.facility_ownership"}, "reporting_company"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "自有设施焚烧废弃物的排放计入Scope 1，不计入Category 5"
+    citation: "cit-cat5-014"
+
+  # === Avoided emissions separation ===
+  - id: "s3-c5-011"
+    name: "Avoided emissions reporting separation"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.treatment_method"}, "recycling"]}
+      ]
+    assertion:
+      "or": [
+        {"!=": [{"var": "input.scope3_emission_sources.waste.treatment_method"}, "recycling"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.avoided_emissions_excluded"}, true]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "回收避免的排放声明必须与Scope 3清单分开报告"
+    citation: "cit-cat5-016"
+
+  # === Emission factor quality ===
+  - id: "s3-c5-012"
+    name: "Emission factor source requirement"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"!=": [{"var": "input.scope3_emission_sources.waste.calculation_method"}, "supplier_specific"]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.waste.emission_factor_source"}, null]
+    on_fail: "raise_warning"
+    on_fail_message: "排放因子应来自认可的数据库（IPCC指南、生命周期数据库、行业协会）"
+    citation: "cit-cat5-017"
+
+  # === Wastewater BOD/COD consideration ===
+  - id: "s3-c5-013"
+    name: "Wastewater BOD/COD consideration"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.treatment_method"}, "wastewater_treatment"]}
+      ]
+    statement: "对于废水处理，应考虑BOD/COD水平以进行准确的排放计算。"
+    on_fail: "log_info"
+    on_fail_message: "建议考虑废水BOD/COD数据以提高计算准确性"
+    citation: "cit-cat5-015"
+
+  # === Time boundary ===
+  - id: "s3-c5-014"
+    name: "Time boundary requirement"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat5"]},
+        {"==": [{"var": "input.scope3_emission_sources.waste.reporting_year"}, null]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.waste.reporting_year"}, null]
+    on_fail: "raise_warning"
+    on_fail_message: "Category 5包括报告年份废弃物产生的所有未来排放"
+    citation: "cit-cat5-005"
+
+  # === Reporting ===
+  - id: "s3-c5-015"
+    name: "Third-party emissions reporting"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "报告固体废弃物和废水管理公司的scope 1和scope 2排放。"
+    on_fail: "log_info"
+    on_fail_message: "建议报告废弃物处理公司的scope 1和scope 2排放"
+    citation: "cit-cat5-006"
+
+dependencies:
+  - ref: "scope3/category-definitions"
+    relation: "constrained_by"
+  - ref: "principles/organizational-boundary"
+    relation: "applies_within"
+
+conflicts_with: []

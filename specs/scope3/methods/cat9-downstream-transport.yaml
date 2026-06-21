@@ -1,0 +1,459 @@
+meta:
+  id: "scope3/cat9-downstream-transport"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 9 下游运输和配送排放核算规则（售出产品从报告公司到最终消费者的运输和配送）"
+
+citations:
+  # Category description and boundary
+  - id: "cit-cat9-001"
+    text: "Category 9 includes emissions that occur in the reporting year from transportation and distribution of sold products in vehicles and facilities not owned or controlled by the reporting company."
+    page: 102
+    section: "Technical Guidance, Category 9"
+
+  - id: "cit-cat9-002"
+    text: "This category also includes emissions from retail and storage. Outbound transportation and distribution services that are purchased by the reporting company are excluded from category 9 and included in category 4 because the reporting company purchases the service."
+    page: 102
+    section: "Technical Guidance, Category 9"
+
+  - id: "cit-cat9-003"
+    text: "Category 9 includes only emissions from transportation and distribution of products after the point of sale."
+    page: 102
+    section: "Technical Guidance, Category 9"
+
+  - id: "cit-cat9-004"
+    text: "Transportation and distribution of products sold by the reporting company in the reporting year between the reporting company's operations and the end consumer (if not paid for by the reporting company), including retail and storage (in vehicles and facilities not owned or controlled by the reporting company)."
+    page: 38
+    section: "Scope 3 Standard, Chapter 5, Table 5.4"
+
+  - id: "cit-cat9-005"
+    text: "The scope 1 and scope 2 emissions of transportation providers, distributors, and retailers that occur during use of vehicles and facilities (e.g., from energy use)."
+    page: 38
+    section: "Scope 3 Standard, Chapter 5, Table 5.4"
+
+  - id: "cit-cat9-006"
+    text: "Optional: The life cycle emissions associated with manufacturing vehicles, facilities, or infrastructure."
+    page: 38
+    section: "Scope 3 Standard, Chapter 5, Table 5.4"
+
+  # Calculation methods
+  - id: "cit-cat9-007"
+    text: "The emissions from downstream transportation should follow the calculation methods described in category 4 (Upstream transportation and distribution). Companies may use either the fuel-based, distance-based or spend-based method."
+    page: 104
+    section: "Technical Guidance, Category 9"
+
+  - id: "cit-cat9-008"
+    text: "The emissions from downstream distribution should follow the calculation methods described in category 4 (Upstream transportation and distribution). Companies may use either the site-specific method or the average-data method."
+    page: 104
+    section: "Technical Guidance, Category 9"
+
+  - id: "cit-cat9-009"
+    text: "Transportation data may be easier to obtain from upstream suppliers than from downstream customers and transportation companies. Therefore, companies may need to use the distance-based method to calculate downstream transportation emissions."
+    page: 104
+    section: "Technical Guidance, Category 9"
+
+  # Data sources
+  - id: "cit-cat9-010"
+    text: "If the actual transportation distances are not known, the reporting company may estimate downstream distances by using a combination of: Government, academic, or industry publications; Online maps and calculators; Published port-to-port travel distances."
+    page: 104
+    section: "Technical Guidance, Category 9"
+
+  - id: "cit-cat9-011"
+    text: "The UK government produces average freight distances for the economy's main categories of goods. This database may be used in the absence of purchaser-specific or region-specific data."
+    page: 104
+    section: "Technical Guidance, Category 9"
+
+  # Customer travel
+  - id: "cit-cat9-012"
+    text: "In this category, companies may include emissions from customers traveling to and from retail stores, which can be significant for companies that own or operate retail facilities."
+    page: 103
+    section: "Technical Guidance, Category 9"
+
+  # Intermediate products
+  - id: "cit-cat9-013"
+    text: "If the reporting company sells an intermediate product, the company should report emissions from transportation and distribution of this intermediate product between the point of sale by the reporting company and either (1) the end consumer (if the eventual end use of the intermediate product is known) or (2) business customers (if the eventual end use of the intermediate product is unknown)."
+    page: 103
+    section: "Technical Guidance, Category 9"
+
+  # Boundary rules from Table 5.7
+  - id: "cit-cat9-014"
+    text: "Transportation and distribution in vehicles and facilities owned or controlled by the reporting company: Scope 1 (for fuel use) or Scope 2 (for electricity use)."
+    page: 47
+    section: "Scope 3 Standard, Chapter 5, Table 5.7"
+
+  - id: "cit-cat9-015"
+    text: "Transportation and distribution services purchased by the reporting company in the reporting year (either directly or through an intermediary), including inbound logistics, outbound logistics (e.g., of sold products): Scope 3, category 4 (Upstream transportation and distribution)."
+    page: 47
+    section: "Scope 3 Standard, Chapter 5, Table 5.7"
+
+  # Example
+  - id: "cit-cat9-016"
+    text: "Example: Company A sells timber to furniture Company B. Company A collects information on the mass of timber sold to Company B and estimates the downstream transport distances. Emissions = mass × distance × emission factor."
+    page: 105
+    section: "Technical Guidance, Category 9, Example 9.1"
+
+# 计算方法定义（与Category 4相同）
+calculation_methods:
+  - id: "fuel_based"
+    name: "Fuel-based method"
+    name_zh: "燃料法"
+    description: "Determining the amount of fuel consumed and applying the appropriate emission factor"
+    formula: "∑ (quantity of fuel consumed × emission factor for the fuel)"
+    note: "Same formulas as Category 4, Formula 4.1"
+
+  - id: "distance_based"
+    name: "Distance-based method"
+    name_zh: "距离法"
+    description: "Determining the mass, distance, and mode of each shipment"
+    formula: "∑ (mass of goods × distance × emission factor of transport mode)"
+    note: "Same formulas as Category 4, Formula 4.6"
+    data_quality: "Lower accuracy than fuel-based due to assumptions about average fuel consumption and loading"
+
+  - id: "spend_based"
+    name: "Spend-based method"
+    name_zh: "支出法"
+    description: "Determining the amount spent on transportation and applying EEIO emission factors"
+    formula: "∑ (amount spent × EEIO emission factor)"
+    note: "Same formulas as Category 4, Formula 4.7"
+    data_quality: "Lowest accuracy, suitable for screening only"
+
+  - id: "site_specific"
+    name: "Site-specific method"
+    name_zh: "场地特定法"
+    description: "Site-specific fuel, electricity, and fugitive emissions data for distribution facilities"
+    formula: "Facility emissions × (company goods volume / total facility volume)"
+    note: "Same formulas as Category 4, Formula 4.8"
+
+  - id: "average_data"
+    name: "Average-data method"
+    name_zh: "平均数据法"
+    description: "Average emission factors for distribution activities"
+    formula: "∑ (volume stored × days stored × emission factor per unit per day)"
+    note: "Same formulas as Category 4, Formula 4.9"
+
+# 关键区别：Category 4 vs Category 9
+boundary_distinction:
+  - rule: "Outbound transport PAID by reporting company → Category 4"
+    explanation: "When the reporting company purchases outbound logistics services, these are upstream purchased services"
+    citation: "cit-cat9-002"
+
+  - rule: "Outbound transport NOT paid by reporting company → Category 9"
+    explanation: "When the reporting company does not pay for transport to end consumer, emissions are downstream"
+    citation: "cit-cat9-004"
+
+  - rule: "Transport AFTER point of sale → Category 9"
+    explanation: "Category 9 only includes emissions from transportation and distribution of products after the point of sale"
+    citation: "cit-cat9-003"
+
+rules:
+  # === 前置约束 (pre_calculation) ===
+
+  - id: "s3-c9-001"
+    name: "Category 9类别归属校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat9"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "category"}, "cat9"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 9排放源的category字段必须为cat9"
+    citation: "cit-cat9-001"
+
+  - id: "s3-c9-002"
+    name: "车辆所有权校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat9"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"!=": [{"var": "vehicle_ownership"}, "reporting_company"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 9仅适用于非报告公司自有或控制的车辆/设施，自有车辆应计入Scope 1或Scope 2"
+    citation: "cit-cat9-014"
+
+  - id: "s3-c9-003"
+    name: "销售后运输校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat9"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "transport_timing"}, "post_sale"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 9仅包括销售点之后的运输和配送，销售前运输应计入Category 4"
+    citation: "cit-cat9-003"
+
+  # === 运行时推导 (runtime_inference) ===
+
+  - id: "s3-c9-004"
+    name: "运输计算方法选择校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat9"]},
+        {"==": [{"var": "input.activity_type"}, "transportation"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"in": [{"var": "calculation_method"}, ["fuel_based", "distance_based", "spend_based"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "下游运输排放必须指定计算方法：fuel_based、distance_based或spend_based"
+    citation: "cit-cat9-007"
+
+  - id: "s3-c9-005"
+    name: "配送计算方法选择校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat9"]},
+        {"==": [{"var": "input.activity_type"}, "distribution"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"in": [{"var": "calculation_method"}, ["site_specific", "average_data"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "下游配送排放必须指定计算方法：site_specific或average_data"
+    citation: "cit-cat9-008"
+
+  - id: "s3-c9-006"
+    name: "距离法数据要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "distance_based"]},
+        {"==": [{"var": "input.category"}, "cat9"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.mass_of_goods"}, null]},
+        {">": [{"var": "input.mass_of_goods"}, 0]},
+        {"!=": [{"var": "input.distance"}, null]},
+        {">": [{"var": "input.distance"}, 0]},
+        {"!=": [{"var": "input.transport_mode"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "距离法要求提供货物质量、运输距离和运输模式"
+    citation: "cit-cat9-007"
+
+  - id: "s3-c9-007"
+    name: "支出法数据要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "spend_based"]},
+        {"==": [{"var": "input.category"}, "cat9"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.spend_value"}, null]},
+        {">": [{"var": "input.spend_value"}, 0]},
+        {"!=": [{"var": "input.currency"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "支出法要求提供运输支出金额和货币单位"
+    citation: "cit-cat9-007"
+
+  - id: "s3-c9-008"
+    name: "建议使用距离法"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "knowledge"
+    lifecycle: "runtime_inference"
+    statement: "下游运输数据通常较难获取，建议使用距离法计算下游运输排放。可使用政府出版物、在线地图或港口间距离数据估算距离。"
+    on_fail: "raise_warning"
+    on_fail_message: "建议对下游运输使用距离法，因数据可获取性通常较低"
+    citation: "cit-cat9-009"
+
+  - id: "s3-c9-009"
+    name: "中间产品运输边界"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.product_type"}, "intermediate"]},
+        {"==": [{"var": "input.category"}, "cat9"]}
+      ]
+    assertion:
+      "or": [
+        {"==": [{"var": "input.boundary_endpoint"}, "end_consumer"]},
+        {"==": [{"var": "input.boundary_endpoint"}, "business_customer"]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "中间产品应在销售点与最终消费者或业务客户之间报告运输排放"
+    citation: "cit-cat9-013"
+
+  # === 后置审计 (post_audit) ===
+
+  - id: "s3-c9-010"
+    name: "公司付费运输排除校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat9"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "paid_by_reporting_company"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "报告公司付费的出站物流应计入Category 4，不得计入Category 9"
+    citation: "cit-cat9-002"
+
+  - id: "s3-c9-011"
+    name: "自有车辆运输排除校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat9"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "vehicle_ownership"}, "reporting_company"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "报告公司自有或控制的车辆运输排放应计入Scope 1或Scope 2，不得计入Category 9"
+    citation: "cit-cat9-014"
+
+  - id: "s3-c9-012"
+    name: "租赁车辆运输排除校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat9"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "vehicle_ownership"}, "leased_by_reporting_company"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "报告公司租赁并运营的车辆运输排放应计入Category 8（上游租赁资产），不得计入Category 9"
+    citation: "cit-cat9-014"
+
+  - id: "s3-c9-013"
+    name: "使用生命周期排放因子"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat9"]}
+      ]
+    assertion:
+      "or": [
+        {"==": [{"var": "input.emission_factor.type"}, "life_cycle"]},
+        {"!=": [{"var": "input.justifications.s3-c9-013"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "Scope 3下游运输排放应使用生命周期排放因子（而非仅燃烧排放因子）"
+    citation: "cit-cat9-005"
+
+  - id: "s3-c9-014"
+    name: "建议记录距离估算方法"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "当实际运输距离未知而使用估算距离时，应记录距离估算方法和数据来源（如政府出版物、在线地图等）。"
+    on_fail: "raise_warning"
+    on_fail_message: "建议记录距离估算方法和数据来源"
+    citation: "cit-cat9-010"
+
+  - id: "s3-c9-015"
+    name: "零售客户出行可选计入"
+    type: "recommendation"
+    priority: "MAY"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "对于拥有或运营零售设施的公司，可选择将客户往返零售门店的出行排放计入Category 9。这对于拥有大量零售网络的公司可能非常显著。"
+    on_fail: "log_info"
+    on_fail_message: "可选择将零售客户出行排放计入Category 9"
+    citation: "cit-cat9-012"
+
+dependencies:
+  - ref: "scope3/category-definitions"
+    relation: "constrained_by"
+  - ref: "scope3/data-quality-hierarchy"
+    relation: "constrained_by"
+  - ref: "scope3/cat4-upstream-transport"
+    relation: "uses_same_methods_as"
+
+conflicts_with: []

@@ -1,0 +1,400 @@
+# ============================================================
+# Scope 3 Category 12: End-of-Life Treatment of Sold Products
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, pp. 46-47
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 12, pp. 125-127
+
+meta:
+  id: "scope3/cat12-end-of-life"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 12 售出产品报废处理排放核算规则（1种计算方法：废弃物类型特定法）"
+
+citations:
+  # Category description
+  - id: "cit-cat12-001"
+    text: "Category 12 includes emissions from the waste disposal and treatment of products sold by the reporting company (in the reporting year) at the end of their life. This category includes the total expected end-of-life emissions from all products sold in the reporting year."
+    page: 125
+    section: "Technical Guidance, Category 12"
+
+  - id: "cit-cat12-002"
+    text: "End-of-life treatment methods (e.g., landfilling, incineration, and recycling) are described in category 5 (Waste generated in operations) and apply to both category 5 and category 12."
+    page: 125
+    section: "Technical Guidance, Category 12"
+
+  # Calculation method
+  - id: "cit-cat12-003"
+    text: "The emissions from downstream end-of-life treatment of sold products should follow the calculation methods in category 5 (Waste generated in operations), with the difference that instead of collecting data on total mass of waste generated in operations, companies should collect data on total mass of sold products (and packaging) from the point of sale by the reporting company through the end of life after use by consumers."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  - id: "cit-cat12-004"
+    text: "The major difference between calculating upstream and downstream emissions of waste treatment is likely to be the availability and quality of waste activity data. Whereas the reporting company is likely have specific waste type and waste treatment data from its own operations, this information is likely to be more difficult to obtain for sold products."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  # Activity data requirements
+  - id: "cit-cat12-005"
+    text: "Companies should collect: Total mass of sold products and packaging from the point of sale by the reporting company to the end-of-life after consumer use (e.g., packaging used to transport products through to the point of retail and any packaging that is disposed of prior to the end-of-life of the final product)."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  - id: "cit-cat12-006"
+    text: "Companies should collect: Proportion of this waste being treated by different methods (e.g., percent landfilled, incinerated, recycled)."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  # Emission factors
+  - id: "cit-cat12-007"
+    text: "Companies should collect: Average waste-treatment specific-emission factors based on all waste treatment types."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  # Data collection guidance
+  - id: "cit-cat12-008"
+    text: "When collecting data on total waste produced, the reporting company should collect data on the waste type(s) and amounts after it sells the products through to the end-of-life disposal by consumers. This data should include any packaging and product waste."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  - id: "cit-cat12-009"
+    text: "For food and drink items, companies should refer to average proportion of food/drinks wasted. In many cases, total waste will be equal to the total products sold in reporting year. However, if the product is actually consumed (e.g., food and drink) the total waste is likely to be lower, and in other cases, such as products combusted to generate energy, could even be zero."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  # Waste treatment data sources
+  - id: "cit-cat12-010"
+    text: "When collecting data on the proportion of waste treated by different methods, companies may refer to: Company's own research and internal data on how its products are treated after consumption."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  - id: "cit-cat12-011"
+    text: "When collecting data on the proportion of waste treated by different methods, companies may refer to: Specific government directives on waste treatment of certain products (e.g., the European Union's 'Waste Electrical and Electronic Equipment Directive')."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  - id: "cit-cat12-012"
+    text: "When collecting data on the proportion of waste treated by different methods, companies may refer to: Industry associations or organizations that have conducted research into consumer disposal patterns of specific products."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  - id: "cit-cat12-013"
+    text: "When collecting data on the proportion of waste treated by different methods, companies may refer to: Average data on waste treatment from the point that the products are sold by the reporting company through to the end of life after consumer use."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  # Intermediate products
+  - id: "cit-cat12-014"
+    text: "For sold intermediate products, companies should account for the emissions from disposing of the intermediate product at the end of its life, not the final product."
+    page: 125
+    section: "Technical Guidance, Category 12"
+
+  - id: "cit-cat12-015"
+    text: "If the reporting company sells intermediate products, it is required to account for emissions from disposing of the sold intermediate products at the end of their life."
+    page: 126
+    section: "Technical Guidance, Category 12"
+
+  # Formula
+  - id: "cit-cat12-016"
+    text: "CO2e emissions from end-of-life treatment of sold products = sum across waste treatment methods: ∑ (total mass of sold products and packaging from point of sale to end of life after consumer use (kg) × % of total waste being treated by waste treatment method × emission factor of waste treatment method (kg CO2e/kg)). Formula 12.1."
+    page: 127
+    section: "Technical Guidance, Category 12, Formula 12.1"
+
+  # Reporting
+  - id: "cit-cat12-017"
+    text: "For category 12 (End-of-life treatment of sold products), companies should report underlying assumptions related to product lifetimes and waste treatment methods."
+    page: 121
+    section: "Scope 3 Standard, Chapter 11"
+
+  - id: "cit-cat12-018"
+    text: "Emissions reported for category 12 should not be interpreted to mean that emissions have already occurred, but rather that the reported emissions are expected to occur as a result of activities that occurred in the reporting year."
+    page: 120
+    section: "Scope 3 Standard, Chapter 11"
+
+  # Calculation resources
+  - id: "cit-cat12-019"
+    text: "Calculation resources include: The European Union publishes data on average end-of-life treatment scenarios of different product groups in EU member countries. The U.S. Environmental Protection Agency also publishes data on waste generation, recycling, and disposal statistics."
+    page: 127
+    section: "Technical Guidance, Category 12"
+
+rules:
+  # === 前置约束 (pre_calculation) ===
+
+  - id: "s3-c12-001"
+    name: "Sold products mass validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.sold_products_total_mass_kg"}, null]},
+        {">": [{"var": "input.sold_products_total_mass_kg"}, 0]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.sold_products_total_mass_kg"}, null]},
+        {">": [{"var": "input.sold_products_total_mass_kg"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Total mass of sold products and packaging must be provided"
+    citation: "cit-cat12-005"
+
+  - id: "s3-c12-002"
+    name: "Waste treatment methods validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.waste_treatment_methods"}, null]},
+        {"!!": [{"var": "input.waste_treatment_methods"}]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.waste_treatment_methods"}, null]},
+        {"!!": [{"var": "input.waste_treatment_methods"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Waste treatment methods with proportions must be provided"
+    citation: "cit-cat12-006"
+
+  - id: "s3-c12-003"
+    name: "Waste treatment percentages sum check"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.waste_treatment_methods"}, null]},
+        {">=": [
+          {"reduce": [
+            {"var": "input.waste_treatment_methods"},
+            {"+": [{"var": "accumulator"}, {"var": "current.percentage"}]},
+            0
+          ]},
+          0.99
+        ]},
+        {"<=": [
+          {"reduce": [
+            {"var": "input.waste_treatment_methods"},
+            {"+": [{"var": "accumulator"}, {"var": "current.percentage"}]},
+            0
+          ]},
+          1.01
+        ]}
+      ]
+    assertion:
+      {">=": [
+        {"reduce": [
+          {"var": "input.waste_treatment_methods"},
+          {"+": [{"var": "accumulator"}, {"var": "current.percentage"}]},
+          0
+        ]},
+        0.99
+      ]}
+    on_fail: "raise_warning"
+    on_fail_message: "Waste treatment method percentages should sum to ~100%"
+    citation: "cit-cat12-006"
+
+  # === 运行时推断 (runtime_inference) ===
+
+  - id: "s3-c12-004"
+    name: "Calculation method selection"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "waste_type_specific"]}
+    assertion:
+      {"==": [{"var": "input.selected_method"}, "waste_type_specific"]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 12 uses waste-type-specific calculation method"
+    citation: "cit-cat12-003"
+
+  - id: "s3-c12-005"
+    name: "Emission factors source validation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"!=": [{"var": "input.emission_factors.source"}, null]}
+    assertion:
+      {"!=": [{"var": "input.emission_factors.source"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Waste-treatment-specific emission factors should be sourced"
+    citation: "cit-cat12-007"
+
+  - id: "s3-c12-006"
+    name: "Food drink waste proportion check"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.product_type"}, "food_drink"]}
+    assertion:
+      {"!=": [{"var": "input.waste_proportion_adjusted"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Food/drink products should reference average proportion of food/drinks wasted"
+    citation: "cit-cat12-009"
+
+  - id: "s3-c12-007"
+    name: "Intermediate product scope check"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.product_type"}, "intermediate"]}
+    assertion:
+      {"==": [{"var": "input.end_of_life_scope"}, "intermediate_product"]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Intermediate products: account for disposal of intermediate product, not final product"
+    citation: "cit-cat12-014"
+
+  # === 后审计 (post_audit) ===
+
+  - id: "s3-c12-008"
+    name: "Total emissions validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Total CO2e emissions must be non-negative"
+    citation: "cit-cat12-016"
+
+  - id: "s3-c12-009"
+    name: "Emissions calculation cross-check"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [
+        {"var": "output.total_emissions_co2e"},
+        {"reduce": [
+          {"var": "input.waste_treatment_methods"},
+          {"+": [
+            {"var": "accumulator"},
+            {"*": [
+              {"var": "input.sold_products_total_mass_kg"},
+              {"var": "current.percentage"},
+              {"var": "current.emission_factor"}
+            ]}
+          ]},
+          0
+        ]}
+      ]}
+    assertion:
+      {"==": [
+        {"var": "output.total_emissions_co2e"},
+        {"reduce": [
+          {"var": "input.waste_treatment_methods"},
+          {"+": [
+            {"var": "accumulator"},
+            {"*": [
+              {"var": "input.sold_products_total_mass_kg"},
+              {"var": "current.percentage"},
+              {"var": "current.emission_factor"}
+            ]}
+          ]},
+          0
+        ]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Total emissions must match sum across all waste treatment methods"
+    citation: "cit-cat12-016"
+
+  - id: "s3-c12-010"
+    name: "End-of-life assumptions documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.end_of_life_assumptions"}, null]}
+    assertion:
+      {"!=": [{"var": "output.end_of_life_assumptions"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "End-of-life assumptions (product lifetimes, waste treatment methods) should be documented"
+    citation: "cit-cat12-017"
+
+  - id: "s3-c12-011"
+    name: "Time boundary documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.time_boundary"}, null]}
+    assertion:
+      {"!=": [{"var": "output.time_boundary"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "Time boundary should be specified (emissions are expected future emissions)"
+    citation: "cit-cat12-018"
+
+  - id: "s3-c12-012"
+    name: "Emission factors documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.emission_factors"}, null]},
+        {"!!": [{"var": "output.emission_factors"}]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.emission_factors"}, null]},
+        {"!!": [{"var": "output.emission_factors"}]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "Emission factors for waste treatment methods should be provided"
+    citation: "cit-cat12-007"
+
+  - id: "s3-c12-013"
+    name: "Calculation methodology documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.calculation_methodology"}, null]}
+    assertion:
+      {"!=": [{"var": "output.calculation_methodology"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "Calculation methodology and assumptions should be documented for reporting"
+    citation: "cit-cat12-017"

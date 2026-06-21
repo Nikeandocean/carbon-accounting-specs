@@ -1,0 +1,435 @@
+meta:
+  id: "scope3/cat1-purchased-goods"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 1 外购商品和服务排放核算规则（4种计算方法：供应商特定法、混合法、平均数据法、支出法）"
+
+citations:
+  - id: "cit-cat1-001"
+    text: "This category includes all upstream (i.e., cradle-to-gate) emissions from the production of products purchased or acquired by the reporting company in the reporting year. Products include both goods (tangible products) and services (intangible products)."
+    page: 20
+    section: "Technical Guidance, Category 1"
+
+  - id: "cit-cat1-002"
+    text: "Category 1 includes emissions from all purchased goods and services not otherwise included in the other categories of upstream scope 3 emissions (i.e., category 2 through category 8)."
+    page: 20
+    section: "Technical Guidance, Category 1"
+
+  - id: "cit-cat1-003"
+    text: "Supplier-specific method: collects product-level cradle-to-gate GHG inventory data from goods or services suppliers."
+    page: 21
+    section: "Technical Guidance, Category 1"
+
+  - id: "cit-cat1-004"
+    text: "Hybrid method: uses a combination of supplier-specific activity data (where available) and secondary data to fill the gaps."
+    page: 21
+    section: "Technical Guidance, Category 1"
+
+  - id: "cit-cat1-005"
+    text: "Average-data method: estimates emissions for goods and services by collecting data on the mass (e.g., kilograms or pounds), or other relevant units of goods or services purchased and multiplying by the relevant secondary (e.g., industry average) emission factors."
+    page: 21
+    section: "Technical Guidance, Category 1"
+
+  - id: "cit-cat1-006"
+    text: "Spend-based method: estimates emissions for goods and services by collecting data on the economic value of goods and services purchased and multiplying it by relevant secondary (e.g., industry average) emission factors."
+    page: 21
+    section: "Technical Guidance, Category 1"
+
+  - id: "cit-cat1-007"
+    text: "CO2e emissions for purchased goods or services = sum across purchased goods or services: ∑ (quantities of good purchased (e.g., kg) × supplier-specific product emission factor of purchased good or service (e.g., kg CO2e/kg))"
+    page: 24
+    section: "Technical Guidance, Category 1, Formula 1.1"
+
+  - id: "cit-cat1-008"
+    text: "Hybrid formula: ∑ scope 1 and scope 2 emissions of tier 1 supplier + ∑ (mass of material inputs × cradle-to-gate EF for material) + ∑ (distance × mass × transport EF) + ∑ (mass of waste × waste EF)"
+    page: 27
+    section: "Technical Guidance, Category 1, Formula 1.2"
+
+  - id: "cit-cat1-009"
+    text: "Average-data formula: ∑ (mass of purchased good or service (kg) × emission factor of purchased good or service per unit of mass (kg CO2e/kg))"
+    page: 32
+    section: "Technical Guidance, Category 1, Formula 1.4"
+
+  - id: "cit-cat1-010"
+    text: "Spend-based formula: ∑ (value of purchased good or service ($) × emission factor of purchased good or service per unit of economic value (kg CO2e/$))"
+    page: 33
+    section: "Technical Guidance, Category 1, Formula 1.5"
+
+  - id: "cit-cat1-011"
+    text: "Emissions from the transportation of purchased products from a tier one (direct) supplier to the reporting company (in vehicles not owned or controlled by the reporting company) are accounted for in category 4."
+    page: 20
+    section: "Technical Guidance, Category 1"
+
+  - id: "cit-cat1-012"
+    text: "Companies may find it useful to differentiate between purchases of production-related products (e.g., materials, components, and parts) and non-production-related products (e.g., office furniture, office supplies, and IT support)."
+    page: 20
+    section: "Technical Guidance, Category 1"
+
+  - id: "cit-cat1-013"
+    text: "When collecting emission factors from suppliers it is recommended that companies also request information relating to the ratio of primary and secondary data used to calculate the emission factor."
+    page: 24
+    section: "Technical Guidance, Category 1"
+
+  - id: "cit-cat1-014"
+    text: "Even though the supplier-specific and hybrid methods are more specific to the individual supplier than the average-data and spend-based methods, they may not produce results that are a more accurate reflection of the product's contribution to the reporting company's scope 3 emissions."
+    page: 22
+    section: "Technical Guidance, Category 1, Box 1.1"
+
+# 计算方法定义
+calculation_methods:
+  - id: "supplier_specific"
+    name: "Supplier-specific method"
+    name_zh: "供应商特定法"
+    specificity: "highest"
+    description: "Collects product-level cradle-to-gate GHG inventory data from goods or services suppliers"
+    activity_data:
+      - "quantities_or_units_of_goods_or_services_purchased"
+    emission_factors:
+      - "supplier_specific_cradle_to_gate_ef"
+    formula: "∑ (quantities_purchased × supplier_specific_product_ef)"
+
+  - id: "hybrid"
+    name: "Hybrid method"
+    name_zh: "混合法"
+    specificity: "high"
+    description: "Uses a combination of supplier-specific activity data (where available) and secondary data to fill the gaps"
+    activity_data:
+      - "allocated_scope1_scope2_data"
+      - "mass_or_volume_of_material_inputs"
+      - "distance_of_transport_to_supplier"
+      - "mass_of_waste_outputs"
+    emission_factors:
+      - "cradle_to_gate_ef_for_materials"
+      - "life_cycle_ef_for_fuel_transport"
+      - "ef_for_waste_outputs"
+    formula: "∑ scope1_scope2_emissions + ∑ (material_inputs × material_ef) + ∑ (distance × mass × transport_ef) + ∑ (waste × waste_ef)"
+
+  - id: "average_data"
+    name: "Average-data method"
+    name_zh: "平均数据法"
+    specificity: "medium"
+    description: "Estimates emissions by collecting data on mass or other relevant units and multiplying by industry average emission factors"
+    activity_data:
+      - "mass_or_units_of_purchased_goods_or_services"
+    emission_factors:
+      - "cradle_to_gate_ef_per_unit_mass_or_product"
+    formula: "∑ (mass_purchased × ef_per_unit_mass)"
+
+  - id: "spend_based"
+    name: "Spend-based method"
+    name_zh: "支出法"
+    specificity: "lowest"
+    description: "Estimates emissions by collecting data on economic value and multiplying by EEIO emission factors"
+    activity_data:
+      - "economic_value_of_purchases_by_product_type"
+    emission_factors:
+      - "eeio_ef_per_economic_value"
+    formula: "∑ (value_purchased × ef_per_economic_value)"
+
+# 方法选择决策树
+method_selection_decision_tree:
+  step1:
+    question: "Can the tier 1 supplier provide product-level cradle-to-gate GHG data of sufficient quality?"
+    yes: "supplier_specific"
+    no: "step2"
+  step2:
+    question: "Can the supplier provide allocated scope 1 and scope 2 data?"
+    yes: "hybrid"
+    no: "step3"
+  step3:
+    question: "Are data available on the physical quantity of the purchased good or service?"
+    yes: "average_data"
+    no: "spend_based"
+
+rules:
+  # === 前置约束 (pre_calculation) ===
+
+  - id: "s3-c1-001"
+    name: "Category 1类别归属校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat1"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "category"}, "cat1"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 1排放源的category字段必须为cat1"
+    citation: "cit-cat1-002"
+
+  - id: "s3-c1-002"
+    name: "采购数量或金额必填"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat1"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {
+          "or": [
+            {"!=": [{"var": "quantity"}, null]},
+            {"!=": [{"var": "spend_value"}, null]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 1排放源必须提供采购数量（quantity）或采购金额（spend_value）"
+    citation: "cit-cat1-001"
+
+  - id: "s3-c1-003"
+    name: "排放因子必填"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat1"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"!=": [{"var": "emission_factor.value"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 1排放源必须提供排放因子"
+    citation: "cit-cat1-003"
+
+  # === 运行时推导 (runtime_inference) ===
+
+  - id: "s3-c1-004"
+    name: "计算方法选择校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat1"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"in": [{"var": "calculation_method"}, ["supplier_specific", "hybrid", "average_data", "spend_based"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 1必须指定计算方法：supplier_specific、hybrid、average_data或spend_based"
+    citation: "cit-cat1-003"
+
+  - id: "s3-c1-005"
+    name: "供应商特定法数据要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "supplier_specific"]},
+        {"==": [{"var": "input.category"}, "cat1"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.quantity"}, null]},
+        {">": [{"var": "input.quantity"}, 0]},
+        {"!=": [{"var": "input.emission_factor.source_type"}, null]},
+        {"==": [{"var": "input.emission_factor.source_type"}, "supplier_specific"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "供应商特定法要求提供采购数量和供应商特定的cradle-to-gate排放因子"
+    citation: "cit-cat1-007"
+
+  - id: "s3-c1-006"
+    name: "混合法数据要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "hybrid"]},
+        {"==": [{"var": "input.category"}, "cat1"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.supplier_scope1_scope2"}, null]},
+        {"!=": [{"var": "input.material_inputs"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "混合法要求提供供应商scope1/2排放数据和材料投入数据"
+    citation: "cit-cat1-008"
+
+  - id: "s3-c1-007"
+    name: "平均数据法数据要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "average_data"]},
+        {"==": [{"var": "input.category"}, "cat1"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.quantity"}, null]},
+        {">": [{"var": "input.quantity"}, 0]},
+        {"!=": [{"var": "input.quantity_unit"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "平均数据法要求提供采购数量和单位（如kg、件）"
+    citation: "cit-cat1-009"
+
+  - id: "s3-c1-008"
+    name: "支出法数据要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.calculation_method"}, "spend_based"]},
+        {"==": [{"var": "input.category"}, "cat1"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.spend_value"}, null]},
+        {">": [{"var": "input.spend_value"}, 0]},
+        {"!=": [{"var": "input.currency"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "支出法要求提供采购金额和货币单位"
+    citation: "cit-cat1-010"
+
+  - id: "s3-c1-009"
+    name: "排放因子来源类型校验"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat1"]}
+      ]
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"in": [{"var": "emission_factor.source_type"}, ["supplier_specific", "process_database", "eeio", "industry_average"]]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "建议明确排放因子来源类型（supplier_specific、process_database、eeio或industry_average）"
+    citation: "cit-cat1-013"
+
+  - id: "s3-c1-010"
+    name: "建议区分生产和非生产采购"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "建议区分生产相关采购（原材料、零部件）和非生产相关采购（办公用品、IT服务），以便更高效地组织数据收集。"
+    on_fail: "raise_warning"
+    on_fail_message: "建议区分生产性和非生产性采购以提高数据收集效率"
+    citation: "cit-cat1-012"
+
+  # === 后置审计 (post_audit) ===
+
+  - id: "s3-c1-011"
+    name: "运输排放归类校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat1"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "includes_transport_to_reporting_company"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "从tier 1供应商到报告公司的运输排放应计入Category 4，不应包含在Category 1中"
+    citation: "cit-cat1-011"
+
+  - id: "s3-c1-012"
+    name: "Category 1排除范围校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat1"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"in": [{"var": "excluded_category"}, ["cat2", "cat3", "cat4", "cat5", "cat6", "cat7", "cat8"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 1不应包含Categories 2-8已覆盖的排放源"
+    citation: "cit-cat1-002"
+
+  - id: "s3-c1-013"
+    name: "供应商特定数据质量标注"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "使用供应商特定数据时，建议记录一次数据与二次数据的比例，以评估数据质量并支持持续改进追踪。"
+    on_fail: "raise_warning"
+    on_fail_message: "建议记录供应商排放因子中一次数据与二次数据的比例"
+    citation: "cit-cat1-013"
+
+  - id: "s3-c1-014"
+    name: "方法组合使用说明"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "公司可对不同类型的采购商品使用不同的计算方法。对于排放贡献最大的采购，应使用更精确的方法（如供应商特定法或混合法）；对于排放贡献较小的采购，可使用平均数据法或支出法。"
+    on_fail: "raise_warning"
+    on_fail_message: "建议对物质性较高的采购使用更精确的计算方法"
+    citation: "cit-cat1-014"
+
+dependencies:
+  - ref: "scope3/category-definitions"
+    relation: "constrained_by"
+  - ref: "principles/organizational-boundary"
+    relation: "applies_within"
+
+conflicts_with: []

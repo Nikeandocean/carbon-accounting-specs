@@ -1,0 +1,421 @@
+# ============================================================
+# Scope 3 Category 10: Processing of Sold Products
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, p. 50
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 10, pp. 106-112
+
+meta:
+  id: "scope3/cat10-processing-sold"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 10 售出产品加工排放核算规则（2种计算方法：现场特定法、平均数据法）"
+
+citations:
+  # Category description
+  - id: "cit-cat10-001"
+    text: "Category 10 includes emissions from processing of sold intermediate products by third parties (e.g., manufacturers) subsequent to sale by the reporting company. Intermediate products are products that require further processing, transformation, or inclusion in another product before use."
+    page: 106
+    section: "Technical Guidance, Category 10"
+
+  # Intermediate products definition
+  - id: "cit-cat10-002"
+    text: "Intermediate products are products that require further processing, transformation, or inclusion in another product before use, and therefore result in emissions from processing subsequent to sale by the reporting company and before use by the end consumer."
+    page: 106
+    section: "Technical Guidance, Category 10"
+
+  # Unknown end use
+  - id: "cit-cat10-003"
+    text: "In certain cases, the eventual end use of sold intermediate products may be unknown. For example, a company that produces an intermediate product with many potential downstream applications, each of which has a different GHG emissions profile, may be unable to reasonably estimate the downstream emissions associated with these various end uses."
+    page: 106
+    section: "Technical Guidance, Category 10"
+
+  # Third-party scope 1 and 2
+  - id: "cit-cat10-004"
+    text: "A reporting company's scope 3 emissions from processing of sold intermediate products include the scope 1 and scope 2 emissions of downstream value chain partners (e.g., manufacturers)."
+    page: 106
+    section: "Technical Guidance, Category 10"
+
+  # Calculation methods
+  - id: "cit-cat10-005"
+    text: "Companies may use either of two methods: Site-specific method; Average-data method."
+    page: 107
+    section: "Technical Guidance, Category 10"
+
+  # Site-specific method
+  - id: "cit-cat10-006"
+    text: "The site-specific method involves determining the amount of fuel and electricity used and the amount of waste generated from processing of sold intermediate products by the third party and applying the appropriate emission factors."
+    page: 107
+    section: "Technical Guidance, Category 10"
+
+  # Site-specific formula
+  - id: "cit-cat10-007"
+    text: "Formula 10.1: CO2e = Σ (fuel consumed × life cycle EF for fuel) + Σ (electricity consumed × life cycle EF for electricity) + Σ (refrigerant leakage × GWP for refrigerant) + process emissions + Σ (waste output × EF for waste)."
+    page: 109
+    section: "Technical Guidance, Category 10, Formula 10.1"
+
+  # Average-data method
+  - id: "cit-cat10-008"
+    text: "The average-data method involves estimating emissions for processing of sold intermediate products based on average secondary data, such as average emissions per process or per product. Formula 10.2: CO2e = Σ (mass of sold intermediate product × emission factor of processing)."
+    page: 112
+    section: "Technical Guidance, Category 10, Formula 10.2"
+
+  # Activity data - site-specific
+  - id: "cit-cat10-009"
+    text: "Companies should first collect data on the types and quantities of intermediate goods sold by the reporting company. Companies should then collect either site-specific GHG emissions data provided by downstream value chain partners or site-specific activity data from downstream processes."
+    page: 108
+    section: "Technical Guidance, Category 10"
+
+  # Activity data details
+  - id: "cit-cat10-010"
+    text: "Activity data includes: Quantities of energy (including electricity and fuels) consumed in process(es); To the extent possible, mass of waste generated in process(es); If applicable, activity data related to non-combustion emissions (i.e., industrial process or fugitive emissions)."
+    page: 108
+    section: "Technical Guidance, Category 10"
+
+  # Emission factors - site-specific
+  - id: "cit-cat10-011"
+    text: "If site-specific activity data is collected, companies should also collect: Emission factors for fuels; Emission factors for electricity; To the extent possible, emission factors for waste outputs; If applicable, emission factors related to non-combustion emissions."
+    page: 108
+    section: "Technical Guidance, Category 10"
+
+  # Activity data - average-data
+  - id: "cit-cat10-012"
+    text: "For each type of sold intermediate product, companies should collect data on: The process(es) involved in transforming or processing sold intermediate products into a usable state final product; Information needed for allocation (e.g., mass, economic value)."
+    page: 111
+    section: "Technical Guidance, Category 10"
+
+  # Emission factors - average-data
+  - id: "cit-cat10-013"
+    text: "Companies should collect: Average emission factors for processing stages required to transform the sold intermediate product into a final product, expressed in units of emissions per unit of product (e.g., kg CO2/kg of final product)."
+    page: 111
+    section: "Technical Guidance, Category 10"
+
+  # Allocation guidance
+  - id: "cit-cat10-014"
+    text: "If downstream processes involve intermediate goods and/or material inputs other than those sold by the reporting company, emissions should be allocated between intermediate product(s) sold by the reporting company and other intermediate products/material inputs."
+    page: 107
+    section: "Technical Guidance, Category 10"
+
+  # Decision tree
+  - id: "cit-cat10-015"
+    text: "Decision tree: If customers can provide energy or GHG data related to processing of sold intermediate products → site-specific method. Otherwise → average-data method."
+    page: 107
+    section: "Technical Guidance, Category 10, Figure 10.1"
+
+  # Emission factor sources
+  - id: "cit-cat10-016"
+    text: "Data sources for emission factors include: Life cycle databases; The GHG Protocol website; Companies or manufacturers; Industry associations."
+    page: 108
+    section: "Technical Guidance, Category 10"
+
+rules:
+  # === Attribution rules ===
+  - id: "s3-c10-001"
+    name: "Category 10 attribution"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"!=": [{"var": "input.scope3_emission_sources.processing_sold.product_type"}, null]}
+      ]
+    assertion:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"!=": [{"var": "input.scope3_emission_sources.processing_sold.product_type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 10排放源的category字段必须为cat10"
+    citation: "cit-cat10-001"
+
+  # === Intermediate product validation ===
+  - id: "s3-c10-002"
+    name: "Intermediate product requirement"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"==": [{"var": "input.scope3_emission_sources.processing_sold.is_intermediate"}, false]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.processing_sold.is_intermediate"}, false]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 10仅适用于中间产品，最终产品应使用Category 11"
+    citation: "cit-cat10-002"
+
+  # === Third-party processing ===
+  - id: "s3-c10-003"
+    name: "Third-party processing requirement"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"==": [{"var": "input.scope3_emission_sources.processing_sold.processed_by"}, "reporting_company"]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.processing_sold.processed_by"}, "reporting_company"]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 10仅适用于第三方加工，报告公司自身的加工排放计入Scope 1/2"
+    citation: "cit-cat10-001"
+
+  # === Calculation method selection ===
+  - id: "s3-c10-004"
+    name: "Calculation method selection"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"!=": [{"var": "input.scope3_emission_sources.processing_sold.calculation_method"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.processing_sold.calculation_method"},
+        ["site_specific", "average_data"]
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "必须指定计算方法：site_specific或average_data"
+    citation: "cit-cat10-005"
+
+  # === Site-specific method requirements ===
+  - id: "s3-c10-005"
+    name: "Site-specific method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"==": [{"var": "input.scope3_emission_sources.processing_sold.calculation_method"}, "site_specific"]}
+      ]
+    assertion:
+      "or": [
+        {"!=": [{"var": "input.scope3_emission_sources.processing_sold.customer_emissions_data"}, null]},
+        {"and": [
+          {"!=": [{"var": "input.scope3_emission_sources.processing_sold.fuel_consumption"}, null]},
+          {"!=": [{"var": "input.scope3_emission_sources.processing_sold.electricity_consumption"}, null]}
+        ]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "现场特定法需要客户提供能源消耗或GHG排放数据"
+    citation: "cit-cat10-006"
+
+  # === Average-data method requirements ===
+  - id: "s3-c10-006"
+    name: "Average-data method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"==": [{"var": "input.scope3_emission_sources.processing_sold.calculation_method"}, "average_data"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.processing_sold.product_mass"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.processing_sold.processing_emission_factor"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "平均数据法需要产品质量和加工排放因子"
+    citation: "cit-cat10-008"
+
+  # === Mass unit validation ===
+  - id: "s3-c10-007"
+    name: "Mass unit validation"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"!=": [{"var": "input.scope3_emission_sources.processing_sold.product_mass"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.processing_sold.product_mass_unit"},
+        ["kg", "tonnes"]
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "产品质量应使用适当单位（kg或吨）"
+    citation: "cit-cat10-012"
+
+  # === Allocation guidance ===
+  - id: "s3-c10-008"
+    name: "Allocation requirement"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"==": [{"var": "input.scope3_emission_sources.processing_sold.multiple_inputs"}, true]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.processing_sold.allocation_method"}, null]
+    on_fail: "raise_warning"
+    on_fail_message: "当下游加工涉及多种投入时，应使用分配方法将排放分配到中间产品"
+    citation: "cit-cat10-014"
+
+  # === Unknown end use handling ===
+  - id: "s3-c10-009"
+    name: "Unknown end use documentation"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"==": [{"var": "input.scope3_emission_sources.processing_sold.end_use_unknown"}, true]}
+      ]
+    statement: "当中间产品的最终用途未知时，应记录此限制并说明如何处理多种潜在应用。"
+    on_fail: "log_info"
+    on_fail_message: "当中间产品最终用途未知时，应记录相关假设和限制"
+    citation: "cit-cat10-003"
+
+  # === Emission factor quality ===
+  - id: "s3-c10-010"
+    name: "Emission factor source requirement"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"==": [{"var": "input.scope3_emission_sources.processing_sold.calculation_method"}, "average_data"]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.processing_sold.emission_factor_source"}, null]
+    on_fail: "raise_warning"
+    on_fail_message: "排放因子应来自认可的数据库"
+    citation: "cit-cat10-016"
+
+  # === Life cycle emission factors ===
+  - id: "s3-c10-011"
+    name: "Life cycle emission factors requirement"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"==": [{"var": "input.scope3_emission_sources.processing_sold.calculation_method"}, "site_specific"]}
+      ]
+    assertion:
+      "or": [
+        {"!=": [{"var": "input.scope3_emission_sources.processing_sold.customer_emissions_data"}, null]},
+        {"and": [
+          {"!=": [{"var": "input.scope3_emission_sources.processing_sold.fuel_emission_factor_type"}, null]},
+          {"==": [{"var": "input.scope3_emission_sources.processing_sold.fuel_emission_factor_type"}, "life_cycle"]}
+        ]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "燃料和电力排放因子应为生命周期排放因子（不仅燃烧）"
+    citation: "cit-cat10-011"
+
+  # === Third-party emissions inclusion ===
+  - id: "s3-c10-012"
+    name: "Third-party emissions reporting"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "报告下游价值链合作伙伴（如制造商）的scope 1和scope 2排放。"
+    on_fail: "log_info"
+    on_fail_message: "建议报告下游合作伙伴的scope 1和scope 2排放"
+    citation: "cit-cat10-004"
+
+  # === All processing steps ===
+  - id: "s3-c10-013"
+    name: "Complete processing steps"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"==": [{"var": "input.scope3_emission_sources.processing_sold.calculation_method"}, "site_specific"]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.processing_sold.all_processing_steps_included"}, null]
+    on_fail: "raise_warning"
+    on_fail_message: "应核算到最终成品生产的所有加工步骤"
+    citation: "cit-cat10-006"
+
+  # === Waste output consideration ===
+  - id: "s3-c10-014"
+    name: "Waste output consideration"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"==": [{"var": "input.scope3_emission_sources.processing_sold.calculation_method"}, "site_specific"]}
+      ]
+    statement: "在可能的情况下，应收集加工过程中产生的废弃物数据及其排放因子。"
+    on_fail: "log_info"
+    on_fail_message: "建议收集废弃物排放数据以提高计算完整性"
+    citation: "cit-cat10-010"
+
+  # === Refrigerant emissions ===
+  - id: "s3-c10-015"
+    name: "Refrigerant emissions consideration"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat10"]},
+        {"==": [{"var": "input.scope3_emission_sources.processing_sold.calculation_method"}, "site_specific"]}
+      ]
+    statement: "如果加工过程中使用制冷剂，应收集制冷剂泄漏数据及其GWP值。"
+    on_fail: "log_info"
+    on_fail_message: "建议收集制冷剂排放数据"
+    citation: "cit-cat10-007"
+
+dependencies:
+  - ref: "scope3/category-definitions"
+    relation: "constrained_by"
+  - ref: "principles/organizational-boundary"
+    relation: "applies_within"
+
+conflicts_with: []

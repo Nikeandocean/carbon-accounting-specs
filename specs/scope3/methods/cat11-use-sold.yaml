@@ -1,0 +1,446 @@
+# ============================================================
+# Scope 3 Category 11: Use of Sold Products
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, pp. 50-51
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 11, pp. 113-124
+
+meta:
+  id: "scope3/cat11-use-sold"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 11 售出产品使用排放核算规则（5种计算方法：直接能源消耗、燃料/原料、温室气体、间接能源消耗、中间产品）"
+
+citations:
+  # Category description
+  - id: "cit-cat11-001"
+    text: "This category includes emissions from the use of goods and services sold by the reporting company in the reporting year. A reporting company's scope 3 emissions from use of sold products include the scope 1 and scope 2 emissions of end users."
+    page: 113
+    section: "Technical Guidance, Category 11"
+
+  # End users definition
+  - id: "cit-cat11-002"
+    text: "End users include both consumers and business customers that use final products."
+    page: 113
+    section: "Technical Guidance, Category 11"
+
+  # Direct vs indirect emissions
+  - id: "cit-cat11-003"
+    text: "The Scope 3 Standard divides emissions from the use of sold products into two types: Direct use-phase emissions; Indirect use-phase emissions. In category 11, companies are required to include direct use-phase emissions of sold products. Companies may also account for indirect use-phase emissions of sold products, and should do so when indirect use-phase emissions are expected to be significant."
+    page: 113
+    section: "Technical Guidance, Category 11"
+
+  # Time boundary
+  - id: "cit-cat11-004"
+    text: "Category 11 includes the total expected lifetime emissions from all relevant products sold in the reporting year across the company's product portfolio."
+    page: 113
+    section: "Technical Guidance, Category 11"
+
+  # Direct use-phase product types
+  - id: "cit-cat11-005"
+    text: "Direct use-phase emissions: Products that directly consume energy (fuels or electricity) during use (e.g., automobiles, aircraft, engines, motors, appliances, electronics); Fuels and feedstocks (e.g., petroleum products, natural gas, coal, biofuels); Greenhouse gases and products that contain or form GHGs during use (e.g., refrigeration equipment, industrial gases)."
+    page: 114
+    section: "Technical Guidance, Category 11, Table 11.1"
+
+  # Indirect use-phase product types
+  - id: "cit-cat11-006"
+    text: "Indirect use-phase emissions: Products that indirectly consume energy during use (e.g., apparel requiring washing/drying, food requiring cooking/refrigeration, soaps/detergents requiring heated water)."
+    page: 114
+    section: "Technical Guidance, Category 11, Table 11.1"
+
+  # Formula 11.1 - Direct energy consumption
+  - id: "cit-cat11-007"
+    text: "Formula 11.1: CO2e = Σ (total lifetime uses × number sold × fuel per use × fuel EF) + Σ (total lifetime uses × number sold × electricity per use × electricity EF) + Σ (total lifetime uses × number sold × refrigerant leakage per use × GWP)."
+    page: 117
+    section: "Technical Guidance, Category 11, Formula 11.1"
+
+  # Formula 11.2 - Fuels and feedstocks
+  - id: "cit-cat11-008"
+    text: "Formula 11.2: CO2e = Σ (total quantity of fuel/feedstock sold × combustion emission factor for fuel/feedstock). Only the combustion emissions should be reported, not the upstream emissions."
+    page: 119
+    section: "Technical Guidance, Category 11, Formula 11.2"
+
+  # Formula 11.3 - GHG containing products
+  - id: "cit-cat11-009"
+    text: "Formula 11.3: CO2e = Σ (GHG contained per product × total number sold × % released during lifetime × GWP of GHG). If the % released is unknown, 100% should be assumed."
+    page: 120
+    section: "Technical Guidance, Category 11, Formula 11.3"
+
+  # Formula 11.4 - Indirect use-phase
+  - id: "cit-cat11-010"
+    text: "Formula 11.4: CO2e = Σ (total lifetime uses × % using scenario × number sold × fuel per use in scenario × fuel EF) + Σ (total lifetime uses × % using scenario × number sold × electricity per use in scenario × electricity EF) + Σ (refrigerant leakage scenarios) + Σ (GHG emitted indirectly scenarios)."
+    page: 121
+    section: "Technical Guidance, Category 11, Formula 11.4"
+
+  # Formula 11.5 - Intermediate products
+  - id: "cit-cat11-011"
+    text: "Formula 11.5: CO2e = Σ (total intermediate products sold × total lifetime uses of final product × emissions per use of intermediate product)."
+    page: 123
+    section: "Technical Guidance, Category 11, Formula 11.5"
+
+  # Regional consideration
+  - id: "cit-cat11-012"
+    text: "It is important to consider the region where products are used, especially if the product consumes electricity because electricity grid emission factors can vary significantly."
+    page: 116
+    section: "Technical Guidance, Category 11"
+
+  # Product lifetime
+  - id: "cit-cat11-013"
+    text: "Because the scope 3 inventory accounts for total lifetime emissions of sold products, companies that produce more durable products with longer lifetimes could appear to be penalized because, as product lifetimes increase, scope 3 emissions increase. Companies should also report relevant information such as product lifetimes and emissions intensity metrics."
+    page: 115
+    section: "Technical Guidance, Category 11, Box 11.2"
+
+  # Avoided emissions
+  - id: "cit-cat11-014"
+    text: "Any claims of avoided emissions related to a company's sold products must be reported separately from the company's scope 1, scope 2, and scope 3 inventories."
+    page: 114
+    section: "Technical Guidance, Category 11"
+
+  # Maintenance (optional)
+  - id: "cit-cat11-015"
+    text: "Companies may optionally include emissions associated with maintenance of sold products during use."
+    page: 113
+    section: "Technical Guidance, Category 11"
+
+  # Unknown end use for intermediate products
+  - id: "cit-cat11-016"
+    text: "In certain cases, the eventual end use of sold intermediate products may be unknown. In such a case, companies may disclose and justify the exclusion of all downstream emissions related to sold intermediate products."
+    page: 123
+    section: "Technical Guidance, Category 11"
+
+  # Decision tree
+  - id: "cit-cat11-017"
+    text: "Companies should first determine in which categories their products belong: Products that directly consume energy; Fuels and feedstocks; GHG-containing products; Products that indirectly consume energy."
+    page: 115
+    section: "Technical Guidance, Category 11"
+
+  # Emission factor sources
+  - id: "cit-cat11-018"
+    text: "Data sources for emission factors include: The GHG Protocol website; Life cycle databases; Company or supplier developed emission factors; Industry associations."
+    page: 116
+    section: "Technical Guidance, Category 11"
+
+rules:
+  # === Attribution rules ===
+  - id: "s3-c11-001"
+    name: "Category 11 attribution"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.product_type"}, null]}
+      ]
+    assertion:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.product_type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 11排放源的category字段必须为cat11"
+    citation: "cit-cat11-001"
+
+  # === Final product requirement ===
+  - id: "s3-c11-002"
+    name: "Final product requirement"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.is_final_product"}, false]}
+      ]
+    assertion:
+      "or": [
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.is_final_product"}, false]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.intermediate_product_handled"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 11主要适用于最终产品，中间产品应使用Category 10或按Category 11中间产品规则处理"
+    citation: "cit-cat11-002"
+
+  # === Product category classification ===
+  - id: "s3-c11-003"
+    name: "Product category classification"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.product_category"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.use_sold.product_category"},
+        ["direct_energy_consumption", "fuels_feedstocks", "ghg_containing", "indirect_energy_consumption"]
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "产品类别必须是：direct_energy_consumption、fuels_feedstocks、ghg_containing或indirect_energy_consumption"
+    citation: "cit-cat11-005"
+
+  # === Direct energy consumption requirements ===
+  - id: "s3-c11-004"
+    name: "Direct energy consumption data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.product_category"}, "direct_energy_consumption"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.lifetime_uses"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.quantity_sold"}, null]},
+        {"or": [
+          {"!=": [{"var": "input.scope3_emission_sources.use_sold.fuel_per_use"}, null]},
+          {"!=": [{"var": "input.scope3_emission_sources.use_sold.electricity_per_use"}, null]},
+          {"!=": [{"var": "input.scope3_emission_sources.use_sold.refrigerant_leakage_per_use"}, null]}
+        ]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "直接能源消耗产品需要生命周期使用次数、销售量和每次使用的能源消耗数据"
+    citation: "cit-cat11-007"
+
+  # === Fuels/feedstocks requirements ===
+  - id: "s3-c11-005"
+    name: "Fuels and feedstocks data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.product_category"}, "fuels_feedstocks"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.quantity_sold"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.combustion_emission_factor"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "燃料/原料产品需要销售量和燃烧排放因子"
+    citation: "cit-cat11-008"
+
+  # === GHG containing products requirements ===
+  - id: "s3-c11-006"
+    name: "GHG containing products data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.product_category"}, "ghg_containing"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.quantity_sold"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.ghg_contained_per_product"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.gwp_of_ghg"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "含GHG产品需要销售量、每产品GHG含量和GWP值"
+    citation: "cit-cat11-009"
+
+  # === Indirect energy consumption requirements ===
+  - id: "s3-c11-007"
+    name: "Indirect energy consumption data requirements"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.product_category"}, "indirect_energy_consumption"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.lifetime_uses"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.quantity_sold"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.use_scenarios"}, null]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "间接能源消耗产品需要生命周期使用次数、销售量和使用场景数据"
+    citation: "cit-cat11-010"
+
+  # === Intermediate product handling ===
+  - id: "s3-c11-008"
+    name: "Intermediate product use-phase requirements"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.is_final_product"}, false]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.quantity_sold"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.final_product_type"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.use_sold.lifetime_uses_final_product"}, null]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "中间产品需要销售量、最终产品类型和最终产品生命周期使用数据"
+    citation: "cit-cat11-011"
+
+  # === Regional consideration ===
+  - id: "s3-c11-009"
+    name: "Regional emission factor consideration"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"or": [
+          {"==": [{"var": "input.scope3_emission_sources.use_sold.product_category"}, "direct_energy_consumption"]},
+          {"==": [{"var": "input.scope3_emission_sources.use_sold.product_category"}, "indirect_energy_consumption"]}
+        ]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.use_sold.regional_consideration"}, null]
+    on_fail: "raise_warning"
+    on_fail_message: "应考虑产品使用地区的电力排放因子差异"
+    citation: "cit-cat11-012"
+
+  # === Product lifetime reporting ===
+  - id: "s3-c11-010"
+    name: "Product lifetime reporting"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "报告产品生命周期和排放强度指标（如年度排放/产品、能效/产品、排放/功能单位等）以提供透明度。"
+    on_fail: "log_info"
+    on_fail_message: "建议报告产品生命周期和排放强度指标"
+    citation: "cit-cat11-013"
+
+  # === Avoided emissions separation ===
+  - id: "s3-c11-011"
+    name: "Avoided emissions separation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.avoided_emissions_claimed"}, true]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.use_sold.avoided_emissions_in_inventory"}, true]
+    on_fail: "raise_warning"
+    on_fail_message: "避免的排放声明必须与Scope 1、2、3清单分开报告"
+    citation: "cit-cat11-014"
+
+  # === Maintenance emissions (optional) ===
+  - id: "s3-c11-012"
+    name: "Maintenance emissions disclosure"
+    type: "recommendation"
+    priority: "MAY"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.maintenance_emissions_included"}, true]}
+      ]
+    statement: "如果包含产品维护排放，应披露相关方法和假设。"
+    on_fail: "log_info"
+    on_fail_message: "如果包含维护排放，应披露相关信息"
+    citation: "cit-cat11-015"
+
+  # === Unknown end use for intermediate products ===
+  - id: "s3-c11-013"
+    name: "Unknown end use documentation"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.is_final_product"}, false]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.end_use_unknown"}, true]}
+      ]
+    statement: "当中间产品的最终用途未知时，应披露并证明排除所有下游排放的合理性。"
+    on_fail: "log_info"
+    on_fail_message: "当中间产品最终用途未知时，应披露并证明排除的合理性"
+    citation: "cit-cat11-016"
+
+  # === Emission factor quality ===
+  - id: "s3-c11-014"
+    name: "Emission factor source requirement"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "input.category"}, "cat11"]}
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.use_sold.emission_factor_source"}, null]
+    on_fail: "raise_warning"
+    on_fail_message: "排放因子应来自认可的数据库"
+    citation: "cit-cat11-018"
+
+  # === Life cycle emission factors ===
+  - id: "s3-c11-015"
+    name: "Life cycle emission factors for energy"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat11"]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.product_category"}, "direct_energy_consumption"]}
+      ]
+    assertion:
+      "or": [
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.emission_factor_type"}, "life_cycle"]},
+        {"==": [{"var": "input.scope3_emission_sources.use_sold.emission_factor_type"}, "combustion"]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "能源排放因子应为生命周期排放因子（不仅是燃烧）"
+    citation: "cit-cat11-007"
+
+dependencies:
+  - ref: "scope3/category-definitions"
+    relation: "constrained_by"
+  - ref: "principles/organizational-boundary"
+    relation: "applies_within"
+
+conflicts_with: []

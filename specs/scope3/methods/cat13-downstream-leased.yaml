@@ -1,0 +1,343 @@
+# ============================================================
+# Scope 3 Category 13: Downstream Leased Assets
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, p. 52
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 13, pp. 128-129
+
+meta:
+  id: "scope3/cat13-downstream-leased"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 13 下游租赁资产排放核算规则（1种计算方法：资产特定法）"
+
+citations:
+  # Category description
+  - id: "cit-cat13-001"
+    text: "Category 13 (Downstream leased assets) includes emissions from the operation of assets that are owned by the reporting company (acting as lessor) and leased to other entities in the reporting year that are not already included in scope 1 or scope 2. This category is applicable to lessors (i.e., companies that receive payments from lessees)."
+    page: 52
+    section: "Scope 3 Standard, Chapter 5"
+
+  - id: "cit-cat13-002"
+    text: "This category includes emissions from the operation of assets that are owned by the reporting company (acting as lessor) and leased to other entities in the reporting year that are not already included in scope 1 or scope 2. This category is applicable to lessors (i.e., companies that receive payments from lessees). Companies that operate leased assets (i.e., lessees) should refer to category 8 (Upstream leased assets)."
+    page: 128
+    section: "Technical Guidance, Category 13"
+
+  # Boundary guidance
+  - id: "cit-cat13-003"
+    text: "Leased assets may be included in a company's scope 1 or scope 2 inventory depending on the type of lease and the consolidation approach the company uses to define its organizational boundaries."
+    page: 52
+    section: "Scope 3 Standard, Chapter 5"
+
+  - id: "cit-cat13-004"
+    text: "If the reporting company leases an asset for only part of the reporting year, the reporting company should account for emissions from the portion of the year that the asset was leased."
+    page: 52
+    section: "Scope 3 Standard, Chapter 5"
+
+  - id: "cit-cat13-005"
+    text: "A reporting company's scope 3 emissions from downstream leased assets include the scope 1 and scope 2 emissions of lessees (depending on the lessee's consolidation approach)."
+    page: 52
+    section: "Scope 3 Standard, Chapter 5"
+
+  # Category 11 vs 13 guidance
+  - id: "cit-cat13-006"
+    text: "In some cases, companies may not find value in distinguishing between products sold to customers (accounted for in category 11) and products leased to customers (accounted for in category 13). Companies may account for products leased to customers the same way the company accounts for products sold to customers (i.e., by accounting for the total expected lifetime emissions from all relevant products leased to other entities in the reporting year)."
+    page: 52
+    section: "Scope 3 Standard, Chapter 5"
+
+  - id: "cit-cat13-007"
+    text: "Companies should report emissions from leased products in category 11 (Use of sold products), rather than category 13 (Downstream leased assets) and avoid double counting between categories."
+    page: 52
+    section: "Scope 3 Standard, Chapter 5"
+
+  # Calculation method
+  - id: "cit-cat13-008"
+    text: "Downstream leased assets differ from upstream leased assets in that the leased assets are owned by the reporting company. The availability and access to information depends on the type of asset leased. For example, a company that leases vehicles may need to request fuel or mileage data from lessees in order to calculate emissions."
+    page: 129
+    section: "Technical Guidance, Category 13"
+
+  - id: "cit-cat13-009"
+    text: "The calculation methods for upstream and downstream leased assets do not differ. For guidance on calculating emissions from category 13 (Downstream leased assets), refer to the guidance for category 8 (Upstream leased assets)."
+    page: 129
+    section: "Technical Guidance, Category 13"
+
+  # Asset-specific method
+  - id: "cit-cat13-010"
+    text: "Asset-specific method: calculate the scope 1 and scope 2 emissions associated with each leased asset. Scope 1 emissions of leased asset = ∑ (quantity of fuel consumed × emission factor for fuel source) + ∑ (quantity of refrigerant leakage × emission factor for refrigerant) + process emissions. Scope 2 emissions of leased asset = ∑ (quantity of electricity, steam, heating, cooling consumed × emission factor for electricity, steam, heating, cooling)."
+    page: 179
+    section: "Technical Guidance, Appendix D"
+
+  - id: "cit-cat13-011"
+    text: "Then sum across leased assets: ∑ scope 1 and scope 2 emissions of each leased asset. Formula 13.1."
+    page: 179
+    section: "Technical Guidance, Appendix D, Formula 13.1"
+
+  # Allocation for non-sub-metered buildings
+  - id: "cit-cat13-012"
+    text: "Companies requesting scope 1 and scope 2 data from lessees using the asset-specific method in category 8 (Upstream leased assets) may need to request additional information from the lessee in order to properly allocate emissions to the reporting company's leased assets. The lessee's scope 1 and scope 2 emissions data maybe aggregated, as with buildings without sub-metering."
+    page: 129
+    section: "Technical Guidance, Category 13"
+
+  - id: "cit-cat13-013"
+    text: "For leased building spaces not sub-metered by the tenant: energy use from leased space (kWh) = (reporting company's area (m2) / building's total area (m2) × building's occupancy rate) × building's total energy use (kWh). Formula 13.2."
+    page: 179
+    section: "Technical Guidance, Appendix D, Formula 13.2"
+
+  # Activity data
+  - id: "cit-cat13-014"
+    text: "Activity data needed: Asset-specific fuel use; electricity, steam, heating and cooling use; process emissions; and fugitive emissions (e.g., refrigerant leakage), or asset-specific scope 1 and scope 2 emissions data."
+    page: 179
+    section: "Technical Guidance, Appendix D"
+
+  # Emission factors
+  - id: "cit-cat13-015"
+    text: "Emission factors needed: Site or regionally specific emission factors for energy sources (e.g., electricity and fuels) per unit of consumption (e.g., kg CO2e/kWh for electricity, kg CO2e/liter for diesel), and emission factors of fugitive and process emissions."
+    page: 179
+    section: "Technical Guidance, Appendix D"
+
+  # Partial year accounting
+  - id: "cit-cat13-016"
+    text: "If the reporting company leases an asset for only part of the reporting year, the reporting company should account for emissions from the portion of the year that the asset was leased."
+    page: 128
+    section: "Technical Guidance, Category 13"
+
+  # Example
+  - id: "cit-cat13-017"
+    text: "Example: Company C (lessor) leases out a factory to Company D. Company D knows its aggregated corporate scope 1 and scope 2 emissions of both factory 1 and a separate unit it operates, Factory 2. For company C to determine emissions associated with factory 1, it must allocate total emissions from both factories. It chooses to allocate based on physical allocation (i.e., floor space). The emissions of company C's (lessor) downstream leased asset is calculated as: ∑ scope 1 and scope 2 emissions of lessee × (physical area of the leased asset / total physical area of lessor assets)."
+    page: 129
+    section: "Technical Guidance, Category 13, Example 13.1"
+
+  # Reporting
+  - id: "cit-cat13-018"
+    text: "Companies should report emissions from leased products in category 11 (Use of sold products), rather than category 13 (Downstream leased assets) and avoid double counting between categories."
+    page: 52
+    section: "Scope 3 Standard, Chapter 5"
+
+rules:
+  # === 前置约束 (pre_calculation) ===
+
+  - id: "s3-c13-001"
+    name: "Leased assets inventory validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.leased_assets"}, null]},
+        {"!!": [{"var": "input.leased_assets"}]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.leased_assets"}, null]},
+        {"!!": [{"var": "input.leased_assets"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Leased assets inventory must be provided for Category 13"
+    citation: "cit-cat13-001"
+
+  - id: "s3-c13-002"
+    name: "Reporting entity role validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "input.reporting_entity_role"}, "lessor"]}
+    assertion:
+      {"==": [{"var": "input.reporting_entity_role"}, "lessor"]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 13 is only applicable to lessors (companies that own and lease out assets)"
+    citation: "cit-cat13-002"
+
+  - id: "s3-c13-003"
+    name: "Consolidation approach validation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"!=": [{"var": "input.consolidation_approach"}, null]}
+    assertion:
+      {"!=": [{"var": "input.consolidation_approach"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Consolidation approach should be specified to determine if leased assets are in scope 1/2 or scope 3"
+    citation: "cit-cat13-003"
+
+  # === 运行时推断 (runtime_inference) ===
+
+  - id: "s3-c13-004"
+    name: "Calculation method selection"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "asset_specific"]}
+    assertion:
+      {"==": [{"var": "input.selected_method"}, "asset_specific"]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 13 uses asset-specific calculation method (same as Category 8)"
+    citation: "cit-cat13-009"
+
+  - id: "s3-c13-005"
+    name: "Partial year lease check"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.lease_duration_months"}, null]}
+    assertion:
+      {"==": [{"var": "input.lease_portion_of_year"}, 1.0]}
+    on_fail: "raise_warning"
+    on_fail_message: "If lease is for partial year, emissions should be prorated"
+    citation: "cit-cat13-016"
+
+  - id: "s3-c13-006"
+    name: "Non-sub-metered building allocation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.building_sub_metered"}, false]}
+    assertion:
+      {"!=": [{"var": "input.allocation_method"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Non-sub-metered buildings require allocation method (e.g., floor space ratio)"
+    citation: "cit-cat13-012"
+
+  - id: "s3-c13-007"
+    name: "Lessee emissions data source"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"!=": [{"var": "input.lessee_emissions_data.source"}, null]}
+    assertion:
+      {"!=": [{"var": "input.lessee_emissions_data.source"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Source of lessee emissions/activity data should be documented"
+    citation: "cit-cat13-014"
+
+  # === 后审计 (post_audit) ===
+
+  - id: "s3-c13-008"
+    name: "Total emissions validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Total CO2e emissions must be non-negative"
+    citation: "cit-cat13-011"
+
+  - id: "s3-c13-009"
+    name: "Non-zero emissions check"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.total_emissions_co2e"}, 0]}
+    assertion:
+      {"!=": [{"var": "output.total_emissions_co2e"}, 0]}
+    on_fail: "raise_warning"
+    on_fail_message: "Total emissions should not be zero unless all leased assets have zero emissions"
+    citation: "cit-cat13-011"
+
+  - id: "s3-c13-010"
+    name: "Double counting check"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "input.leased_products_in_cat11"}, null]}
+    assertion:
+      {"==": [{"var": "output.cat13_excludes_leased_products"}, true]}
+    on_fail: "raise_warning"
+    on_fail_message: "Leased products reported in Cat 11 should be excluded from Cat 13 to avoid double counting"
+    citation: "cit-cat13-007"
+
+  - id: "s3-c13-011"
+    name: "Scope 1 and 2 completeness"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.scope1_emissions"}, null]},
+        {"!=": [{"var": "output.scope2_emissions"}, null]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.scope1_emissions"}, null]},
+        {"!=": [{"var": "output.scope2_emissions"}, null]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "Both scope 1 and scope 2 emissions should be calculated for each leased asset"
+    citation: "cit-cat13-010"
+
+  - id: "s3-c13-012"
+    name: "Consolidation approach documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.consolidation_approach"}, null]},
+        {"!=": [{"var": "output.boundary_decisions"}, null]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.consolidation_approach"}, null]},
+        {"!=": [{"var": "output.boundary_decisions"}, null]}
+      ]
+    on_fail: "log_info"
+    on_fail_message: "Consolidation approach and boundary decisions should be documented"
+    citation: "cit-cat13-003"
+
+  - id: "s3-c13-013"
+    name: "Emission factors documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.emission_factors"}, null]}
+    assertion:
+      {"!=": [{"var": "output.emission_factors"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "Emission factors used should be documented"
+    citation: "cit-cat13-015"

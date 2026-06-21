@@ -1,0 +1,445 @@
+# ============================================================
+# Scope 3 Category 6: Business Travel
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, p. 48
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 6, pp. 81-86
+
+meta:
+  id: "scope3/cat6-business-travel"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 6 商务差旅排放核算规则（3种计算方法：燃料法、距离法、支出法）"
+
+citations:
+  # Category description
+  - id: "cit-cat6-001"
+    text: "This category includes emissions from the transportation of employees for business-related activities in vehicles owned or operated by third parties, such as aircraft, trains, buses, and passenger cars."
+    page: 81
+    section: "Technical Guidance, Category 6"
+
+  # Scope 1/2 exclusion
+  - id: "cit-cat6-002"
+    text: "Emissions from transportation in vehicles owned or controlled by the reporting company are accounted for in either scope 1 (for fuel use), or in the case of electric vehicles, scope 2 (for electricity use)."
+    page: 81
+    section: "Technical Guidance, Category 6"
+
+  # Leased vehicles
+  - id: "cit-cat6-003"
+    text: "Emissions from leased vehicles operated by the reporting company not included in scope 1 or scope 2 are accounted for in scope 3, category 8 (Upstream leased assets)."
+    page: 81
+    section: "Technical Guidance, Category 6"
+
+  # Employee commuting exclusion
+  - id: "cit-cat6-004"
+    text: "Emissions from transportation of employees to and from work are accounted for in scope 3, category 7 (Employee commuting)."
+    page: 81
+    section: "Technical Guidance, Category 6"
+
+  # Travel modes
+  - id: "cit-cat6-005"
+    text: "Emissions from business travel may arise from: Air travel; Rail travel; Bus travel; Automobile travel (e.g., business travel in rental cars or employee-owned vehicles other than employee commuting to and from work); Other modes of travel."
+    page: 81
+    section: "Technical Guidance, Category 6"
+
+  # Hotel stays (optional)
+  - id: "cit-cat6-006"
+    text: "Companies may optionally include emissions from business travelers staying in hotels."
+    page: 81
+    section: "Technical Guidance, Category 6"
+
+  # Third-party scope 1 and 2
+  - id: "cit-cat6-007"
+    text: "A reporting company's scope 3 emissions from business travel include the scope 1 and scope 2 emissions of transportation companies (e.g., airlines)."
+    page: 81
+    section: "Technical Guidance, Category 6"
+
+  # Calculation methods
+  - id: "cit-cat6-008"
+    text: "Companies may use one of the following methods: Fuel-based method; Distance-based method; Spend-based method."
+    page: 82
+    section: "Technical Guidance, Category 6"
+
+  # Distance-based method
+  - id: "cit-cat6-009"
+    text: "The distance-based method involves multiplying activity data (i.e., vehicle-kilometers or person-kilometers travelled by vehicle type) by emission factors. Formula 6.1: CO2e = Σ (distance travelled by vehicle type × vehicle specific emission factor) + (optional) Σ (annual number of hotel nights × hotel emission factor)."
+    page: 84
+    section: "Technical Guidance, Category 6, Formula 6.1"
+
+  # Fuel-based method
+  - id: "cit-cat6-010"
+    text: "The fuel-based method involves determining the amount of fuel consumed during business travel (i.e., scope 1 and scope 2 emissions of transport providers) and applying the appropriate emission factor for that fuel."
+    page: 83
+    section: "Technical Guidance, Category 6"
+
+  # Spend-based method
+  - id: "cit-cat6-011"
+    text: "The spend-based method involves determining the amount of money spent on each mode of business travel transport and applying secondary (EEIO) emission factors."
+    page: 86
+    section: "Technical Guidance, Category 6"
+
+  # Activity data
+  - id: "cit-cat6-012"
+    text: "Companies should collect data on: Total distance travelled by each mode of transport (air, train, bus, car, etc.) for employees in the reporting year. Where possible: Countries of travel; Specific types of vehicles used; The specific passenger vehicle type and the relevant emission factor."
+    page: 83
+    section: "Technical Guidance, Category 6"
+
+  # Emission factors
+  - id: "cit-cat6-013"
+    text: "Companies should collect: Emission factors for each mode of transport (e.g., aircraft, rail, metro, bus, taxi), expressed in units of greenhouse gas emitted per kilometer or per passenger-kilometer travelled."
+    page: 83
+    section: "Technical Guidance, Category 6"
+
+  # Air travel radiative forcing
+  - id: "cit-cat6-014"
+    text: "For air travel emission factors, multipliers or other corrections to account for radiative forcing may be applied to the GWP of emissions arising from aircraft transport. If applied, companies should disclose the specific factor used."
+    page: 83
+    section: "Technical Guidance, Category 6"
+
+  # Flight types
+  - id: "cit-cat6-015"
+    text: "Three types of flights are identified: Short haul – flights less than 3 hours in length; Medium haul – flights 3-6 hours in length; Long haul – journeys made by wide-bodied aircrafts that fly long distance, typically more than 6.5 hours."
+    page: 86
+    section: "Technical Guidance, Category 6"
+
+  # Data collection methods
+  - id: "cit-cat6-016"
+    text: "Methods of data collection include: Automatic tracking of distance travelled by mode through a travel agency or other travel providers; Automatic tracking through internal expense and reimbursement systems; Annual surveys/questionnaires of employees; Working with travel providers to obtain GHG emissions data."
+    page: 84
+    section: "Technical Guidance, Category 6"
+
+  # Sampling
+  - id: "cit-cat6-017"
+    text: "Collecting travel data from all employees may not be feasible. In such a case, companies may extrapolate from a representative sample of employees to the total business travel of all employees."
+    page: 84
+    section: "Technical Guidance, Category 6"
+
+  # Decision tree
+  - id: "cit-cat6-018"
+    text: "Decision tree: If data on types and quantities/cost of fuels consumed during travel available → fuel-based method. If data on distance travelled available → distance-based method. If data on amount of money spent on travel providers available → spend-based method."
+    page: 82
+    section: "Technical Guidance, Category 6, Figure 6.1"
+
+  # Table 6.1
+  - id: "cit-cat6-019"
+    text: "Emissions from transportation in vehicles owned or controlled by the reporting company → Scope 1/2. Business travel in third-party vehicles → Category 6. Employee commuting → Category 7. Leased vehicles operated by reporting company → Category 8."
+    page: 82
+    section: "Technical Guidance, Category 6, Table 6.1"
+
+rules:
+  # === Attribution rules ===
+  - id: "s3-c6-001"
+    name: "Category 6 attribution"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.travel_type"}, null]}
+      ]
+    assertion:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.travel_type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 6排放源的category字段必须为cat6"
+    citation: "cit-cat6-001"
+
+  # === Vehicle ownership validation ===
+  - id: "s3-c6-002"
+    name: "Vehicle ownership exclusion"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"==": [{"var": "input.scope3_emission_sources.business_travel.vehicle_ownership"}, "reporting_company"]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.business_travel.vehicle_ownership"}, "reporting_company"]
+    on_fail: "raise_fatal"
+    on_fail_message: "报告公司自有或控制的车辆排放应计入Scope 1或Scope 2，不计入Category 6"
+    citation: "cit-cat6-002"
+
+  # === Leased vehicle exclusion ===
+  - id: "s3-c6-003"
+    name: "Leased vehicle exclusion"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"==": [{"var": "input.scope3_emission_sources.business_travel.vehicle_ownership"}, "leased"]}
+      ]
+    assertion:
+      "or": [
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.vehicle_ownership"}, "leased"]},
+        {"==": [{"var": "input.scope3_emission_sources.business_travel.leased_in_scope1_or_scope2"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "报告公司租赁车辆未计入Scope 1/2的排放应计入Category 8，不计入Category 6"
+    citation: "cit-cat6-003"
+
+  # === Commuting exclusion ===
+  - id: "s3-c6-004"
+    name: "Commuting exclusion"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"==": [{"var": "input.scope3_emission_sources.business_travel.is_commuting"}, true]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.business_travel.is_commuting"}, true]
+    on_fail: "raise_fatal"
+    on_fail_message: "员工上下班通勤排放应计入Category 7，不计入Category 6"
+    citation: "cit-cat6-004"
+
+  # === Travel mode validation ===
+  - id: "s3-c6-005"
+    name: "Travel mode validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.travel_mode"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.business_travel.travel_mode"},
+        ["air", "rail", "bus", "automobile", "taxi", "rental_car", "other"]
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "出行方式必须是已识别的方式"
+    citation: "cit-cat6-005"
+
+  # === Calculation method selection ===
+  - id: "s3-c6-006"
+    name: "Calculation method selection"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.calculation_method"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.business_travel.calculation_method"},
+        ["fuel_based", "distance_based", "spend_based"]
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "必须指定计算方法：fuel_based、distance_based或spend_based"
+    citation: "cit-cat6-008"
+
+  # === Fuel-based method requirements ===
+  - id: "s3-c6-007"
+    name: "Fuel-based method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"==": [{"var": "input.scope3_emission_sources.business_travel.calculation_method"}, "fuel_based"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.fuel_quantity"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.fuel_type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "燃料法需要燃料数量和燃料类型数据"
+    citation: "cit-cat6-010"
+
+  # === Distance-based method requirements ===
+  - id: "s3-c6-008"
+    name: "Distance-based method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"==": [{"var": "input.scope3_emission_sources.business_travel.calculation_method"}, "distance_based"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.distance"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.distance_unit"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "距离法需要出行距离和距离单位数据"
+    citation: "cit-cat6-009"
+
+  # === Spend-based method requirements ===
+  - id: "s3-c6-009"
+    name: "Spend-based method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"==": [{"var": "input.scope3_emission_sources.business_travel.calculation_method"}, "spend_based"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.expenditure"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.expenditure_currency"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "支出法需要支出金额和货币单位数据"
+    citation: "cit-cat6-011"
+
+  # === Flight type classification ===
+  - id: "s3-c6-010"
+    name: "Flight type classification"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"==": [{"var": "input.scope3_emission_sources.business_travel.travel_mode"}, "air"]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.business_travel.flight_type"},
+        ["short_haul", "medium_haul", "long_haul"]
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "航空出行应分类为短途(<3h)、中途(3-6h)或长途(>6.5h)"
+    citation: "cit-cat6-015"
+
+  # === Radiative forcing disclosure ===
+  - id: "s3-c6-011"
+    name: "Radiative forcing disclosure"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"==": [{"var": "input.scope3_emission_sources.business_travel.travel_mode"}, "air"]},
+        {"==": [{"var": "input.scope3_emission_sources.business_travel.radiative_forcing_applied"}, true]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.business_travel.radiative_forcing_factor"}, null]
+    on_fail: "raise_warning"
+    on_fail_message: "如果应用辐射强迫乘数，必须披露使用的具体因子"
+    citation: "cit-cat6-014"
+
+  # === Hotel stays (optional) ===
+  - id: "s3-c6-012"
+    name: "Hotel stays data requirements"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"==": [{"var": "input.scope3_emission_sources.business_travel.hotel_stays_included"}, true]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.hotel_nights"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.hotel_emission_factor"}, null]}
+      ]
+    on_fail: "log_info"
+    on_fail_message: "如果包含酒店住宿，应报告酒店夜数和酒店类型排放因子"
+    citation: "cit-cat6-006"
+
+  # === Data quality ===
+  - id: "s3-c6-013"
+    name: "Emission factor source requirement"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.calculation_method"}, "fuel_based"]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.business_travel.emission_factor_source"}, null]
+    on_fail: "raise_warning"
+    on_fail_message: "排放因子应来自认可的数据库"
+    citation: "cit-cat6-013"
+
+  # === Sampling disclosure ===
+  - id: "s3-c6-014"
+    name: "Sampling methodology disclosure"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat6"]},
+        {"!=": [{"var": "input.scope3_emission_sources.business_travel.data_collection_method"}, "complete"]}
+      ]
+    statement: "如果数据是从代表性样本推断的，应披露抽样方法。"
+    on_fail: "log_info"
+    on_fail_message: "建议披露数据收集的抽样方法"
+    citation: "cit-cat6-017"
+
+  # === Third-party emissions inclusion ===
+  - id: "s3-c6-015"
+    name: "Third-party emissions reporting"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "报告运输公司（如航空公司）的scope 1和scope 2排放。"
+    on_fail: "log_info"
+    on_fail_message: "建议报告运输公司的scope 1和scope 2排放"
+    citation: "cit-cat6-007"
+
+dependencies:
+  - ref: "scope3/category-definitions"
+    relation: "constrained_by"
+  - ref: "principles/organizational-boundary"
+    relation: "applies_within"
+
+conflicts_with: []

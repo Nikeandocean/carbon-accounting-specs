@@ -1,0 +1,457 @@
+# ============================================================
+# Scope 3 Category 7: Employee Commuting
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, p. 48
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 7, pp. 87-93
+
+meta:
+  id: "scope3/cat7-employee-commuting"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 7 员工通勤排放核算规则（3种计算方法：燃料法、距离法、平均数据法）"
+
+citations:
+  # Category description
+  - id: "cit-cat7-001"
+    text: "This category includes emissions from the transportation of employees between their homes and their worksites."
+    page: 87
+    section: "Technical Guidance, Category 7"
+
+  # Commuting modes
+  - id: "cit-cat7-002"
+    text: "Emissions from employee commuting may arise from: Automobile travel; Bus travel; Rail travel; Air travel; Other modes of transportation (e.g., subway, bicycling, walking)."
+    page: 87
+    section: "Technical Guidance, Category 7"
+
+  # Teleworking
+  - id: "cit-cat7-003"
+    text: "Companies may include emissions from teleworking (i.e., employees working remotely) in this category."
+    page: 87
+    section: "Technical Guidance, Category 7"
+
+  # Third-party scope 1 and 2
+  - id: "cit-cat7-004"
+    text: "A reporting company's scope 3 emissions from employee commuting include the scope 1 and scope 2 emissions of employees and third-party transportation providers."
+    page: 87
+    section: "Technical Guidance, Category 7"
+
+  # Upstream categorization rationale
+  - id: "cit-cat7-005"
+    text: "Even though employee commuting is not always purchased or reimbursed by the reporting company, it is categorized as an upstream scope 3 category because it is a service that enables company operations, similar to purchased or acquired goods and services."
+    page: 87
+    section: "Technical Guidance, Category 7"
+
+  # Employee definition
+  - id: "cit-cat7-006"
+    text: "'Employees' refers to employees of entities and facilities owned, operated, or leased by the reporting company. Companies may include employees of other relevant entities (e.g., franchises or outsourced operations), as well as consultants, contractors, and other individuals who are not employees of the company, but commute to facilities owned and operated by the company."
+    page: 87
+    section: "Technical Guidance, Category 7"
+
+  # Calculation methods
+  - id: "cit-cat7-007"
+    text: "Companies may use one of the following methods: Fuel-based method; Distance-based method; Average-data method."
+    page: 87
+    section: "Technical Guidance, Category 7"
+
+  # Distance-based method
+  - id: "cit-cat7-008"
+    text: "The distance-based method involves collecting data from employees on commuting patterns (e.g., distance travelled and mode used for commuting) and applying appropriate emission factors. Formula 7.1: CO2e = Σ (total distance travelled by vehicle type × vehicle specific emission factor) + (optionally) Σ (quantities of energy consumed for teleworking × emission factor)."
+    page: 89
+    section: "Technical Guidance, Category 7, Formula 7.1"
+
+  # Fuel-based method
+  - id: "cit-cat7-009"
+    text: "The fuel-based method involves determining the amount of fuel consumed during commuting and applying the appropriate emission factor for that fuel. If used for public transport, emissions need to be allocated to the employee(s)."
+    page: 88
+    section: "Technical Guidance, Category 7"
+
+  # Average-data method
+  - id: "cit-cat7-010"
+    text: "The average-data method involves estimating emissions from employee commuting based on average (e.g., national) data on commuting patterns. Formula 7.2: CO2e = Σ (total number of employees × % of employees using mode × one-way distance × 2 × working days per year × emission factor)."
+    page: 92
+    section: "Technical Guidance, Category 7, Formula 7.2"
+
+  # Activity data - distance-based
+  - id: "cit-cat7-011"
+    text: "Companies should collect data on: Total distance travelled by employees over the reporting period (e.g., passenger-kilometers travelled); Mode of transport used for commuting (e.g., train, subway, bus, car, bicycle)."
+    page: 88
+    section: "Technical Guidance, Category 7"
+
+  # Emission factors
+  - id: "cit-cat7-012"
+    text: "Companies should collect: Emission factors for each mode of transport (usually expressed in units of greenhouse gas emitted per passenger-kilometers travelled)."
+    page: 89
+    section: "Technical Guidance, Category 7"
+
+  # Air travel radiative forcing
+  - id: "cit-cat7-013"
+    text: "For air travel emission factors, multipliers or other corrections to account for radiative forcing may be applied to the GWP of emissions arising from aircraft transport. Where used, companies should disclose the specific factor used."
+    page: 89
+    section: "Technical Guidance, Category 7"
+
+  # Data collection - surveys
+  - id: "cit-cat7-014"
+    text: "Companies should collect data on employee commuting habits, for example through a survey. Companies should survey their employees annually to obtain information on average commuting habits."
+    page: 89
+    section: "Technical Guidance, Category 7"
+
+  # Sampling
+  - id: "cit-cat7-015"
+    text: "Collecting commuting data from all employees through a survey may not be feasible. Companies may extrapolate from a representative sample of employees to represent the total commuting patterns of all employees."
+    page: 89
+    section: "Technical Guidance, Category 7"
+
+  # Average-data sources
+  - id: "cit-cat7-016"
+    text: "Company may collect average secondary data from sources such as national transportation departments, ministries or agencies, national statistics publications, and/or industry associations."
+    page: 91
+    section: "Technical Guidance, Category 7"
+
+  # Teleworking calculation
+  - id: "cit-cat7-017"
+    text: "To calculate emissions of teleworking from home, a baseline emissions scenario should first be established. Baseline emissions occur regardless of whether or not the employee was at home (e.g., energy consumed by the refrigerator). The reporting company should only account for the additional emissions resulting from working from home."
+    page: 90
+    section: "Technical Guidance, Category 7"
+
+  # Annual distance calculation
+  - id: "cit-cat7-018"
+    text: "Companies should convert daily commuting distance into annual commuting distance by multiplying the daily distance by the number of times the trip occurs during the reporting period. For one-way journeys, multiply by number of working days and by two to account for daily return journeys."
+    page: 90
+    section: "Technical Guidance, Category 7"
+
+  # Decision tree
+  - id: "cit-cat7-019"
+    text: "Decision tree: If data on types and quantities or cost of fuels consumed during transportation available → fuel-based method. If data on distance travelled and mode of transport used by employees available → distance-based method. Otherwise → average-data method."
+    page: 88
+    section: "Technical Guidance, Category 7, Figure 7.1"
+
+rules:
+  # === Attribution rules ===
+  - id: "s3-c7-001"
+    name: "Category 7 attribution"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.commute_type"}, null]}
+      ]
+    assertion:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.commute_type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 7排放源的category字段必须为cat7"
+    citation: "cit-cat7-001"
+
+  # === Commuting mode validation ===
+  - id: "s3-c7-002"
+    name: "Commuting mode validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.transport_mode"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.employee_commuting.transport_mode"},
+        ["automobile", "bus", "rail", "air", "subway", "bicycle", "walking", "carpool", "other"]
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "通勤方式必须是已识别的方式"
+    citation: "cit-cat7-002"
+
+  # === Employee definition ===
+  - id: "s3-c7-003"
+    name: "Employee definition"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.employee_type"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.employee_commuting.employee_type"},
+        ["direct_employee", "contractor_consultant"]
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "员工包括直接员工、承包商和顾问"
+    citation: "cit-cat7-006"
+
+  # === Calculation method selection ===
+  - id: "s3-c7-004"
+    name: "Calculation method selection"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.calculation_method"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.employee_commuting.calculation_method"},
+        ["fuel_based", "distance_based", "average_data"]
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "必须指定计算方法：fuel_based、distance_based或average_data"
+    citation: "cit-cat7-007"
+
+  # === Fuel-based method requirements ===
+  - id: "s3-c7-005"
+    name: "Fuel-based method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"==": [{"var": "input.scope3_emission_sources.employee_commuting.calculation_method"}, "fuel_based"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.fuel_quantity"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.fuel_type"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "燃料法需要燃料数量和燃料类型数据"
+    citation: "cit-cat7-009"
+
+  # === Distance-based method requirements ===
+  - id: "s3-c7-006"
+    name: "Distance-based method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"==": [{"var": "input.scope3_emission_sources.employee_commuting.calculation_method"}, "distance_based"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.daily_one_way_distance"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.commuting_days_per_year"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.transport_mode"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "距离法需要每日单程距离、年通勤天数和交通方式数据"
+    citation: "cit-cat7-008"
+
+  # === Average-data method requirements ===
+  - id: "s3-c7-007"
+    name: "Average-data method data requirements"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"==": [{"var": "input.scope3_emission_sources.employee_commuting.calculation_method"}, "average_data"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.number_of_employees"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.average_one_way_distance"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.mode_split_percentages"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.working_days_per_year"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "平均数据法需要员工人数、平均距离、方式分担比例和年工作天数"
+    citation: "cit-cat7-010"
+
+  # === Distance unit validation ===
+  - id: "s3-c7-008"
+    name: "Distance unit validation"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.distance_unit"}, null]}
+      ]
+    assertion:
+      "in": [
+        {"var": "input.scope3_emission_sources.employee_commuting.distance_unit"},
+        ["km", "miles"]
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "距离应使用适当单位（公里或英里）"
+    citation: "cit-cat7-011"
+
+  # === Working days validation ===
+  - id: "s3-c7-009"
+    name: "Working days validation"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.working_days_per_year"}, null]}
+      ]
+    assertion:
+      "and": [
+        {">=": [{"var": "input.scope3_emission_sources.employee_commuting.working_days_per_year"}, 200]},
+        {"<=": [{"var": "input.scope3_emission_sources.employee_commuting.working_days_per_year"}, 260]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "年工作天数应在合理范围内（通常200-260天）"
+    citation: "cit-cat7-018"
+
+  # === Teleworking inclusion (optional) ===
+  - id: "s3-c7-010"
+    name: "Teleworking data requirements"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"==": [{"var": "input.scope3_emission_sources.employee_commuting.teleworking_included"}, true]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.teleworking_energy_consumption"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.teleworking_energy_source"}, null]}
+      ]
+    on_fail: "log_info"
+    on_fail_message: "如果包含远程工作排放，应报告能源消耗数据"
+    citation: "cit-cat7-003"
+
+  # === Teleworking baseline exclusion ===
+  - id: "s3-c7-011"
+    name: "Teleworking baseline exclusion"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"==": [{"var": "input.scope3_emission_sources.employee_commuting.teleworking_included"}, true]}
+      ]
+    assertion:
+      "or": [
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.teleworking_included"}, true]},
+        {"==": [{"var": "input.scope3_emission_sources.employee_commuting.teleworking_baseline_excluded"}, true]}
+      ]
+    on_fail: "raise_warning"
+    on_fail_message: "远程工作仅应计算超出基线的额外排放"
+    citation: "cit-cat7-017"
+
+  # === Air travel radiative forcing ===
+  - id: "s3-c7-012"
+    name: "Radiative forcing disclosure"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"==": [{"var": "input.scope3_emission_sources.employee_commuting.transport_mode"}, "air"]},
+        {"==": [{"var": "input.scope3_emission_sources.employee_commuting.radiative_forcing_applied"}, true]}
+      ]
+    assertion:
+      "!=": [{"var": "input.scope3_emission_sources.employee_commuting.radiative_forcing_factor"}, null]
+    on_fail: "raise_warning"
+    on_fail_message: "如果应用辐射强迫乘数，必须披露使用的具体因子"
+    citation: "cit-cat7-013"
+
+  # === Sampling disclosure ===
+  - id: "s3-c7-013"
+    name: "Sampling methodology disclosure"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.data_collection_method"}, "complete"]}
+      ]
+    statement: "如果数据是从代表性样本推断的，应披露抽样方法。"
+    on_fail: "log_info"
+    on_fail_message: "建议披露数据收集的抽样方法"
+    citation: "cit-cat7-015"
+
+  # === Third-party emissions inclusion ===
+  - id: "s3-c7-014"
+    name: "Third-party emissions reporting"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "报告员工和第三方运输提供商的scope 1和scope 2排放。"
+    on_fail: "log_info"
+    on_fail_message: "建议报告员工和第三方运输提供商的scope 1和scope 2排放"
+    citation: "cit-cat7-004"
+
+  # === Carpooling consideration ===
+  - id: "s3-c7-015"
+    name: "Carpooling data consideration"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "knowledge"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "input.category"}, "cat7"]},
+        {"==": [{"var": "input.scope3_emission_sources.employee_commuting.transport_mode"}, "carpool"]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.carpool_occupancy"}, null]},
+        {"!=": [{"var": "input.scope3_emission_sources.employee_commuting.carpool_participation_rate"}, null]}
+      ]
+    on_fail: "log_info"
+    on_fail_message: "如果存在拼车计划，应考虑乘坐率和参与率数据"
+    citation: "cit-cat7-014"
+
+dependencies:
+  - ref: "scope3/category-definitions"
+    relation: "constrained_by"
+  - ref: "principles/organizational-boundary"
+    relation: "applies_within"
+
+conflicts_with: []

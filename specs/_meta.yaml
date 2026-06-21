@@ -267,6 +267,60 @@ input_schema:
             type: "string"
             enum: ["IPCC_AR4", "IPCC_AR5", "IPCC_AR6"]
             description: "GWP值来源的IPCC评估报告版本"
+    scope3_emission_sources:
+      type: "array"
+      description: "Scope 3价值链间接排放源"
+      items:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+            description: "排放源唯一标识"
+          category:
+            type: "string"
+            enum: ["cat1", "cat2", "cat3", "cat4", "cat5", "cat6", "cat7", "cat8", "cat9", "cat10", "cat11", "cat12", "cat13", "cat14", "cat15"]
+            description: "Scope 3类别编号"
+          description:
+            type: "string"
+            description: "排放源描述"
+          calculation_method:
+            type: "string"
+            enum: ["supplier_specific", "hybrid", "average_data", "spend_based"]
+            description: "计算方法"
+          quantity:
+            type: "number"
+            nullable: true
+            description: "采购数量（kg、件等）"
+          quantity_unit:
+            type: "string"
+            nullable: true
+            description: "数量单位"
+          spend_value:
+            type: "number"
+            nullable: true
+            description: "采购金额"
+          currency:
+            type: "string"
+            nullable: true
+            description: "货币单位"
+          emission_factor:
+            type: "object"
+            properties:
+              value:
+                type: "number"
+                description: "排放因子值（kg CO2e/单位）"
+              source_type:
+                type: "string"
+                enum: ["supplier_specific", "process_database", "eeio", "industry_average"]
+                description: "排放因子来源类型"
+              year:
+                type: "integer"
+              source:
+                type: "string"
+          gwp_source:
+            type: "string"
+            enum: ["IPCC_AR4", "IPCC_AR5", "IPCC_AR6"]
+            description: "GWP值来源的IPCC评估报告版本"
 
 load_order:
   - principles/organizational-boundary
@@ -292,6 +346,23 @@ load_order:
   - scope1/constraints/prohibitions
   - scope1/constraints/quality-criteria
   - scope1/constraints/cross-type-validation
+  # Scope 3 (new)
+  - scope3/principles/category-definitions
+  - scope3/principles/data-quality-hierarchy
+  - scope3/methods/cat1-purchased-goods
+  - scope3/methods/cat5-waste
+  - scope3/methods/cat6-business-travel
+  - scope3/methods/cat7-employee-commuting
+  - scope3/methods/cat8-upstream-leased
+  - scope3/methods/cat4-upstream-transport
+  - scope3/methods/cat9-downstream-transport
+  - scope3/methods/cat10-processing-sold
+  - scope3/methods/cat11-use-sold
+  - scope3/methods/cat12-end-of-life
+  - scope3/methods/cat13-downstream-leased
+  - scope3/methods/cat14-franchises
+  - scope3/methods/cat15-investments
+  - scope3/constraints/prohibitions
 
 global_rules:
   - id: "global-001"
@@ -429,6 +500,62 @@ global_rules:
     on_fail: "raise_warning"
     on_fail_message: "所有Scope 1排放源应使用同一IPCC评估报告的GWP值"
     citation: "GHG Protocol Corporate Standard, Chapter 6"
+
+  - id: "global-s3-001"
+    name: "Scope 3完整性原则"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    scope: "scope3_only"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {
+          "and": [
+            {"!=": [{"var": "category"}, null]},
+            {"in": [{"var": "category"}, ["cat1", "cat2", "cat3", "cat4", "cat5", "cat6", "cat7", "cat8", "cat9", "cat10", "cat11", "cat12", "cat13", "cat14", "cat15"]]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Scope 3排放源必须指定有效的类别编号（cat1-cat15）"
+    citation: "GHG Protocol Scope 3 Standard, Chapter 5"
+
+  - id: "global-s3-002"
+    name: "Scope 3计算方法必填"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    scope: "scope3_only"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"in": [{"var": "calculation_method"}, ["supplier_specific", "hybrid", "average_data", "spend_based"]]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Scope 3排放源必须指定计算方法（supplier_specific、hybrid、average_data或spend_based）"
+    citation: "GHG Protocol Scope 3 Calculation Guidance, Introduction"
+
+  - id: "global-s3-003"
+    name: "Scope 3类别互斥性"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    scope: "scope3_only"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      "unique": [
+        {"var": "input.scope3_emission_sources"},
+        {"var": "id"}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "同一排放源不得在多个Scope 3类别中重复计算"
+    citation: "GHG Protocol Scope 3 Standard, Chapter 5, Section 5.4"
 
 versioning:
   scheme: "semver"

@@ -1,0 +1,373 @@
+# ============================================================
+# Scope 3 Category 14: Franchises
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, p. 53
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 14, pp. 130-135
+
+meta:
+  id: "scope3/cat14-franchises"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 14 特许经营排放核算规则（2种计算方法：特许经营特定法、平均数据法）"
+
+citations:
+  # Category description
+  - id: "cit-cat14-001"
+    text: "Category 14 (Franchises) includes emissions from the operation of franchises not included in scope 1 or scope 2. A franchise is a business operating under a license to sell or distribute another company's goods or services within a certain location. This category is applicable to franchisors (i.e., companies that grant licenses to other entities to sell or distribute its goods or services in return for payments, such as royalties for the use of trademarks and other services)."
+    page: 53
+    section: "Scope 3 Standard, Chapter 5"
+
+  - id: "cit-cat14-002"
+    text: "Category 14 includes emissions from the operation of franchises not included in scope 1 or scope 2. A franchise is a business operating under a license to sell or distribute another company's goods or services within a certain location. This category is applicable to franchisors (i.e., companies that grant licenses to other entities to sell or distribute its goods or services in return for payments, such as royalties for the use of trademarks and other services). Franchisors should account for emissions that occur from the operation of franchises (i.e., the scope 1 and scope 2 emissions of franchisees) in this category."
+    page: 130
+    section: "Technical Guidance, Category 14"
+
+  # Franchisor vs Franchisee
+  - id: "cit-cat14-003"
+    text: "Franchisees (i.e., companies that operate franchises and pay fees to a franchisor) should include emissions from operations under their control in this category if they have not included those emissions in scope 1 and scope 2 due to their choice of consolidation approach. Franchisees may optionally report upstream scope 3 emissions associated with the franchisor's operations (i.e., the scope 1 and scope 2 emissions of the franchisor) in category 1 (Purchased goods and services)."
+    page: 53
+    section: "Scope 3 Standard, Chapter 5"
+
+  # Franchise-specific method
+  - id: "cit-cat14-004"
+    text: "The franchise-specific method involves collecting scope 1 and scope 2 emissions from franchisees. If franchisees have conducted corporate scope 1 and scope 2 GHG inventory report(s), the data can be applied immediately. If such reports are not available, site-specific fuel and energy data from individual franchises should be collected."
+    page: 131
+    section: "Technical Guidance, Category 14"
+
+  - id: "cit-cat14-005"
+    text: "The reporting company should determine whether the franchisee delivers business solely for the reporting company (i.e., franchisor), and if not, the franchisee or the reporting company should allocate the emissions accordingly."
+    page: 131
+    section: "Technical Guidance, Category 14"
+
+  - id: "cit-cat14-006"
+    text: "If significant upstream emissions result from the purchase of goods and services by franchisees, the franchisor developing the scope 3 inventory should include these emissions in this category. For example, a large fast-food franchise should account for the upstream emissions associated with the beef purchased by its franchise restaurants."
+    page: 131
+    section: "Technical Guidance, Category 14"
+
+  # Activity data - franchise-specific
+  - id: "cit-cat14-007"
+    text: "Companies should collect data on either: Scope 1, scope 2, and (optionally) scope 3 emissions data from franchisees, or site-specific fuel use, electricity use, and process and fugitive emissions activity data if applicable."
+    page: 131
+    section: "Technical Guidance, Category 14"
+
+  # Emission factors - franchise-specific
+  - id: "cit-cat14-008"
+    text: "If collecting fuel and energy data, companies should also collect: Site- or regionally-specific emission factors for energy sources (e.g., electricity and fuels) per unit of consumption (e.g., kg CO2e/kWh for electricity, kg CO2e/liter for diesel), emission factors of process emissions and fugitive emissions (e.g., refrigeration and air conditioning), and upstream emission factors."
+    page: 131
+    section: "Technical Guidance, Category 14"
+
+  # Data sources - franchise-specific
+  - id: "cit-cat14-009"
+    text: "Data sources for activity data include: Public GHG inventory reports accessible through GHG reporting programs, utility bills, purchase records, meter readings, internal IT systems."
+    page: 131
+    section: "Technical Guidance, Category 14"
+
+  - id: "cit-cat14-010"
+    text: "Data sources for emission factors include: The GHG Protocol websites, company-specific emission factors, industry associations, government agencies (e.g., Defra provides emission factors for the United Kingdom)."
+    page: 131
+    section: "Technical Guidance, Category 14"
+
+  # Formulas
+  - id: "cit-cat14-011"
+    text: "CO2e emissions from franchises = sum across franchises: ∑ (scope 1 emissions + scope 2 emissions of each franchise (kg CO2e)). Formula 14.1."
+    page: 132
+    section: "Technical Guidance, Category 14, Formula 14.1"
+
+  - id: "cit-cat14-012"
+    text: "CO2e emissions allocated to franchise = energy use from franchise (kWh) = (franchise's area (m2) / building's total area (m2) × building's occupancy rate) × building's total energy use (kWh). Formula 14.2."
+    page: 132
+    section: "Technical Guidance, Category 14, Formula 14.2"
+
+  # Sampling
+  - id: "cit-cat14-013"
+    text: "If a company has a large number of individual franchises, it may not be practical to collect data from each franchise. Therefore, companies may use appropriate sampling techniques when collecting data to represent all franchises from a representative sample of franchises."
+    page: 132
+    section: "Technical Guidance, Category 14"
+
+  - id: "cit-cat14-014"
+    text: "Companies may also choose to categorize franchises into similar groups for data collection. The grouping strategy should group franchises with similar anticipated emissions intensities. Possible ways to group franchises: Location, building type, floor space, financial turnover, product volume, customer numbers, distinctive characteristics."
+    page: 132
+    section: "Technical Guidance, Category 14"
+
+  # Extrapolation formula
+  - id: "cit-cat14-015"
+    text: "CO2e emissions from franchises = Step 1: total emissions from sampled franchises within group × (total number of franchises within group / number of franchises sampled within group). Step 2: ∑ total scope 1 and scope 2 emissions from each asset group. Formula 14.3."
+    page: 133
+    section: "Technical Guidance, Category 14, Formula 14.3"
+
+  # Average-data method
+  - id: "cit-cat14-016"
+    text: "The average-data approach involves estimating emissions for each franchise, or groups of franchises, based on average statistics, such as average emissions per building type, floor space, or franchise type. This approach should be used when purchase records, electricity bills, or meter readings of fuel or energy use are not available or applicable. Approaches include: Estimated emissions based on occupied floor space by building type, estimated emissions based on number and type of franchises."
+    page: 134
+    section: "Technical Guidance, Category 14"
+
+  - id: "cit-cat14-017"
+    text: "Note that the average-data approach may be relatively inaccurate and limits the ability of companies to track performance of GHG reduction actions."
+    page: 134
+    section: "Technical Guidance, Category 14"
+
+  # Activity data - average-data
+  - id: "cit-cat14-018"
+    text: "Depending on the type of asset that is leased, companies may need to collect data on: Floor space of each franchise, by floor space; number of franchises, by building type; number of franchise assets that give rise to GHG emissions (e.g., company cars, trucks)."
+    page: 134
+    section: "Technical Guidance, Category 14"
+
+  # Emission factors - average-data
+  - id: "cit-cat14-019"
+    text: "Depending on the type of asset that is leased companies may need to collect: Average emission factors by floor space (e.g., kg CO2e/m2/year), average emission factors by building type (e.g., kg CO2e/small office block/year), emission factors by asset type (e.g., kg CO2e/car/year)."
+    page: 134
+    section: "Technical Guidance, Category 14"
+
+  # Data sources - average-data
+  - id: "cit-cat14-020"
+    text: "Data sources for emission factors include: Industry bodies (e.g., building industry), national statistics published by government agencies, the U.S. Energy Information Administration dataset on average energy use by building type."
+    page: 134
+    section: "Technical Guidance, Category 14"
+
+  # Average-data formulas
+  - id: "cit-cat14-021"
+    text: "CO2e emissions from franchises = sum across building types: ∑ (total floor space of building type (m2) × average emission factor for building type (kg CO2e/m2/year)). Formula 14.4."
+    page: 134
+    section: "Technical Guidance, Category 14, Formula 14.4"
+
+  - id: "cit-cat14-022"
+    text: "CO2e emissions from franchises = sum across building/asset types: ∑ (number of buildings or assets × average emissions per building or asset type per year (kg CO2e/building or asset type/year)). Formula 14.5."
+    page: 135
+    section: "Technical Guidance, Category 14, Formula 14.5"
+
+  # Reporting
+  - id: "cit-cat14-023"
+    text: "Franchisees may optionally report upstream scope 3 emissions associated with the franchisor's operations (i.e., the scope 1 and scope 2 emissions of the franchisor) in category 1 (Purchased goods and services)."
+    page: 53
+    section: "Scope 3 Standard, Chapter 5"
+
+rules:
+  # === 前置约束 (pre_calculation) ===
+
+  - id: "s3-c14-001"
+    name: "Franchise inventory validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.franchises"}, null]},
+        {"!!": [{"var": "input.franchises"}]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.franchises"}, null]},
+        {"!!": [{"var": "input.franchises"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Franchise inventory must be provided for Category 14"
+    citation: "cit-cat14-001"
+
+  - id: "s3-c14-002"
+    name: "Reporting entity role validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"in": [{"var": "input.reporting_entity_role"}, ["franchisor", "franchisee"]]}
+    assertion:
+      {"in": [{"var": "input.reporting_entity_role"}, ["franchisor", "franchisee"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 14 is applicable to franchisors or franchisees"
+    citation: "cit-cat14-002"
+
+  - id: "s3-c14-003"
+    name: "Calculation method selection validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"!=": [{"var": "input.selected_method"}, null]}
+    assertion:
+      {"!=": [{"var": "input.selected_method"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Calculation method must be selected (franchise_specific or average_data)"
+    citation: "cit-cat14-004"
+
+  # === 运行时推断 (runtime_inference) ===
+
+  - id: "s3-c14-004"
+    name: "Calculation method validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"in": [{"var": "input.selected_method"}, ["franchise_specific", "average_data"]]}
+    assertion:
+      {"in": [{"var": "input.selected_method"}, ["franchise_specific", "average_data"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 14 supports franchise_specific or average_data methods"
+    citation: "cit-cat14-004"
+
+  - id: "s3-c14-005"
+    name: "Franchise-specific data requirement"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "franchise_specific"]}
+    assertion:
+      {"!=": [{"var": "input.franchise_emissions_data"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Franchise-specific method requires emissions or activity data from franchisees"
+    citation: "cit-cat14-007"
+
+  - id: "s3-c14-006"
+    name: "Allocation method check"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "franchise_specific"]}
+    assertion:
+      {"!=": [{"var": "input.allocation_method"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "Allocation method should be specified if franchisee serves multiple franchisors"
+    citation: "cit-cat14-005"
+
+  - id: "s3-c14-007"
+    name: "Upstream emissions inclusion check"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.franchise_has_upstream"}, true]}
+    assertion:
+      {"!=": [{"var": "input.upstream_emissions_included"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "Significant upstream emissions from franchisee purchases should be included"
+    citation: "cit-cat14-006"
+
+  - id: "s3-c14-008"
+    name: "Average-data emission factors requirement"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "average_data"]}
+    assertion:
+      {"!=": [{"var": "input.average_emission_factors"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Average-data method requires average emission factors (per floor space, building type, or asset type)"
+    citation: "cit-cat14-019"
+
+  - id: "s3-c14-009"
+    name: "Sampling methodology documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.uses_sampling"}, true]}
+    assertion:
+      {"!=": [{"var": "input.sampling_methodology"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "If sampling is used, sampling methodology should be documented"
+    citation: "cit-cat14-013"
+
+  # === 后审计 (post_audit) ===
+
+  - id: "s3-c14-010"
+    name: "Total emissions validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Total CO2e emissions must be non-negative"
+    citation: "cit-cat14-011"
+
+  - id: "s3-c14-011"
+    name: "Non-zero emissions check"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.total_emissions_co2e"}, 0]}
+    assertion:
+      {"!=": [{"var": "output.total_emissions_co2e"}, 0]}
+    on_fail: "raise_warning"
+    on_fail_message: "Total emissions should not be zero unless all franchises have zero emissions"
+    citation: "cit-cat14-011"
+
+  - id: "s3-c14-012"
+    name: "Emissions calculation cross-check"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "franchise_specific"]}
+    assertion:
+      {"==": [
+        {"var": "output.total_emissions_co2e"},
+        {"reduce": [
+          {"var": "input.franchises"},
+          {"+": [
+            {"var": "accumulator"},
+            {"+": [
+              {"var": "current.scope1_emissions"},
+              {"var": "current.scope2_emissions"}
+            ]}
+          ]},
+          0
+        ]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Total emissions must match sum of scope 1 + scope 2 across all franchises"
+    citation: "cit-cat14-011"
+
+  - id: "s3-c14-013"
+    name: "Calculation methodology documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.calculation_methodology"}, null]}
+    assertion:
+      {"!=": [{"var": "output.calculation_methodology"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "Calculation methodology should be documented for reporting"
+    citation: "cit-cat14-004"

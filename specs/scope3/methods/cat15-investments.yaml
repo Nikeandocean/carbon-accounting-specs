@@ -1,0 +1,414 @@
+# ============================================================
+# Scope 3 Category 15: Investments
+# ============================================================
+# Source: GHG Protocol Corporate Value Chain (Scope 3) Standard (2011)
+#         Chapter 5, pp. 53-54
+# Source: GHG Protocol Technical Guidance for Calculating Scope 3 Emissions (2013)
+#         Chapter 15, pp. 136-152
+
+meta:
+  id: "scope3/cat15-investments"
+  version: "1.0.0"
+  source: "GHG Protocol Technical Guidance for Calculating Scope 3 Emissions"
+  source_ref: "https://ghgprotocol.org/calculation-tools/scope-3-calculation-guidance"
+  layer: "schema"
+  description: "Scope 3 Category 15 投资排放核算规则（3种计算方法：投资特定法、项目特定法、平均数据法）"
+
+citations:
+  # Category description
+  - id: "cit-cat15-001"
+    text: "Category 15 (Investments) includes scope 3 emissions associated with the reporting company's investments in the reporting year, not already included in scope 1 or scope 2. This category is applicable to investors (i.e., companies that make an investment with the objective of making a profit) and companies that provide financial services."
+    page: 53
+    section: "Scope 3 Standard, Chapter 5"
+
+  - id: "cit-cat15-002"
+    text: "Investments are categorized as a downstream scope 3 category because the provision of capital or financing is a service provided by the reporting company."
+    page: 53
+    section: "Scope 3 Standard, Chapter 5"
+
+  - id: "cit-cat15-003"
+    text: "This category also applies to investors that are not profit driven (e.g. multilateral development banks), and the same calculation methods should be used."
+    page: 136
+    section: "Technical Guidance, Category 15"
+
+  # Investment types
+  - id: "cit-cat15-004"
+    text: "For purposes of GHG accounting, this standard divides financial investments into four types: Equity investments, Debt investments, Project finance, Managed investments and client services."
+    page: 137
+    section: "Technical Guidance, Category 15"
+
+  # Boundary guidance
+  - id: "cit-cat15-005"
+    text: "Investments may be included in a company's scope 1 or scope 2 inventory depending on how the company defines its organizational boundaries. Companies that use the equity share approach include emissions from equity investments in scope 1 and scope 2. Companies that use a control approach account only for those equity investments that are under the company's control in scope 1 and scope 2. Investments not included in the company's scope 1 or scope 2 emissions are included in scope 3, in this category."
+    page: 53
+    section: "Scope 3 Standard, Chapter 5"
+
+  - id: "cit-cat15-006"
+    text: "A reporting company's scope 3 emissions from investments are the scope 1 and scope 2 emissions of investees."
+    page: 53
+    section: "Scope 3 Standard, Chapter 5"
+
+  # Proportional allocation
+  - id: "cit-cat15-007"
+    text: "Emissions from investments should be allocated to the reporting company based on the reporting company's proportional share of investment in the investee."
+    page: 53
+    section: "Scope 3 Standard, Chapter 5"
+
+  - id: "cit-cat15-008"
+    text: "Because investment portfolios are dynamic and can change frequently throughout the reporting year, companies should identify investments by choosing a fixed point in time, such as December 31 of the reporting year, or using a representative average over the course of the reporting year."
+    page: 53
+    section: "Scope 3 Standard, Chapter 5"
+
+  # Equity investments - required
+  - id: "cit-cat15-009"
+    text: "It is a requirement of the Scope 3 Standard to report emissions from equity investments made by the reporting company using the company's own capital and balance sheet, including: Equity investments in subsidiaries (typically more than 50 percent ownership), equity investments in associate companies (typically 20-50 percent ownership), equity investments in joint ventures, equity investments where the reporting company has neither financial control nor significant influence (typically less than 20 percent ownership)."
+    page: 140
+    section: "Technical Guidance, Category 15"
+
+  - id: "cit-cat15-010"
+    text: "Companies may establish a threshold (e.g., equity share of 1 percent) below which the company excludes equity investments from the inventory, if disclosed and justified."
+    page: 140
+    section: "Technical Guidance, Category 15"
+
+  # Investment-specific method
+  - id: "cit-cat15-011"
+    text: "The investment-specific method involves collecting scope 1 and scope 2 emissions directly from investee companies and allocating these emissions based upon the proportion of the investment."
+    page: 141
+    section: "Technical Guidance, Category 15"
+
+  - id: "cit-cat15-012"
+    text: "Activity data needed: Scope 1 and scope 2 emissions of investee company, the investor's proportional share of equity in the investee, if significant companies should also collect scope 3 emissions of the investee company."
+    page: 141
+    section: "Technical Guidance, Category 15"
+
+  - id: "cit-cat15-013"
+    text: "Emissions from equity investments = sum across equity investments: ∑ (scope 1 and scope 2 emissions of equity investment × share of equity (%)). If using the investment-specific method, the reporting company collects emissions data from investees, thus no emission factors are required. Formula 15.1."
+    page: 142
+    section: "Technical Guidance, Category 15, Formula 15.1"
+
+  # Average-data method for equity
+  - id: "cit-cat15-014"
+    text: "The average-data method uses Environmentally-extended input-output (EEIO) data to estimate the scope 1 and scope 2 emissions associated with equity investments. The revenue of the investee company should be multiplied by the appropriate EEIO emission factor that is representative of the investee company's sector of the economy."
+    page: 143
+    section: "Technical Guidance, Category 15"
+
+  - id: "cit-cat15-015"
+    text: "Activity data needed: Sector(s) the investee company operates in, revenue of investee company, the investor's proportional share of equity in the investee."
+    page: 143
+    section: "Technical Guidance, Category 15"
+
+  - id: "cit-cat15-016"
+    text: "Emissions from equity investments = sum across equity investments: ∑ ((investee company total revenue ($) × emission factor for investee's sector (kg CO2e/$ revenue)) × share of equity (%)). Emission factors needed: EEIO emission factors for the sectors of the economy that the investments are related to (kg CO2e/$ revenue). Formula 15.2."
+    page: 144
+    section: "Technical Guidance, Category 15, Formula 15.2"
+
+  # Project finance and debt with known use
+  - id: "cit-cat15-017"
+    text: "For each year during the term of the investment, companies should account for proportional scope 1 and scope 2 emissions of relevant projects that occur in the reporting year. Proportional emissions from project finance and debt investments with known use of proceeds should be allocated to the investor based on the investor's proportional share of total project costs (total equity plus debt)."
+    page: 146
+    section: "Technical Guidance, Category 15"
+
+  - id: "cit-cat15-018"
+    text: "The project-specific method involves collecting scope 1 and scope 2 emissions directly from the investee company for the relevant project(s) and allocating these emissions based on the investor's proportional share of total project costs (total equity plus debt)."
+    page: 147
+    section: "Technical Guidance, Category 15"
+
+  - id: "cit-cat15-019"
+    text: "CO2e emissions from projects = sum across projects: ∑ (scope 1 and scope 2 emissions of relevant project in the reporting year × share of total project costs (%)). If using the project-specific method, the reporting company collects emissions data from investees, so no emission factors are required. Formula 15.3."
+    page: 148
+    section: "Technical Guidance, Category 15, Formula 15.3"
+
+  # Average-data for project finance
+  - id: "cit-cat15-020"
+    text: "The average-data method uses environmentally-extended input output (EEIO) data to estimate the scope 1 and scope 2 emissions from projects. The project cost should be multiplied by appropriate emission factors that are representative of the sectors of the economy to which the project relates."
+    page: 148
+    section: "Technical Guidance, Category 15"
+
+  - id: "cit-cat15-021"
+    text: "Emissions from project finance and debt investments with known use proceeds = sum across projects in the construction phase: ∑ ((project construction cost in the reporting year ($) × emission factor of relevant construction sector (kg CO2e/$ revenue)) × share of total project costs (%)) + sum across projects in the operational phase: ∑ ((project revenue in the reporting year ($) × emission factor of relevant operating sector (kg CO2e/$ revenue)) × share of total project costs (%)). Formula 15.4."
+    page: 150
+    section: "Technical Guidance, Category 15, Formula 15.4"
+
+  # Projected lifetime emissions
+  - id: "cit-cat15-022"
+    text: "If the reporting company is an initial sponsor or lender of a project, it should also account for the total projected lifetime scope 1 and scope 2 emissions of relevant projects financed during the reporting year, and report those emissions separately from scope 3."
+    page: 151
+    section: "Technical Guidance, Category 15"
+
+  - id: "cit-cat15-023"
+    text: "Total projected lifetime emissions are reported in the initial year the project is financed, not in subsequent years, and emissions should not be amortized or discounted."
+    page: 151
+    section: "Technical Guidance, Category 15"
+
+  - id: "cit-cat15-024"
+    text: "Projected total lifetime emissions from project finance and debt investments with known use proceeds = ∑ ((projected annual emissions of project × projected lifetime of project) × share of total project costs). Note that project total lifetime emissions are only required to be reported in the initial year the project is financed. Formula 15.5."
+    page: 152
+    section: "Technical Guidance, Category 15, Formula 15.5"
+
+  # Screening guidance
+  - id: "cit-cat15-025"
+    text: "Because financial services companies may have a large number of investments, investments should be screened to prioritize investments that are likely to contribute most significantly to total GHG emissions. It is recommended that a screening, using the average-data methods described below, be carried out as a first step to calculating emissions from investments."
+    page: 139
+    section: "Technical Guidance, Category 15"
+
+  # Scope 3 of investees
+  - id: "cit-cat15-026"
+    text: "When scope 3 emissions are significant compared to other sources of emissions, investors should also account for the scope 3 emissions of the investee company. The GHG Protocol does not set a threshold above which scope 3 emissions should be included; instead, reporting companies should develop their own significance threshold based on their business goals."
+    page: 140
+    section: "Technical Guidance, Category 15"
+
+  # Reporting
+  - id: "cit-cat15-027"
+    text: "Any claims of avoided emissions related to a project must be reported separately from the company's scope 1, scope 2, and scope 3 inventories."
+    page: 151
+    section: "Technical Guidance, Category 15"
+
+rules:
+  # === 前置约束 (pre_calculation) ===
+
+  - id: "s3-c15-001"
+    name: "Investment portfolio validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.investments"}, null]},
+        {"!!": [{"var": "input.investments"}]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.investments"}, null]},
+        {"!!": [{"var": "input.investments"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Investment portfolio must be provided for Category 15"
+    citation: "cit-cat15-004"
+
+  - id: "s3-c15-002"
+    name: "Reporting entity role validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"in": [{"var": "input.reporting_entity_role"}, ["investor", "financial_services"]]}
+    assertion:
+      {"in": [{"var": "input.reporting_entity_role"}, ["investor", "financial_services"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 15 is applicable to investors and financial services companies"
+    citation: "cit-cat15-003"
+
+  - id: "s3-c15-003"
+    name: "Consolidation approach validation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"!=": [{"var": "input.consolidation_approach"}, null]}
+    assertion:
+      {"!=": [{"var": "input.consolidation_approach"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Consolidation approach should be specified to determine scope 1/2 vs scope 3 boundary"
+    citation: "cit-cat15-005"
+
+  - id: "s3-c15-004"
+    name: "Investment snapshot date documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"!=": [{"var": "input.investment_snapshot_date"}, null]}
+    assertion:
+      {"!=": [{"var": "input.investment_snapshot_date"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "Snapshot date for investment portfolio should be specified (e.g., Dec 31)"
+    citation: "cit-cat15-008"
+
+  # === 运行时推断 (runtime_inference) ===
+
+  - id: "s3-c15-005"
+    name: "Calculation method validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"in": [{"var": "input.selected_method"}, ["investment_specific", "project_specific", "average_data"]]}
+    assertion:
+      {"in": [{"var": "input.selected_method"}, ["investment_specific", "project_specific", "average_data"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Category 15 supports investment_specific, project_specific, or average_data methods"
+    citation: "cit-cat15-011"
+
+  - id: "s3-c15-006"
+    name: "Investment-specific data requirement"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "investment_specific"]}
+    assertion:
+      {"!=": [{"var": "input.investee_emissions_data"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Investment-specific method requires scope 1 and scope 2 emissions from investees"
+    citation: "cit-cat15-012"
+
+  - id: "s3-c15-007"
+    name: "Average-data EEIO factors requirement"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "average_data"]}
+    assertion:
+      {"!=": [{"var": "input.eeio_emission_factors"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Average-data method requires EEIO emission factors by sector"
+    citation: "cit-cat15-016"
+
+  - id: "s3-c15-008"
+    name: "Project finance cost share validation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.investment_type"}, "project_finance"]}
+    assertion:
+      {"!=": [{"var": "input.project_cost_share"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Project finance should use proportional share of total project costs (equity plus debt)"
+    citation: "cit-cat15-017"
+
+  - id: "s3-c15-009"
+    name: "Projected lifetime emissions check"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.is_initial_sponsor_or_lender"}, true]}
+    assertion:
+      {"!=": [{"var": "input.projected_lifetime_emissions"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "Initial sponsors/lenders should report total projected lifetime emissions separately"
+    citation: "cit-cat15-022"
+
+  - id: "s3-c15-010"
+    name: "EEIO geographic representativeness"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "average_data"]}
+    assertion:
+      {"!=": [{"var": "input.eeio_data_geographic_representativeness"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "EEIO data should be representative of geographic region where investee is located"
+    citation: "cit-cat15-016"
+
+  - id: "s3-c15-011"
+    name: "Scope 3 significance threshold"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.includes_scope3_of_investees"}, true]}
+    assertion:
+      {"!=": [{"var": "input.scope3_significance_threshold"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "If including scope 3 of investees, significance threshold should be documented"
+    citation: "cit-cat15-026"
+
+  # === 后审计 (post_audit) ===
+
+  - id: "s3-c15-012"
+    name: "Total emissions validation"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.total_emissions_co2e"}, null]},
+        {">=": [{"var": "output.total_emissions_co2e"}, 0]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "Total CO2e emissions must be non-negative"
+    citation: "cit-cat15-013"
+
+  - id: "s3-c15-013"
+    name: "Non-zero emissions check"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.total_emissions_co2e"}, 0]}
+    assertion:
+      {"!=": [{"var": "output.total_emissions_co2e"}, 0]}
+    on_fail: "raise_warning"
+    on_fail_message: "Total emissions should not be zero unless all investments have zero emissions"
+    citation: "cit-cat15-013"
+
+  - id: "s3-c15-014"
+    name: "Calculation methodology documentation"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "output.calculation_methodology"}, null]},
+        {"!=": [{"var": "output.investment_types_included"}, null]}
+      ]
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.calculation_methodology"}, null]},
+        {"!=": [{"var": "output.investment_types_included"}, null]}
+      ]
+    on_fail: "log_info"
+    on_fail_message: "Calculation methodology and investment types included should be documented"
+    citation: "cit-cat15-009"
+
+  - id: "s3-c15-015"
+    name: "EEIO limitations disclosure"
+    type: "validation"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "input.selected_method"}, "average_data"]}
+    assertion:
+      {"!=": [{"var": "output.eeio_limitations_disclosed"}, null]}
+    on_fail: "log_info"
+    on_fail_message: "EEIO data limitations should be disclosed when using average-data method"
+    citation: "cit-cat15-014"

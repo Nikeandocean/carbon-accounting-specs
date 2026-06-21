@@ -1,0 +1,236 @@
+meta:
+  id: "scope3/prohibitions"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Value Chain (Scope 3) Accounting and Reporting Standard"
+  source_ref: "https://ghgprotocol.org/standard/scope-3"
+  layer: "schema"
+  description: "Scope 3 核算禁止事项与合规红线"
+
+citations:
+  - id: "cit-s3p-001"
+    text: "The categories are designed to be mutually exclusive, such that, for any one reporting company, there is no double counting of emissions between categories."
+    page: 31
+    section: "Chapter 5: Identifying Scope 3 Emissions, Section 5.4"
+
+  - id: "cit-s3p-002"
+    text: "Scope 3 emissions should not be aggregated across companies to determine total emissions in a given region."
+    page: 30
+    section: "Chapter 5: Identifying Scope 3 Emissions, Section 5.1"
+
+  - id: "cit-s3p-003"
+    text: "Emissions from the use of capital goods by the reporting company are accounted for in either scope 1 (e.g., for fuel use) or scope 2 (e.g., for electricity use), rather than in scope 3."
+    page: 36
+    section: "Technical Guidance, Category 2"
+
+  - id: "cit-s3p-004"
+    text: "Category 3 excludes emissions from the combustion of fuels or electricity consumed by the reporting company, since they are already included in scope 1 or scope 2."
+    page: 41
+    section: "Chapter 5: Identifying Scope 3 Emissions, Category 3"
+
+  - id: "cit-s3p-005"
+    text: "Emissions from transportation in vehicles owned or controlled by the reporting company are accounted for in either scope 1 (for fuel use) or scope 2 (for electricity use)."
+    page: 46
+    section: "Chapter 5: Identifying Scope 3 Emissions, Category 6"
+
+  - id: "cit-s3p-006"
+    text: "Emissions from transportation of employees to and from work are accounted for in scope 3, category 7 (Employee commuting), not category 6."
+    page: 46
+    section: "Chapter 5: Identifying Scope 3 Emissions, Category 6"
+
+  - id: "cit-s3p-007"
+    text: "Companies should not double count emissions between category 1 and category 2."
+    page: 36
+    section: "Technical Guidance, Category 2"
+
+  - id: "cit-s3p-008"
+    text: "The reporting company should not double count emissions from the same activity in multiple scope 3 categories."
+    page: 54
+    section: "Chapter 5: Identifying Scope 3 Emissions, Section 5.4"
+
+rules:
+  # === 跨类别重复计算禁止 ===
+
+  - id: "proh-s3-001"
+    name: "禁止跨类别重复计算"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {
+          "and": [
+            {"!=": [{"var": "duplicate_check.category_a"}, null]},
+            {"!=": [{"var": "duplicate_check.category_b"}, null]},
+            {"==": [{"var": "duplicate_check.category_a"}, {"var": "duplicate_check.category_b"}]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "同一排放源不得在多个Scope 3类别中重复计算"
+    citation: "cit-s3p-001"
+
+  - id: "proh-s3-002"
+    name: "禁止跨公司汇总Scope 3"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      {"!=": [{"var": "output.aggregation_type"}, "cross_company"]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Scope 3排放不得跨公司汇总以确定区域总排放量"
+    citation: "cit-s3p-002"
+
+  # === Scope边界重叠禁止 ===
+
+  - id: "proh-s3-003"
+    name: "禁止将资本品使用排放计入Scope 3"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat2"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "includes_use_phase"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "资本品的使用阶段排放应计入Scope 1或Scope 2，不得计入Category 2"
+    citation: "cit-s3p-003"
+
+  - id: "proh-s3-004"
+    name: "禁止将燃料燃烧排放计入Category 3"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat3"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "includes_combustion"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "燃料燃烧排放应计入Scope 1，不得计入Category 3"
+    citation: "cit-s3p-004"
+
+  - id: "proh-s3-005"
+    name: "禁止将自有车辆运输计入Scope 3"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"in": [{"var": "input.category"}, ["cat4", "cat6", "cat9"]]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "vehicle_ownership"}, "reporting_company"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "报告公司自有或控制的车辆运输排放应计入Scope 1或Scope 2，不得计入Scope 3运输类别"
+    citation: "cit-s3p-005"
+
+  - id: "proh-s3-006"
+    name: "禁止将通勤计入商务旅行"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"==": [{"var": "input.category"}, "cat6"]}
+      ]
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "trip_type"}, "commuting"]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "员工通勤排放应计入Category 7，不得计入Category 6商务旅行"
+    citation: "cit-s3p-006"
+
+  - id: "proh-s3-007"
+    name: "禁止Category 1与Category 2重叠"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    assertion:
+      "none": [
+        {"var": "input.scope3_emission_sources"},
+        {
+          "and": [
+            {"==": [{"var": "category"}, "cat1"]},
+            {"==": [{"var": "is_capital_good"}, true]}
+          ]
+        }
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "资本品排放应计入Category 2，不得计入Category 1"
+    citation: "cit-s3p-007"
+
+  # === 数据质量禁止 ===
+
+  - id: "proh-s3-008"
+    name: "禁止使用已知不准确的排放因子"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"!=": [{"var": "emission_factor.known_inaccurate"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "不得使用已知不准确的排放因子"
+    citation: "cit-s3p-008"
+
+  - id: "proh-s3-009"
+    name: "禁止混合使用不同GWP来源"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      "all": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "gwp_source"}, {"var": "input.scope3_emission_sources.0.gwp_source"}]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "同一报告年度内不得混合使用不同IPCC评估报告的GWP值"
+    citation: "cit-s3p-008"
+
+dependencies:
+  - ref: "scope3/category-definitions"
+    relation: "constrained_by"
+  - ref: "scope3/cat1-purchased-goods"
+    relation: "constrained_by"
+
+conflicts_with: []

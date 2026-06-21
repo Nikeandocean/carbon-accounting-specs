@@ -1,0 +1,215 @@
+meta:
+  id: "scope3/data-quality-hierarchy"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Value Chain (Scope 3) Accounting and Reporting Standard"
+  source_ref: "https://ghgprotocol.org/standard/scope-3"
+  layer: "schema"
+  description: "Scope 3 数据质量层级与回退机制（针对价值链间接排放的特殊数据质量要求）"
+
+citations:
+  - id: "cit-s3dq-001"
+    text: "Data quality refers to the accuracy, completeness, and representativeness of the data used to calculate scope 3 emissions."
+    page: 64
+    section: "Chapter 7: Collecting Data"
+
+  - id: "cit-s3dq-002"
+    text: "Companies should prioritize data collection for scope 3 categories and activities that contribute the most to emissions."
+    page: 66
+    section: "Chapter 7: Collecting Data, Section 7.3"
+
+  - id: "cit-s3dq-003"
+    text: "Companies should assess data quality based on: temporal representativeness, geographical representativeness, technological representativeness, completeness, and reliability."
+    page: 68
+    section: "Chapter 7: Collecting Data, Section 7.5"
+
+  - id: "cit-s3dq-004"
+    text: "When collecting emission factors from suppliers it is recommended that companies also request information relating to the ratio of primary and secondary data used to calculate the emission factor."
+    page: 24
+    section: "Technical Guidance, Category 1"
+
+  - id: "cit-s3dq-005"
+    text: "Companies may use a combination of calculation methods for various scope 3 categories throughout the inventory, as well as for various scope 3 activities within each scope 3 category."
+    page: 13
+    section: "Technical Guidance, Introduction"
+
+# Scope 3特定的数据质量层级
+data_specificity_levels:
+  - level: 1
+    name: "供应商特定数据"
+    name_zh: "Supplier-specific data"
+    description: "来自供应商的特定产品cradle-to-gate排放数据"
+    quality: "highest"
+    methods: ["supplier_specific"]
+
+  - level: 2
+    name: "混合数据"
+    name_zh: "Hybrid data"
+    description: "供应商特定数据与行业平均数据的组合"
+    quality: "high"
+    methods: ["hybrid"]
+
+  - level: 3
+    name: "行业平均数据"
+    name_zh: "Industry average data"
+    description: "基于过程的生命周期数据库的行业平均排放因子"
+    quality: "medium"
+    methods: ["average_data"]
+
+  - level: 4
+    name: "EEIO数据"
+    name_zh: "Environmentally-extended input-output data"
+    description: "基于经济投入产出模型的排放因子"
+    quality: "lowest"
+    methods: ["spend_based"]
+
+fallback_chains:
+  emission_factor:
+    name: "Scope 3 排放因子回退链"
+    description: "当高优先级排放因子不可用时，按序降级"
+    chain:
+      - level: 1
+        name: "供应商特定排放因子"
+        data_type: "supplier_specific_factor"
+        condition: {"==": [{"var": "input.emission_factor.source_type"}, "supplier_specific"]}
+        on_match:
+          action: "use_value"
+          log_level: "info"
+          message: "使用供应商特定排放因子"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 2
+        name: "过程数据库排放因子"
+        data_type: "process_database_factor"
+        condition: {"==": [{"var": "input.emission_factor.source_type"}, "process_database"]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "供应商特定因子不可用，使用过程数据库行业平均因子"
+          require_disclosure: true
+          disclosure_key: "s3-dq-001"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 3
+        name: "EEIO排放因子"
+        data_type: "eeio_factor"
+        condition: {"==": [{"var": "input.emission_factor.source_type"}, "eeio"]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "过程数据库因子不可用，使用EEIO排放因子，数据质量降级"
+          require_disclosure: true
+          disclosure_key: "s3-dq-001"
+        on_null:
+          action: "mark_unavailable"
+          log_level: "fatal"
+          message: "所有排放因子数据源均不可用"
+          set_state: "scope3.emission_factor_available = false"
+
+  time_based_fallback:
+    name: "Scope 3 排放因子时效性回退"
+    description: "当当年因子不可用时的降级策略"
+    chain:
+      - level: 1
+        name: "当年排放因子"
+        data_type: "current_year_factor"
+        condition: {"!=": [{"var": "context.emission_factors.current_year"}, null]}
+        on_match:
+          action: "use_value"
+          log_level: "info"
+          message: "使用当年排放因子"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 2
+        name: "前一年排放因子"
+        data_type: "previous_year_factor"
+        condition: {"!=": [{"var": "context.emission_factors.previous_year"}, null]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "当年因子不可用，使用前一年因子"
+          require_disclosure: true
+          disclosure_key: "s3-dq-002"
+        on_null:
+          action: "proceed_to_next"
+
+      - level: 3
+        name: "最近可用排放因子"
+        data_type: "latest_available_factor"
+        condition: {"!=": [{"var": "context.emission_factors.latest_available"}, null]}
+        on_match:
+          action: "use_value_with_warning"
+          log_level: "warning"
+          message: "使用最近可用因子，距核算期存在时滞"
+          require_disclosure: true
+          disclosure_key: "s3-dq-002"
+        on_null:
+          action: "raise_fatal"
+          message: "无任何可用的排放因子数据"
+
+rules:
+  - id: "s3-dq-001"
+    name: "排放因子来源披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"!=": [{"var": "input.emission_factor.source_type"}, "supplier_specific"]}
+      ]
+    assertion:
+      {"!=": [{"var": "input.justifications.s3-dq-001"}, null]}
+    on_fail: "require_justification"
+    on_fail_message: "使用非供应商特定排放因子时，应披露数据来源和质量等级"
+    citation: "cit-s3dq-004"
+
+  - id: "s3-dq-002"
+    name: "排放因子时效性披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"!=": [{"var": "input.emission_factor.year"}, {"var": "input.entity.reporting_year"}]}
+      ]
+    assertion:
+      {"!=": [{"var": "input.justifications.s3-dq-002"}, null]}
+    on_fail: "require_justification"
+    on_fail_message: "排放因子年份与报告年度不一致时，应披露时滞原因"
+    citation: "cit-s3dq-003"
+
+  - id: "s3-dq-003"
+    name: "优先收集物质性数据"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "公司应优先为排放贡献最大的Scope 3类别和活动收集更高质量的数据。对于排放贡献较小的活动，可使用较低精度的方法。"
+    on_fail: "raise_warning"
+    on_fail_message: "建议对物质性较高的排放源使用更精确的数据收集方法"
+    citation: "cit-s3dq-002"
+
+  - id: "s3-dq-004"
+    name: "数据质量五维评估"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "knowledge"
+    lifecycle: "post_audit"
+    statement: "评估排放因子数据质量时应考虑五个维度：时间代表性、地理代表性、技术代表性、完整性和可靠性。"
+    on_fail: "raise_warning"
+    on_fail_message: "建议从五个维度评估排放因子数据质量"
+    citation: "cit-s3dq-003"
+
+dependencies: []
+
+conflicts_with: []
