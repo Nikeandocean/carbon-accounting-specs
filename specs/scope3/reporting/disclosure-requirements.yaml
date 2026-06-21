@@ -1,0 +1,306 @@
+meta:
+  id: "scope3/reporting/disclosure-requirements"
+  version: "1.0.0"
+  source: "GHG Protocol Corporate Value Chain (Scope 3) Standard"
+  source_ref: "https://ghgprotocol.org/standards/scope-3-standard"
+  layer: "schema"
+  description: "Scope 3价值链排放信息披露要求"
+
+citations:
+  - id: "cit-s3-disc-001"
+    text: "The company shall report Scope 3 emissions separately from Scope 1 and Scope 2 emissions."
+    page: 77
+    section: "Chapter 12: Reporting Scope 3 Emissions"
+
+  - id: "cit-s3-disc-002"
+    text: "A company shall report Scope 3 emissions by scope 3 category (categories 1 through 15)."
+    page: 77
+    section: "Chapter 12: Reporting by Category"
+
+  - id: "cit-s3-disc-003"
+    text: "A company shall disclose the calculation methodology used for each scope 3 category, including any data sources, emission factors, and assumptions."
+    page: 78
+    section: "Chapter 12: Methodology Disclosure"
+
+  - id: "cit-s3-disc-004"
+    text: "A company shall disclose any scope 3 categories that were not calculated and the reason for exclusion."
+    page: 78
+    section: "Chapter 12: Excluded Categories"
+
+  - id: "cit-s3-disc-005"
+    text: "A company should report biogenic CO2 emissions from the combustion of biomass separately from Scope 1, 2, and 3 emissions."
+    page: 79
+    section: "Chapter 12: Biogenic Emissions"
+
+  - id: "cit-s3-disc-006"
+    text: "A company shall disclose the base year for Scope 3 emissions and the rationale for the choice of base year. Any changes to the base year or methodology shall be disclosed."
+    page: 79
+    section: "Chapter 12: Base Year Disclosure"
+
+  - id: "cit-s3-disc-007"
+    text: "A company should provide a data quality assessment for Scope 3 emissions, including an evaluation of the accuracy, completeness, and consistency of the data."
+    page: 80
+    section: "Chapter 12: Data Quality Disclosure"
+
+  - id: "cit-s3-disc-008"
+    text: "A company shall disclose any significant changes in methodology, data sources, or assumptions from the previous reporting year."
+    page: 80
+    section: "Chapter 12: Methodology Changes"
+
+  - id: "cit-s3-disc-009"
+    text: "A company should separately report upstream emissions (categories 1-8) and downstream emissions (categories 9-15)."
+    page: 77
+    section: "Chapter 12: Upstream and Downstream Reporting"
+
+  - id: "cit-s3-disc-010"
+    text: "A company shall disclose the organizational and operational boundaries used for Scope 3 accounting, including the consolidation approach (equity share, operational control, or financial control)."
+    page: 78
+    section: "Chapter 12: Boundary Disclosure"
+
+  - id: "cit-s3-disc-011"
+    text: "Where Scope 3 emissions are calculated using the spend-based method, the company should disclose this limitation and any efforts to improve data quality toward supplier-specific or average-data methods."
+    page: 79
+    section: "Chapter 12: Method Limitations"
+
+  - id: "cit-s3-disc-012"
+    text: "A company should disclose the intended audience and purpose of the Scope 3 inventory, including whether it is being used for goal setting, risk assessment, or engagement with value chain partners."
+    page: 76
+    section: "Chapter 12: Inventory Purpose"
+
+rules:
+  # ========== 强制性披露 ==========
+
+  - id: "s3-disc-001"
+    name: "Scope 3总排放量披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      {"!=": [{"var": "output.total_scope3_emissions"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "须披露Scope 3总排放量"
+    citation: "cit-s3-disc-001"
+
+  - id: "s3-disc-002"
+    name: "分类别排放量披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.scope3_by_category"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat1"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat2"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat3"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat4"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat5"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat6"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat7"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat8"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat9"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat10"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat11"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat12"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat13"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat14"}, null]},
+        {"!=": [{"var": "output.scope3_by_category.cat15"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "须按Scope 3类别（Cat 1-15）分别披露排放量"
+    citation: "cit-s3-disc-002"
+
+  - id: "s3-disc-003"
+    name: "计算方法论披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.methodology"}, null]},
+        {"!=": [{"var": "output.data_sources"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "须披露Scope 3核算方法论、数据来源和排放因子"
+    citation: "cit-s3-disc-003"
+
+  - id: "s3-disc-004"
+    name: "排除类别披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      {"!=": [{"var": "output.excluded_categories"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "须披露未计算的Scope 3类别及排除原因"
+    citation: "cit-s3-disc-004"
+
+  - id: "s3-disc-005"
+    name: "基准年信息披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.base_year.scope3_emissions"}, null]},
+        {"!=": [{"var": "output.base_year.year"}, null]},
+        {"!=": [{"var": "output.base_year.rationale"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "须披露Scope 3基准年排放量、基准年年份及选择理由"
+    citation: "cit-s3-disc-006"
+
+  - id: "s3-disc-006"
+    name: "方法变更披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.scope3_emission_sources"}, null]},
+        {"!=": [{"var": "context.previous_year.methodology"}, null]}
+      ]
+    assertion:
+      "or": [
+        {"==": [{"var": "output.methodology"}, {"var": "context.previous_year.methodology"}]},
+        {"!=": [{"var": "output.methodology_changes"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "方法论、数据来源或假设发生重大变更时须予以披露"
+    citation: "cit-s3-disc-008"
+
+  - id: "s3-disc-007"
+    name: "组织边界披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      {"!=": [{"var": "output.consolidation_approach"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "须披露Scope 3核算采用的合并方法（股权比例法、运营控制法或财务控制法）"
+    citation: "cit-s3-disc-010"
+
+  # ========== 推荐性披露 ==========
+
+  - id: "s3-disc-008"
+    name: "生物源CO2单独报告"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "some": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "is_biomass"}, true]}
+      ]
+    assertion:
+      "or": [
+        {"!=": [{"var": "output.biogenic_co2"}, null]},
+        {"!=": [{"var": "input.justifications.s3-disc-008"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "建议将生物源CO2排放单独报告，不计入Scope 3总量"
+    citation: "cit-s3-disc-005"
+
+  - id: "s3-disc-009"
+    name: "数据质量评估披露"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      "or": [
+        {"!=": [{"var": "output.data_quality_assessment"}, null]},
+        {"!=": [{"var": "input.justifications.s3-disc-009"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "建议披露Scope 3数据质量评估（准确性、完整性、一致性）"
+    citation: "cit-s3-disc-007"
+
+  - id: "s3-disc-010"
+    name: "上下游分别报告"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      "or": [
+        {"and": [
+          {"!=": [{"var": "output.upstream_emissions"}, null]},
+          {"!=": [{"var": "output.downstream_emissions"}, null]}
+        ]},
+        {"!=": [{"var": "input.justifications.s3-disc-010"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "建议分别报告上游排放（Cat 1-8）和下游排放（Cat 9-15）"
+    citation: "cit-s3-disc-009"
+
+  - id: "s3-disc-011"
+    name: "支出法局限性披露"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "some": [
+        {"var": "input.scope3_emission_sources"},
+        {"==": [{"var": "calculation_method"}, "spend_based"]}
+      ]
+    assertion:
+      "or": [
+        {"!=": [{"var": "output.spend_based_limitations"}, null]},
+        {"!=": [{"var": "input.justifications.s3-disc-011"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "使用支出法时，建议披露该方法的局限性及提升数据质量的计划"
+    citation: "cit-s3-disc-011"
+
+  - id: "s3-disc-012"
+    name: "清单用途披露"
+    type: "recommendation"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.scope3_emission_sources"}, null]}
+    assertion:
+      "or": [
+        {"!=": [{"var": "output.inventory_purpose"}, null]},
+        {"!=": [{"var": "input.justifications.s3-disc-012"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "建议披露Scope 3清单的用途（目标设定、风险评估、价值链伙伴沟通等）"
+    citation: "cit-s3-disc-012"
+
+dependencies:
+  - ref: "scope3/principles/category-definitions"
+    relation: "constrained_by"
+  - ref: "scope3/principles/data-quality-hierarchy"
+    relation: "constrained_by"
+
+conflicts_with: []

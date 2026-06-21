@@ -365,6 +365,7 @@ load_order:
   - scope3/methods/cat14-franchises
   - scope3/methods/cat15-investments
   - scope3/constraints/prohibitions
+  - scope3/reporting/disclosure-requirements
 
 global_rules:
   - id: "global-001"
