@@ -6,9 +6,13 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+.pytest_cache/
 
 # PDF files (reference documents, not for distribution)
 *.pdf
+
+# Parsed text extracts from PDFs (generated artifacts)
+*-text.txt
 
 # OS files
 .DS_Store
