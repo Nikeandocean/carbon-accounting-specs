@@ -1,0 +1,387 @@
+meta:
+  id: "green-finance/cross-domain-bridge"
+  version: "2.0.0"
+  source: "跨域桥接规则：碳核算结果 → 绿色金融资格判定"
+  source_ref: "综合 GHG Protocol、ISSB S2、银保监会绿色信贷统计制度、绿色债券支持项目目录"
+  layer: "schema"
+  description: |
+    跨域桥接规范，将碳核算结果（Scope 1/2/3）映射到绿色金融资格判定。
+    连接三个领域：碳排放核算（GHG Protocol）→ 绿色信贷/债券资格（银保监会/人民银行）→ ISSB 合规性（IFRS S2）。
+    核心逻辑：排放强度超标降级、绿证比例加分、Scope 3 未披露导致 ISSB 不合规、碳数据审查 fatal 导致整体判定为 conditional 或 fail。
+
+# ============================================================
+# Citations: GHG Protocol × 绿色金融交叉条款
+# ============================================================
+citations:
+  - id: "cit-gf-br-001"
+    text: |
+      绿色债券募集资金应100%用于合格绿色项目，项目的环境效益应可量化、可验证。
+      发行主体的排放强度不应超过行业平均水平。
+    section: "绿色债券指引 第三章 募集资金使用"
+
+  - id: "cit-gf-br-002"
+    text: |
+      碳排放权交易体系（ETS）纳入企业的排放量应低于碳配额，
+      超出部分需通过碳配额清缴或购买CCER进行抵消。
+    section: "碳排放权交易管理办法 第二十三条"
+
+  - id: "cit-gf-br-003"
+    text: |
+      绿色信贷评级应综合考虑企业的环境绩效指标，
+      包括单位产值碳排放、清洁能源使用比例、污染物排放达标情况等。
+    section: "银监办发〔2013〕125号 第三章 排放强度评估"
+
+  - id: "cit-gf-br-004"
+    text: |
+      可再生能源证书（绿证）可用于证明企业外购电力的可再生能源属性，
+      但不得重复计算——同一电量不得同时用于绿证和PPA声明。
+      绿证使用比例达50%以上可在绿色信贷评估中获得加分。
+    section: "绿色电力证书认购实施细则 第八条"
+
+  - id: "cit-gf-br-005"
+    text: |
+      ISSB S2 要求披露 Scope 1、Scope 2 和 Scope 3 全部排放数据。
+      未披露任何范围的排放将导致合规性缺陷。
+    section: "IFRS S2, paragraph 29"
+
+  - id: "cit-gf-br-006"
+    text: |
+      绿色债券评估机构应对发行主体的碳管理能力进行评估，
+      包括排放数据质量、减排目标科学性、碳信用使用合理性等维度。
+    section: "绿色债券评估认证指引 第五条"
+
+  - id: "cit-gf-br-007"
+    text: |
+      Scope 3 排放占许多行业总排放的 70% 以上，
+      忽略 Scope 3 将严重低估企业的真实气候风险敞口。
+    section: "GHG Protocol Scope 3 Standard, Chapter 1, Section 1.3"
+
+  - id: "cit-gf-br-008"
+    text: |
+      企业的碳排放数据应经过第三方独立核查，
+      核查范围应覆盖所有重大排放源（通常指占总排放 5% 以上的单一排放源）。
+    section: "ISO 14064-3:2019, Clause 5.3"
+
+  - id: "cit-gf-br-009"
+    text: |
+      绿色债券支持项目目录要求项目的碳排放强度低于行业准入阈值。
+      超过行业基准值120%的项目应降级评估，超过150%的项目不予认定。
+    section: "绿色债券支持项目目录（2021版）附录 技术说明"
+
+  - id: "cit-gf-br-010"
+    text: |
+      碳信用抵消量不应超过企业总排放的一定比例，
+      过度依赖碳信用可能掩盖企业实际减排不足的事实。
+    section: "绿色债券评估认证指引 第六条"
+
+  - id: "cit-gf-br-011"
+    text: |
+      减排目标应与科学碳目标倡议（SBTi）或
+      1.5度/远低于2度升温路径保持一致。
+    section: "IFRS S2, paragraph 33"
+
+  - id: "cit-gf-br-012"
+    text: |
+      绿色信贷的碳数据审查发现 fatal 级别错误时，
+      整体金融资格判定应为 "conditional"（需整改后重新评估）或 "fail"（不予通过）。
+    section: "银监办发〔2013〕125号 第四章 环境合规审查"
+
+# ============================================================
+# Rules: 跨域桥接规则 (13 rules)
+# ============================================================
+rules:
+  # ========== 一、Scope 1 排放强度 → 绿色债券资格 ==========
+
+  - id: "gf-br-001"
+    name: "Scope 1排放强度超标降级（绿色债券）"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.entity.scope1_emission_intensity"}, null]},
+        {"!=": [{"var": "context.industry_benchmark.scope1_intensity"}, null]}
+      ]
+    assertion:
+      {"<=": [
+        {"var": "input.entity.scope1_emission_intensity"},
+        {"*": [{"var": "context.industry_benchmark.scope1_intensity"}, 1.2]}
+      ]}
+    on_fail: "raise_warning"
+    on_fail_message: "Scope 1排放强度超过行业基准值120%，绿色债券资格应降级为'关注类'"
+    citation: "cit-gf-br-009"
+
+  - id: "gf-br-002"
+    name: "Scope 1排放强度严重超标排除（绿色债券）"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.entity.scope1_emission_intensity"}, null]},
+        {"!=": [{"var": "context.industry_benchmark.scope1_intensity"}, null]}
+      ]
+    assertion:
+      {"<=": [
+        {"var": "input.entity.scope1_emission_intensity"},
+        {"*": [{"var": "context.industry_benchmark.scope1_intensity"}, 1.5]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "Scope 1排放强度超过行业基准值150%，不具备绿色债券发行资格"
+    citation: "cit-gf-br-001"
+
+  # ========== 二、Scope 2 绿证比例 → 绿色信贷加分 ==========
+
+  - id: "gf-br-003"
+    name: "绿证使用比例达标加分（绿色信贷）"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "info"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "input.entity.rec_usage_ratio"}, null]}
+    assertion:
+      {"or": [
+        {">=": [{"var": "input.entity.rec_usage_ratio"}, 0.5]},
+        {"!=": [{"var": "input.justifications.gf-br-003"}, null]}
+      ]}
+    on_fail: "log_info"
+    on_fail_message: "Scope 2绿证使用比例达到50%以上，可在绿色信贷评估中获得加分"
+    citation: "cit-gf-br-004"
+
+  - id: "gf-br-004"
+    name: "绿证与PPA不重复计算"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.entity.rec_covered_mwh"}, null]},
+        {"!=": [{"var": "input.entity.ppa_electricity_mwh"}, null]}
+      ]
+    assertion:
+      {"!=": [
+        {"var": "input.entity.rec_covered_mwh"},
+        {"var": "input.entity.ppa_electricity_mwh"}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "同一电量不得同时用于绿证声明和PPA声明，存在重复计算"
+    citation: "cit-gf-br-004"
+
+  # ========== 三、Scope 3 → ISSB S2 合规性 ==========
+
+  - id: "gf-br-005"
+    name: "Scope 3未披露导致ISSB不合规"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.metrics.ghg.scope3_emissions_tco2e"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "未披露Scope 3排放数据，ISSB S2合规性不通过"
+    citation: "cit-gf-br-005"
+
+  - id: "gf-br-006"
+    name: "Scope 3覆盖范围不足警告"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.metrics.ghg.scope3_categories_included"}, null]}
+    assertion:
+      {"or": [
+        {">=": [
+          {"count": {"var": "output.metrics.ghg.scope3_categories_included"}},
+          8
+        ]},
+        {"!=": [{"var": "input.justifications.gf-br-006"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "Scope 3覆盖类别少于8个，建议说明排除原因（Scope 3通常占总排放70%以上）"
+    citation: "cit-gf-br-007"
+
+  # ========== 四、碳数据审查 → 整体金融资格判定 ==========
+
+  - id: "gf-br-007"
+    name: "碳数据fatal错误导致绿色金融整体降级"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"in": [{"var": "input.evaluation.purpose"},
+        ["green_bond", "green_credit", "esg_rating"]]}
+    assertion:
+      {"not": [
+        {"some": [
+          {"var": "output.audit.findings"},
+          {"and": [
+            {"==": [{"var": "severity"}, "fatal"]},
+            {"in": [{"var": "domain"}, ["scope1", "scope2", "scope3", "carbon_accounting"]]}
+          ]}
+        ]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "碳数据审查发现fatal级别错误，绿色金融整体判定为'conditional'或'fail'"
+    citation: "cit-gf-br-012"
+
+  - id: "gf-br-008"
+    name: "全范围排放完整性与绿色评级联动"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"in": [{"var": "input.evaluation.purpose"},
+        ["green_bond", "green_credit", "esg_rating"]]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "output.metrics.ghg.scope1_emissions_tco2e"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.scope2_location_based_tco2e"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.scope3_emissions_tco2e"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "绿色金融评估须基于完整的 Scope 1/2/3 排放数据，缺少任一范围将导致判定为'fail'"
+    citation: "cit-gf-br-005"
+
+  # ========== 五、排放数据质量 → 绿色金融评级 ==========
+
+  - id: "gf-br-009"
+    name: "排放数据第三方核查要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.total_ghg_emissions"}, null]}
+    assertion:
+      {"!=": [{"var": "input.entity.third_party_verification"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "碳排放数据应经过第三方独立核查，方可用于绿色金融评估"
+    citation: "cit-gf-br-008"
+
+  - id: "gf-br-010"
+    name: "重大排放源核查覆盖"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "input.entity.third_party_verification"}, null]}
+    assertion:
+      {"all": [
+        {"var": "input.entity.emission_sources"},
+        {"or": [
+          {"<=": [
+            {"/": [{"var": "emissions_tco2e"}, {"var": "input.entity.total_ghg_emissions"}]},
+            0.05
+          ]},
+          {"==": [{"var": "verified"}, true]}
+        ]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "占总排放5%以上的单一排放源必须经过第三方核查"
+    citation: "cit-gf-br-008"
+
+  # ========== 六、碳配额与碳信用 ==========
+
+  - id: "gf-br-011"
+    name: "碳配额清缴合规检查"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"in": [{"var": "input.entity.regulatory_status"}, ["ets_covered"]]}
+    assertion:
+      {"or": [
+        {"<=": [
+          {"var": "input.entity.scope1_emissions_tco2e"},
+          {"var": "input.entity.carbon_allowance"}
+        ]},
+        {"!=": [{"var": "input.entity.ccus_offset_tco2e"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "ETS纳入企业排放量超出碳配额，需通过CCER或碳配额清缴抵消"
+    citation: "cit-gf-br-002"
+
+  - id: "gf-br-012"
+    name: "碳信用使用合理性审查"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.metrics.carbon_credits"}, null]}
+    assertion:
+      {"or": [
+        {"<=": [
+          {"/": [
+            {"var": "output.metrics.carbon_credits.retired_tco2e"},
+            {"var": "input.entity.total_ghg_emissions"}
+          ]},
+          0.1
+        ]},
+        {"!=": [{"var": "input.justifications.gf-br-012"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "碳信用抵消量超过总排放10%，建议说明碳信用使用的合理性"
+    citation: "cit-gf-br-010"
+
+  # ========== 七、减排目标科学性 ==========
+
+  - id: "gf-br-013"
+    name: "减排目标科学性评估"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.targets.emission_reduction_targets"}, null]}
+    assertion:
+      {"or": [
+        {"in": [
+          {"var": "output.targets.emission_reduction_targets.alignment"},
+          ["SBTi", "1.5C", "well_below_2C"]
+        ]},
+        {"!=": [{"var": "input.justifications.gf-br-013"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "减排目标应与科学碳目标倡议（SBTi）或1.5度/远低于2度升温路径保持一致"
+    citation: "cit-gf-br-011"
+
+dependencies:
+  - ref: "green-finance/credit-classification"
+    relation: "constrained_by"
+  - ref: "green-finance/issb-s2-disclosure"
+    relation: "constrained_by"
+  - ref: "green-finance/bond-catalog"
+    relation: "references"
+  - ref: "green-finance/bond-eligibility"
+    relation: "references"
+  - ref: "scope1/principles/emission-categories"
+    relation: "references"
+  - ref: "scope2/methods/market-based"
+    relation: "references"
+  - ref: "scope3/reporting/disclosure-requirements"
+    relation: "references"
+
+conflicts_with: []

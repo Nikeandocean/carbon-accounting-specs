@@ -1,0 +1,680 @@
+meta:
+  id: "green-finance/credit-classification"
+  version: "2.0.0"
+  source: "银保监会《绿色信贷统计制度》"
+  source_ref: "中国银行保险监督管理委员会 银监办发〔2013〕125号 绿色信贷统计制度"
+  layer: "schema"
+  description: |
+    绿色信贷分类标准，基于银保监会《绿色信贷统计制度》12大类分类体系。
+    用于判定贷款项目是否属于绿色信贷、关注类或不合格类别。
+    分类逻辑：绿色信贷（项目属于12大类且排放达标）→ 关注类（用途不明确或部分涉及高碳）→ 不合格（用于"两高一剩"）。
+
+# ============================================================
+# Citations: 银保监会绿色信贷统计制度 12大类及管理要求
+# ============================================================
+citations:
+  - id: "cit-gf-cc-001"
+    text: |
+      绿色信贷统计制度将绿色信贷支持范围划分为12大类：
+      1. 绿色农业开发项目
+      2. 绿色林业开发项目
+      3. 工业节能节水环保项目
+      4. 自然保护、生态修复及灾害防控项目
+      5. 资源循环利用项目
+      6. 垃圾处理及污染防治项目
+      7. 可再生能源及清洁能源项目
+      8. 农村及城市水项目
+      9. 建筑节能及绿色建筑项目
+      10. 绿色交通运输项目
+      11. 节能环保服务项目
+      12. 采用国际惯例或国际标准的境外项目
+    section: "银监办发〔2013〕125号 附件1 绿色信贷统计报表 绿色贷款统计类别"
+
+  - id: "cit-gf-cc-002"
+    text: |
+      支持节能环保、新能源、新能源汽车等三大战略性新兴产业生产制造端的贷款，
+      纳入绿色信贷统计口径。具体包括：
+      - 节能环保产业：高效节能设备制造、先进环保设备制造、资源循环利用设备制造
+      - 新能源产业：太阳能设备制造、风力发电设备制造、生物质能设备制造
+      - 新能源汽车产业：整车制造、动力电池制造、电机及控制系统制造
+    section: "银监办发〔2013〕125号 附件1 战略性新兴产业生产制造端贷款"
+
+  - id: "cit-gf-cc-003"
+    text: |
+      关注类贷款是指贷款用途不明确，或部分涉及高碳行业但尚未达到不合格标准的贷款。
+      银行应加强贷后管理，跟踪资金实际用途，确保贷款资金未流入限制类行业。
+    section: "银监办发〔2013〕125号 第二章 贷款分类管理"
+
+  - id: "cit-gf-cc-004"
+    text: |
+      不合格贷款是指明确用于'两高一剩'（高污染、高耗能、产能过剩）行业的贷款，
+      不得纳入绿色信贷统计口径。'两高一剩'行业包括但不限于：
+      钢铁、水泥、电解铝、平板玻璃、煤化工、焦化、电石、铁合金等。
+    section: "银监办发〔2013〕125号 第二章 贷款分类管理"
+
+  - id: "cit-gf-cc-005"
+    text: |
+      绿色农业开发项目包括：有机农业、生态农业、节水灌溉、农业废弃物资源化利用、
+      农村沼气工程、农业面源污染治理等项目。
+    section: "银监办发〔2013〕125号 附件1 第1类 绿色农业开发项目"
+
+  - id: "cit-gf-cc-006"
+    text: |
+      绿色林业开发项目包括：植树造林、森林抚育、湿地保护、防沙治沙、
+      林业碳汇、林下经济等项目。
+    section: "银监办发〔2013〕125号 附件1 第2类 绿色林业开发项目"
+
+  - id: "cit-gf-cc-007"
+    text: |
+      工业节能节水环保项目包括：工业余热余压利用、工业节水改造、
+      工业锅炉窑炉节能改造、电机系统节能改造、能量系统优化等项目。
+    section: "银监办发〔2013〕125号 附件1 第3类 工业节能节水环保项目"
+
+  - id: "cit-gf-cc-008"
+    text: |
+      自然保护、生态修复及灾害防控项目包括：自然保护区建设、矿山地质环境恢复治理、
+      水土流失治理、荒漠化治理、地质灾害防治等项目。
+    section: "银监办发〔2013〕125号 附件1 第4类 自然保护生态修复及灾害防控项目"
+
+  - id: "cit-gf-cc-009"
+    text: |
+      资源循环利用项目包括：废旧物资回收利用、再生资源加工利用、
+      机电产品再制造、秸秆综合利用、餐厨废弃物资源化利用等项目。
+    section: "银监办发〔2013〕125号 附件1 第5类 资源循环利用项目"
+
+  - id: "cit-gf-cc-010"
+    text: |
+      垃圾处理及污染防治项目包括：城镇生活垃圾处理、危险废物处置、
+      污水处理、大气污染治理、土壤污染治理、固体废物处理等项目。
+    section: "银监办发〔2013〕125号 附件1 第6类 垃圾处理及污染防治项目"
+
+  - id: "cit-gf-cc-011"
+    text: |
+      可再生能源及清洁能源项目包括：风力发电、太阳能发电、生物质能发电、
+      水力发电、地热能利用、潮汐能利用、垃圾焚烧发电等项目。
+    section: "银监办发〔2013〕125号 附件1 第7类 可再生能源及清洁能源项目"
+
+  - id: "cit-gf-cc-012"
+    text: |
+      农村及城市水项目包括：农村饮水安全工程、城市供水管网改造、
+      城市排水防涝设施、海绵城市建设、水生态修复等项目。
+    section: "银监办发〔2013〕125号 附件1 第8类 农村及城市水项目"
+
+  - id: "cit-gf-cc-013"
+    text: |
+      建筑节能及绿色建筑项目包括：新建绿色建筑、既有建筑节能改造、
+      绿色建材生产、建筑可再生能源应用等项目。
+      绿色建筑应达到国家绿色建筑评价标准二星级及以上。
+    section: "银监办发〔2013〕125号 附件1 第9类 建筑节能及绿色建筑项目"
+
+  - id: "cit-gf-cc-014"
+    text: |
+      绿色交通运输项目包括：城市轨道交通、新能源汽车推广、电动物流车、
+      清洁能源船舶、港口岸电、充电桩/换电站建设、铁路电气化改造等项目。
+      传统燃油车产能扩张项目不属于绿色信贷。
+    section: "银监办发〔2013〕125号 附件1 第10类 绿色交通运输项目"
+
+  - id: "cit-gf-cc-015"
+    text: |
+      节能环保服务项目包括：合同能源管理、节能咨询、环境监测、
+      碳排放权交易服务、清洁生产审核、环境影响评价等项目。
+    section: "银监办发〔2013〕125号 附件1 第11类 节能环保服务项目"
+
+  - id: "cit-gf-cc-016"
+    text: |
+      采用国际惯例或国际标准的境外项目包括：符合赤道原则、
+      国际金融公司（IFC）绩效标准、联合国环境规划署金融倡议（UNEP FI）等
+      国际惯例或国际标准的境外项目融资。
+    section: "银监办发〔2013〕125号 附件1 第12类 采用国际惯例或国际标准的境外项目"
+
+  - id: "cit-gf-cc-017"
+    text: |
+      贷款项目的碳排放强度应低于行业基准值。若项目排放强度超过行业平均水平的120%，
+      应归入关注类；超过150%的，应归入不合格类别。
+    section: "银监办发〔2013〕125号 第三章 排放强度评估"
+
+  - id: "cit-gf-cc-018"
+    text: |
+      借款人在贷款申请日前两年内存在环境违法行为（行政处罚、责令停产整顿、
+      按日连续处罚等），该笔贷款不得归入绿色信贷类别。
+    section: "银监办发〔2013〕125号 第四章 环境合规审查"
+
+  - id: "cit-gf-cc-019"
+    text: |
+      银行应建立绿色信贷分类的内部管理制度，明确分类标准、审批流程和
+      贷后监管要求，并按季度向监管部门报送绿色信贷统计数据。
+    section: "银监办发〔2013〕125号 第五章 管理要求"
+
+  - id: "cit-gf-cc-020"
+    text: |
+      贷款用途涉及多种产业时，应按实际资金投向比例拆分。
+      绿色用途占比超过70%的，可整体归入绿色信贷；
+      占比低于30%的，不得归入绿色信贷；
+      30%-70%之间的，应按比例拆分统计。
+    section: "银监办发〔2013〕125号 第二章 贷款分类管理"
+
+  - id: "cit-gf-cc-021"
+    text: |
+      银行应对绿色信贷项目的环境效益进行量化评估，包括节能量、碳减排量、
+      污染物削减量、资源循环利用量等指标，并建立台账记录。
+    section: "银监办发〔2013〕125号 第五章 管理要求"
+
+# ============================================================
+# 12大类绿色产业目录结构
+# ============================================================
+green_credit_categories:
+  - id: "GC01"
+    name: "绿色农业开发项目"
+    name_en: "Green Agriculture Development"
+    subcategories:
+      - "有机农业"
+      - "生态农业"
+      - "节水灌溉"
+      - "农业废弃物资源化利用"
+      - "农村沼气工程"
+      - "农业面源污染治理"
+
+  - id: "GC02"
+    name: "绿色林业开发项目"
+    name_en: "Green Forestry Development"
+    subcategories:
+      - "植树造林"
+      - "森林抚育"
+      - "湿地保护"
+      - "防沙治沙"
+      - "林业碳汇"
+      - "林下经济"
+
+  - id: "GC03"
+    name: "工业节能节水环保项目"
+    name_en: "Industrial Energy/Water Conservation and Environmental Protection"
+    subcategories:
+      - "工业余热余压利用"
+      - "工业节水改造"
+      - "工业锅炉窑炉节能改造"
+      - "电机系统节能改造"
+      - "能量系统优化"
+
+  - id: "GC04"
+    name: "自然保护、生态修复及灾害防控项目"
+    name_en: "Nature Conservation, Ecological Restoration and Disaster Prevention"
+    subcategories:
+      - "自然保护区建设"
+      - "矿山地质环境恢复治理"
+      - "水土流失治理"
+      - "荒漠化治理"
+      - "地质灾害防治"
+
+  - id: "GC05"
+    name: "资源循环利用项目"
+    name_en: "Resource Recycling"
+    subcategories:
+      - "废旧物资回收利用"
+      - "再生资源加工利用"
+      - "机电产品再制造"
+      - "秸秆综合利用"
+      - "餐厨废弃物资源化利用"
+
+  - id: "GC06"
+    name: "垃圾处理及污染防治项目"
+    name_en: "Waste Treatment and Pollution Prevention"
+    subcategories:
+      - "城镇生活垃圾处理"
+      - "危险废物处置"
+      - "污水处理"
+      - "大气污染治理"
+      - "土壤污染治理"
+      - "固体废物处理"
+
+  - id: "GC07"
+    name: "可再生能源及清洁能源项目"
+    name_en: "Renewable and Clean Energy"
+    subcategories:
+      - "风力发电"
+      - "太阳能发电"
+      - "生物质能发电"
+      - "水力发电"
+      - "地热能利用"
+      - "潮汐能利用"
+      - "垃圾焚烧发电"
+
+  - id: "GC08"
+    name: "农村及城市水项目"
+    name_en: "Rural and Urban Water Projects"
+    subcategories:
+      - "农村饮水安全工程"
+      - "城市供水管网改造"
+      - "城市排水防涝设施"
+      - "海绵城市建设"
+      - "水生态修复"
+
+  - id: "GC09"
+    name: "建筑节能及绿色建筑项目"
+    name_en: "Building Energy Efficiency and Green Buildings"
+    subcategories:
+      - "新建绿色建筑"
+      - "既有建筑节能改造"
+      - "绿色建材生产"
+      - "建筑可再生能源应用"
+
+  - id: "GC10"
+    name: "绿色交通运输项目"
+    name_en: "Green Transportation"
+    subcategories:
+      - "城市轨道交通"
+      - "新能源汽车推广"
+      - "电动物流车"
+      - "清洁能源船舶"
+      - "港口岸电"
+      - "充电桩/换电站建设"
+      - "铁路电气化改造"
+
+  - id: "GC11"
+    name: "节能环保服务项目"
+    name_en: "Energy Conservation and Environmental Protection Services"
+    subcategories:
+      - "合同能源管理"
+      - "节能咨询"
+      - "环境监测"
+      - "碳排放权交易服务"
+      - "清洁生产审核"
+      - "环境影响评价"
+
+  - id: "GC12"
+    name: "采用国际惯例或国际标准的境外项目"
+    name_en: "Overseas Projects Adopting International Standards"
+    subcategories:
+      - "赤道原则项目"
+      - "IFC绩效标准项目"
+      - "UNEP FI标准项目"
+
+  - id: "SE01"
+    name: "战略性新兴产业-节能环保"
+    name_en: "Strategic Emerging Industry - Energy Conservation"
+    subcategories:
+      - "高效节能设备制造"
+      - "先进环保设备制造"
+      - "资源循环利用设备制造"
+
+  - id: "SE02"
+    name: "战略性新兴产业-新能源"
+    name_en: "Strategic Emerging Industry - New Energy"
+    subcategories:
+      - "太阳能设备制造"
+      - "风力发电设备制造"
+      - "生物质能设备制造"
+
+  - id: "SE03"
+    name: "战略性新兴产业-新能源汽车"
+    name_en: "Strategic Emerging Industry - New Energy Vehicles"
+    subcategories:
+      - "整车制造"
+      - "动力电池制造"
+      - "电机及控制系统制造"
+
+# ============================================================
+# Rules: 绿色信贷分类规则 (18 rules)
+# ============================================================
+rules:
+  # ========== 一、12大类行业准入判定 ==========
+
+  - id: "gf-cc-001"
+    name: "绿色产业12大类匹配检查"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.loan.project_category"}, null]}
+    assertion:
+      {"in": [
+        {"var": "input.loan.project_category"},
+        ["GC01", "GC02", "GC03", "GC04", "GC05", "GC06",
+         "GC07", "GC08", "GC09", "GC10", "GC11", "GC12",
+         "SE01", "SE02", "SE03"]
+      ]}
+    on_fail: "raise_warning"
+    on_fail_message: "贷款项目不属于绿色信贷12大类或三大战略性新兴产业，需进一步评估是否归入关注类"
+    citation: "cit-gf-cc-001"
+
+  - id: "gf-cc-002"
+    name: "两高一剩行业排除检查"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.loan.project_industry"}, null]}
+    assertion:
+      {"!": [{"in": [
+        {"var": "input.loan.project_industry"},
+        ["钢铁", "水泥", "电解铝", "平板玻璃", "煤化工", "焦化", "电石", "铁合金"]
+      ]}]}
+    on_fail: "raise_fatal"
+    on_fail_message: "贷款项目属于'两高一剩'行业，应归入不合格类别，不得纳入绿色信贷统计"
+    citation: "cit-gf-cc-004"
+
+  - id: "gf-cc-003"
+    name: "高耗能行业新增产能排除"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"in": [{"var": "input.loan.project_industry"},
+          ["钢铁", "水泥", "电解铝", "平板玻璃", "煤化工", "焦化", "电石", "铁合金"]]},
+        {"==": [{"var": "input.loan.project_type"}, "新增产能"]}
+      ]
+    assertion: false
+    on_fail: "raise_fatal"
+    on_fail_message: "高耗能行业的新增产能贷款不得归入绿色信贷类别"
+    citation: "cit-gf-cc-004"
+
+  - id: "gf-cc-004"
+    name: "高耗能行业节能改造例外"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"in": [{"var": "input.loan.project_industry"},
+          ["钢铁", "水泥", "电解铝", "平板玻璃", "煤化工"]]},
+        {"in": [{"var": "input.loan.project_type"},
+          ["节能改造", "环保升级", "超低排放改造", "节水改造"]]}
+      ]
+    assertion:
+      {"!=": [{"var": "input.loan.energy_saving_report"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "高耗能行业节能改造项目需提供节能评估报告方可归入绿色信贷"
+    citation: "cit-gf-cc-003"
+
+  # ========== 二、排放强度阈值 ==========
+
+  - id: "gf-cc-005"
+    name: "排放强度行业基准比较（关注类阈值）"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.loan.project_industry"}, null]},
+        {"!=": [{"var": "input.loan.emission_intensity"}, null]},
+        {"!=": [{"var": "context.industry_benchmark_emission_intensity"}, null]}
+      ]
+    assertion:
+      {"<=": [
+        {"var": "input.loan.emission_intensity"},
+        {"*": [{"var": "context.industry_benchmark_emission_intensity"}, 1.2]}
+      ]}
+    on_fail: "raise_warning"
+    on_fail_message: "项目排放强度超过行业基准值120%，应归入关注类"
+    citation: "cit-gf-cc-017"
+
+  - id: "gf-cc-006"
+    name: "排放强度严重超标不合格判定"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.loan.project_industry"}, null]},
+        {"!=": [{"var": "input.loan.emission_intensity"}, null]},
+        {"!=": [{"var": "context.industry_benchmark_emission_intensity"}, null]}
+      ]
+    assertion:
+      {"<=": [
+        {"var": "input.loan.emission_intensity"},
+        {"*": [{"var": "context.industry_benchmark_emission_intensity"}, 1.5]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "项目排放强度超过行业基准值150%，应归入不合格类别"
+    citation: "cit-gf-cc-017"
+
+  # ========== 三、环境合规审查 ==========
+
+  - id: "gf-cc-007"
+    name: "环境违法记录排除检查"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.borrower.environmental_violations"}, null]}
+    assertion:
+      "not": [
+        {"some": [
+          {"var": "input.borrower.environmental_violations"},
+          {"<=": [
+            {"var": "violation_date"},
+            {"+": [{"var": "context.current_date"}, -730]}
+          ]}
+        ]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "借款人在贷款申请日前两年内存在环境违法行为，不得归入绿色信贷类别"
+    citation: "cit-gf-cc-018"
+
+  - id: "gf-cc-008"
+    name: "污染防治项目环评和排污许可检查"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"in": [{"var": "input.loan.project_category"}, ["GC06", "GC03"]]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.borrower.eia_report"}, null]},
+        {"!=": [{"var": "input.borrower.pollution_permit"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "污染防治类和工业节能节水类项目需提供环境影响评价报告和排污许可证"
+    citation: "cit-gf-cc-010"
+
+  # ========== 四、资金用途拆分 ==========
+
+  - id: "gf-cc-009"
+    name: "混合用途绿色比例阈值判定"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"!=": [{"var": "input.loan.green_usage_ratio"}, null]}
+    assertion:
+      {"or": [
+        {">=": [{"var": "input.loan.green_usage_ratio"}, 0.7]},
+        {"<": [{"var": "input.loan.green_usage_ratio"}, 0.3]}
+      ]}
+    on_fail: "raise_warning"
+    on_fail_message: "绿色用途占比在30%-70%之间，需按实际比例拆分统计"
+    citation: "cit-gf-cc-020"
+
+  - id: "gf-cc-010"
+    name: "绿色信贷整体归类70%门槛"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"!=": [{"var": "input.loan.green_usage_ratio"}, null]}
+    assertion:
+      {">=": [{"var": "input.loan.green_usage_ratio"}, 0.7]}
+    on_fail: "raise_fatal"
+    on_fail_message: "绿色用途占比低于70%，不得整体归入绿色信贷类别"
+    citation: "cit-gf-cc-020"
+
+  # ========== 五、绿色交通项目专项 ==========
+
+  - id: "gf-cc-011"
+    name: "清洁交通项目资格判定"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.loan.project_category"}, "GC10"]}
+    assertion:
+      {"in": [{"var": "input.loan.project_subtype"},
+        ["城市轨道交通", "新能源汽车推广", "电动物流车", "清洁能源船舶",
+         "港口岸电", "充电桩建设", "换电站建设", "铁路电气化改造"]]}
+    on_fail: "raise_warning"
+    on_fail_message: "绿色交通类项目需确认具体子类别，传统燃油车产能扩张不属于绿色信贷"
+    citation: "cit-gf-cc-014"
+
+  # ========== 六、可再生能源项目专项 ==========
+
+  - id: "gf-cc-012"
+    name: "可再生能源项目类型验证"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"==": [{"var": "input.loan.project_category"}, "GC07"]}
+    assertion:
+      {"in": [{"var": "input.loan.energy_type"},
+        ["风力", "太阳能", "生物质能", "水力", "地热能", "潮汐能", "垃圾焚烧"]]}
+    on_fail: "raise_warning"
+    on_fail_message: "可再生能源类项目需确认能源类型，化石能源发电项目不属于绿色信贷"
+    citation: "cit-gf-cc-011"
+
+  # ========== 七、绿色建筑项目专项 ==========
+
+  - id: "gf-cc-013"
+    name: "绿色建筑星级要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"and": [
+        {"==": [{"var": "input.loan.project_category"}, "GC09"]},
+        {"==": [{"var": "input.loan.project_subtype"}, "新建绿色建筑"]}
+      ]}
+    assertion:
+      {"or": [
+        {">=": [{"var": "input.loan.green_building_star"}, 2]},
+        {"!=": [{"var": "input.loan.international_green_cert"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "新建绿色建筑项目应达到国家绿色建筑评价标准二星级及以上或取得国际认证"
+    citation: "cit-gf-cc-013"
+
+  # ========== 八、境外项目专项 ==========
+
+  - id: "gf-cc-014"
+    name: "境外项目国际标准符合性"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "input.loan.project_category"}, "GC12"]}
+    assertion:
+      {"in": [{"var": "input.loan.international_standard"},
+        ["equator_principles", "ifc_performance_standards", "unep_fi"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "境外项目应采用赤道原则、IFC绩效标准或UNEP FI等国际惯例或标准"
+    citation: "cit-gf-cc-016"
+
+  # ========== 九、战略性新兴产业 ==========
+
+  - id: "gf-cc-015"
+    name: "战略性新兴产业制造端确认"
+    type: "requirement"
+    priority: "MUST"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "runtime_inference"
+    condition:
+      {"in": [{"var": "input.loan.project_category"}, ["SE01", "SE02", "SE03"]]}
+    assertion:
+      {"==": [{"var": "input.loan.is_manufacturing_end"}, true]}
+    on_fail: "raise_warning"
+    on_fail_message: "战略性新兴产业贷款须为生产制造端，非制造端贷款不纳入此分类"
+    citation: "cit-gf-cc-002"
+
+  # ========== 十、管理制度和报送 ==========
+
+  - id: "gf-cc-016"
+    name: "银行内部分类管理制度检查"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.bank.green_credit_policy"}, null]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "input.bank.green_credit_policy.classification_criteria"}, null]},
+        {"!=": [{"var": "input.bank.green_credit_policy.approval_process"}, null]},
+        {"!=": [{"var": "input.bank.green_credit_policy.post_loan_monitoring"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "银行应建立绿色信贷分类管理制度，包含分类标准、审批流程和贷后监管要求"
+    citation: "cit-gf-cc-019"
+
+  # ========== 十一、环境效益量化 ==========
+
+  - id: "gf-cc-017"
+    name: "绿色信贷环境效益量化评估"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition:
+      "and": [
+        {"!=": [{"var": "input.loan.classification"}, null]},
+        {"==": [{"var": "input.loan.classification"}, "green"]}
+      ]
+    assertion:
+      {"or": [
+        {"!=": [{"var": "input.loan.environmental_benefits"}, null]},
+        {"!=": [{"var": "input.justifications.gf-cc-017"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "绿色信贷项目应量化环境效益（节能量、碳减排量、污染物削减量等）"
+    citation: "cit-gf-cc-021"
+
+  # ========== 十二、综合分类结果 ==========
+
+  - id: "gf-cc-018"
+    name: "贷款三分类结果一致性校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.loan.classification"}, null]}
+    assertion:
+      {"in": [{"var": "input.loan.classification"}, ["green", "watchlist", "unqualified"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "贷款分类结果必须为green（绿色信贷）、watchlist（关注类）或unqualified（不合格）"
+    citation: "cit-gf-cc-003"
+
+dependencies:
+  - ref: "scope1/principles/emission-categories"
+    relation: "references"
+  - ref: "scope2/methods/location-based"
+    relation: "references"
+  - ref: "green-finance/bond-catalog"
+    relation: "references"
+
+conflicts_with: []

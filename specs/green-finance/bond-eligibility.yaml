@@ -1,0 +1,632 @@
+meta:
+  id: "green-finance/bond-eligibility"
+  version: "1.0.0"
+  source: "中国人民银行《绿色债券支持项目目录（2021版）》"
+  source_ref: "http://www.pbc.gov.cn"
+  layer: "schema"
+  description: "绿色债券准入条件规范。针对目录各类别定义具体的排放阈值、技术标准、能源效率等准入门槛。"
+
+citations:
+  - id: "cit-gbe-001"
+    text: "太阳能发电项目应符合国家可再生能源发展规划，装机容量不低于1兆瓦（MW）。分布式光伏发电项目可不受此限制。"
+    section: "附录 项目目录 清洁能源产业 太阳能利用"
+
+  - id: "cit-gbe-002"
+    text: "风力发电项目应符合国家可再生能源发展规划，陆上风电装机容量不低于50兆瓦，海上风电装机容量不低于30兆瓦。"
+    section: "附录 项目目录 清洁能源产业 风力发电"
+
+  - id: "cit-gbe-003"
+    text: "水力发电项目应符合国家水电发展规划，装机容量不低于5兆瓦。生态流量保障设施应与主体工程同步建设。"
+    section: "附录 项目目录 清洁能源产业 水力发电"
+
+  - id: "cit-gbe-004"
+    text: "生物质能利用项目不得以粮食为原料，应以农林废弃物、生活垃圾、畜禽粪污等为原料。"
+    section: "附录 项目目录 清洁能源产业 生物质能利用"
+
+  - id: "cit-gbe-005"
+    text: "余热余压利用项目年节能量应不低于1000吨标准煤（tce）。"
+    section: "附录 项目目录 清洁能源产业 余热余压利用"
+
+  - id: "cit-gbe-006"
+    text: "绿色建筑项目应达到国家绿色建筑评价标准二星级及以上，或取得相应国际绿色建筑认证。"
+    section: "附录 项目目录 基础设施绿色升级 建筑节能改造"
+
+  - id: "cit-gbe-007"
+    text: "污水处理项目出水水质应达到或优于《城镇污水处理厂污染物排放标准》（GB 18918）一级A标准。"
+    section: "附录 项目目录 基础设施绿色升级 污水处理"
+
+  - id: "cit-gbe-008"
+    text: "垃圾处理项目应采用焚烧发电或资源化利用方式，填埋处理方式不符合绿色债券支持条件。"
+    section: "附录 项目目录 基础设施绿色升级 垃圾处理"
+
+  - id: "cit-gbe-009"
+    text: "绿色交通项目包括城市轨道交通、新能源汽车充换电设施、港口岸电设施等。城市轨道交通项目应已纳入城市轨道交通建设规划。"
+    section: "附录 项目目录 基础设施绿色升级 绿色交通"
+
+  - id: "cit-gbe-010"
+    text: "高效节能装备制造项目产品能效应达到国家能效标准1级或达到国际先进水平。"
+    section: "附录 项目目录 节能环保产业 高效节能装备制造"
+
+  - id: "cit-gbe-011"
+    text: "先进环保装备制造项目应具备自主知识产权，核心技术指标达到国内领先或国际先进水平。"
+    section: "附录 项目目录 节能环保产业 先进环保装备制造"
+
+  - id: "cit-gbe-012"
+    text: "资源循环利用项目资源综合利用率应不低于90%。"
+    section: "附录 项目目录 节能环保产业 资源循环利用装备制造"
+
+  - id: "cit-gbe-013"
+    text: "有毒有害物质替代项目应使用低毒或无毒替代品，替代后排放应满足相关环保标准。"
+    section: "附录 项目目录 清洁生产产业 有毒有害物质替代"
+
+  - id: "cit-gbe-014"
+    text: "生态修复项目应编制生态修复方案，明确修复目标、技术路线和验收标准。"
+    section: "附录 项目目录 生态环境产业 生态修复"
+
+  - id: "cit-gbe-015"
+    text: "自然生态保护项目应位于依法设立的自然保护地或生态保护红线范围内。"
+    section: "附录 项目目录 生态环境产业 自然生态保护"
+
+  - id: "cit-gbe-016"
+    text: "地热能利用项目应符合地热资源开发利用规划，地热尾水回灌率不低于90%。"
+    section: "附录 项目目录 清洁能源产业 地热能利用"
+
+  - id: "cit-gbe-017"
+    text: "海绵城市项目年径流总量控制率应达到规划要求，一般不低于70%。"
+    section: "附录 项目目录 基础设施绿色升级 海绵城市"
+
+  - id: "cit-gbe-018"
+    text: "碳排放权交易服务项目应依托经国务院或省级主管部门批准的碳交易机构。"
+    section: "附录 项目目录 绿色服务 碳排放权交易服务"
+
+  - id: "cit-gbe-019"
+    text: "环境监测项目应具备国家计量认证（CMA）资质或中国合格评定国家认可委员会（CNAS）认可。"
+    section: "附录 项目目录 绿色服务 环境监测"
+
+  - id: "cit-gbe-020"
+    text: "氢能利用项目应以可再生能源制氢为主要氢源，灰氢项目不符合绿色债券支持条件。"
+    section: "附录 项目目录 清洁能源产业 氢能利用"
+
+  - id: "cit-gbe-021"
+    text: "绿色咨询服务机构应具备相关行业咨询资质或丰富的绿色项目服务经验。"
+    section: "附录 项目目录 绿色服务 绿色咨询"
+
+  - id: "cit-gbe-022"
+    text: "园林绿化项目应选用乡土植物和节水型植物，绿化灌溉应采用再生水或雨水收集系统。"
+    section: "附录 项目目录 基础设施绿色升级 园林绿化"
+
+  - id: "cit-gbe-023"
+    text: "生产过程清洁化改造项目改造后污染物排放应优于国家排放标准限值的80%。"
+    section: "附录 项目目录 清洁生产产业 生产过程清洁化改造"
+
+  - id: "cit-gbe-024"
+    text: "新能源汽车充换电设施应符合国家充换电设施相关标准，充电设备转换效率不低于93%。"
+    section: "附录 项目目录 基础设施绿色升级 绿色交通"
+
+  - id: "cit-gbe-025"
+    text: "绿色认证项目应由经国家认监委批准的认证机构实施。"
+    section: "附录 项目目录 绿色服务 绿色认证"
+
+# 准入条件校验规则
+rules:
+  # === 清洁能源：太阳能 ===
+
+  - id: "gbe-001"
+    name: "太阳能项目装机容量门槛"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C3.1"]}
+    assertion:
+      "or": [
+        {">=": [{"var": "project.capacity_mw"}, 1]},
+        {"==": [{"var": "project.is_distributed"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "太阳能发电项目装机容量应不低于1MW，分布式光伏项目可豁免"
+    citation: "cit-gbe-001"
+
+  - id: "gbe-002"
+    name: "太阳能项目可再生能源规划符合性"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C3.1"]}
+    assertion: {"==": [{"var": "project.conforms_to_re_plan"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "太阳能项目应符合国家可再生能源发展规划"
+    citation: "cit-gbe-001"
+
+  # === 清洁能源：风力发电 ===
+
+  - id: "gbe-003"
+    name: "陆上风电装机容量门槛"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "project.category_l2"}, "C3.2"]},
+        {"==": [{"var": "project.wind_type"}, "onshore"]}
+      ]
+    assertion: {">=": [{"var": "project.capacity_mw"}, 50]}
+    on_fail: "raise_fatal"
+    on_fail_message: "陆上风电项目装机容量应不低于50MW"
+    citation: "cit-gbe-002"
+
+  - id: "gbe-004"
+    name: "海上风电装机容量门槛"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "project.category_l2"}, "C3.2"]},
+        {"==": [{"var": "project.wind_type"}, "offshore"]}
+      ]
+    assertion: {">=": [{"var": "project.capacity_mw"}, 30]}
+    on_fail: "raise_fatal"
+    on_fail_message: "海上风电项目装机容量应不低于30MW"
+    citation: "cit-gbe-002"
+
+  # === 清洁能源：水力发电 ===
+
+  - id: "gbe-005"
+    name: "水电装机容量门槛"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C3.3"]}
+    assertion: {">=": [{"var": "project.capacity_mw"}, 5]}
+    on_fail: "raise_fatal"
+    on_fail_message: "水力发电项目装机容量应不低于5MW"
+    citation: "cit-gbe-003"
+
+  - id: "gbe-006"
+    name: "水电生态流量保障"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C3.3"]}
+    assertion: {"==": [{"var": "project.has_ecological_flow_facility"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "水电项目生态流量保障设施应与主体工程同步建设"
+    citation: "cit-gbe-003"
+
+  # === 清洁能源：生物质能 ===
+
+  - id: "gbe-007"
+    name: "生物质能禁止使用粮食原料"
+    type: "prohibition"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C3.4"]}
+    assertion: {"==": [{"var": "project.uses_food_grain"}, false]}
+    on_fail: "raise_fatal"
+    on_fail_message: "生物质能利用项目不得以粮食为原料，应以农林废弃物、生活垃圾、畜禽粪污等为原料"
+    citation: "cit-gbe-004"
+
+  - id: "gbe-008"
+    name: "生物质能原料来源校验"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C3.4"]}
+    assertion:
+      {"in": [
+        {"var": "project.feedstock_type"},
+        ["agricultural_residue", "forestry_residue", "municipal_solid_waste", "livestock_manure", "other_non_food"]
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "生物质能项目原料应为农林废弃物、生活垃圾、畜禽粪污等非粮食原料"
+    citation: "cit-gbe-004"
+
+  # === 清洁能源：余热余压 ===
+
+  - id: "gbe-009"
+    name: "余热余压年节能量门槛"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C3.5"]}
+    assertion: {">=": [{"var": "project.annual_energy_saving_tce"}, 1000]}
+    on_fail: "raise_fatal"
+    on_fail_message: "余热余压利用项目年节能量应不低于1000吨标准煤（tce）"
+    citation: "cit-gbe-005"
+
+  # === 清洁能源：地热能 ===
+
+  - id: "gbe-010"
+    name: "地热尾水回灌率门槛"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C3.6"]}
+    assertion: {">=": [{"var": "project.tail_water_reinjection_rate"}, 0.9]}
+    on_fail: "raise_fatal"
+    on_fail_message: "地热能利用项目地热尾水回灌率应不低于90%"
+    citation: "cit-gbe-016"
+
+  # === 清洁能源：氢能 ===
+
+  - id: "gbe-011"
+    name: "氢能项目绿色氢源要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C3.8"]}
+    assertion: {"==": [{"var": "project.hydrogen_source"}, "renewable"]}
+    on_fail: "raise_fatal"
+    on_fail_message: "氢能利用项目应以可再生能源制氢为主要氢源，灰氢项目不符合支持条件"
+    citation: "cit-gbe-020"
+
+  # === 节能环保：高效节能装备制造 ===
+
+  - id: "gbe-012"
+    name: "节能装备能效等级要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C1.1"]}
+    assertion:
+      "or": [
+        {"==": [{"var": "project.energy_efficiency_grade"}, 1]},
+        {"==": [{"var": "project.reaches_international_advanced"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "高效节能装备制造产品能效应达到国家能效标准1级或国际先进水平"
+    citation: "cit-gbe-010"
+
+  # === 节能环保：先进环保装备制造 ===
+
+  - id: "gbe-013"
+    name: "环保装备技术水平要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C1.2"]}
+    assertion: {"==": [{"var": "project.has_independent_ip"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "先进环保装备制造项目应具备自主知识产权，核心技术指标达到国内领先或国际先进水平"
+    citation: "cit-gbe-011"
+
+  # === 节能环保：资源循环利用 ===
+
+  - id: "gbe-014"
+    name: "资源综合利用率门槛"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C1.3"]}
+    assertion: {">=": [{"var": "project.resource_utilization_rate"}, 0.9]}
+    on_fail: "raise_fatal"
+    on_fail_message: "资源循环利用项目资源综合利用率应不低于90%"
+    citation: "cit-gbe-012"
+
+  # === 清洁生产：有毒有害物质替代 ===
+
+  - id: "gbe-015"
+    name: "有毒有害物质替代排放要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C2.1"]}
+    assertion: {"==": [{"var": "project.meets_emission_standard"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "有毒有害物质替代项目替代后排放应满足相关环保标准"
+    citation: "cit-gbe-013"
+
+  # === 清洁生产：生产过程清洁化改造 ===
+
+  - id: "gbe-016"
+    name: "清洁化改造排放削减要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C2.2"]}
+    assertion: {">=": [{"var": "project.emission_reduction_ratio"}, 0.2]}
+    on_fail: "raise_fatal"
+    on_fail_message: "生产过程清洁化改造项目改造后污染物排放应优于国家排放标准限值的80%"
+    citation: "cit-gbe-023"
+
+  # === 生态环境：自然生态保护 ===
+
+  - id: "gbe-017"
+    name: "自然保护地范围要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C4.1"]}
+    assertion: {"==": [{"var": "project.in_protected_area"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "自然生态保护项目应位于依法设立的自然保护地或生态保护红线范围内"
+    citation: "cit-gbe-015"
+
+  # === 生态环境：生态修复 ===
+
+  - id: "gbe-018"
+    name: "生态修复方案必填"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C4.2"]}
+    assertion:
+      "and": [
+        {"!=": [{"var": "project.restoration_plan"}, null]},
+        {"!=": [{"var": "project.restoration_target"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "生态修复项目应编制生态修复方案，明确修复目标、技术路线和验收标准"
+    citation: "cit-gbe-014"
+
+  # === 基础设施：绿色建筑 ===
+
+  - id: "gbe-019"
+    name: "绿色建筑星级要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C5.6"]}
+    assertion:
+      "or": [
+        {">=": [{"var": "project.green_building_star"}, 2]},
+        {"!=": [{"var": "project.international_green_cert"}, null]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "绿色建筑项目应达到国家绿色建筑评价标准二星级及以上或取得国际绿色建筑认证"
+    citation: "cit-gbe-006"
+
+  # === 基础设施：污水处理 ===
+
+  - id: "gbe-020"
+    name: "污水处理出水水质要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C5.2"]}
+    assertion:
+      {"in": [
+        {"var": "project.effluent_standard"},
+        ["GB18918_1A", "stricter_than_1A"]
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "污水处理项目出水水质应达到或优于GB 18918一级A标准"
+    citation: "cit-gbe-007"
+
+  # === 基础设施：垃圾处理 ===
+
+  - id: "gbe-021"
+    name: "垃圾处理方式准入要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C5.3"]}
+    assertion:
+      {"in": [
+        {"var": "project.waste_treatment_method"},
+        ["incineration_power", "resource_recovery"]
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "垃圾处理项目应采用焚烧发电或资源化利用方式，填埋方式不符合支持条件"
+    citation: "cit-gbe-008"
+
+  # === 基础设施：海绵城市 ===
+
+  - id: "gbe-022"
+    name: "海绵城市径流控制率要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C5.5"]}
+    assertion: {">=": [{"var": "project.runoff_control_rate"}, 0.7]}
+    on_fail: "raise_fatal"
+    on_fail_message: "海绵城市项目年径流总量控制率应不低于70%"
+    citation: "cit-gbe-017"
+
+  # === 基础设施：绿色交通 ===
+
+  - id: "gbe-023"
+    name: "充换电设施转换效率要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "project.category_l2"}, "C5.1"]},
+        {"in": [{"var": "project.transport_subtype"}, ["charging_station", "battery_swap"]]}
+      ]
+    assertion: {">=": [{"var": "project.charging_efficiency"}, 0.93]}
+    on_fail: "raise_fatal"
+    on_fail_message: "新能源汽车充换电设施充电设备转换效率应不低于93%"
+    citation: "cit-gbe-024"
+
+  # === 基础设施：园林绿化 ===
+
+  - id: "gbe-024"
+    name: "园林绿化植物选择要求"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C5.4"]}
+    assertion: {"==": [{"var": "project.uses_native_plants"}, true]}
+    on_fail: "require_justification"
+    on_fail_message: "园林绿化项目应选用乡土植物和节水型植物"
+    citation: "cit-gbe-022"
+
+  - id: "gbe-025"
+    name: "园林绿化灌溉水源要求"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C5.4"]}
+    assertion:
+      {"in": [
+        {"var": "project.irrigation_water_source"},
+        ["reclaimed_water", "rainwater", "mixed_non_fresh"]
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "绿化灌溉应采用再生水或雨水收集系统"
+    citation: "cit-gbe-022"
+
+  # === 绿色服务：碳排放权交易 ===
+
+  - id: "gbe-026"
+    name: "碳交易平台资质要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C6.4"]}
+    assertion: {"==": [{"var": "project.approved_carbon_exchange"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "碳排放权交易服务项目应依托经国务院或省级主管部门批准的碳交易机构"
+    citation: "cit-gbe-018"
+
+  # === 绿色服务：环境监测 ===
+
+  - id: "gbe-027"
+    name: "环境监测资质要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C6.3"]}
+    assertion:
+      "or": [
+        {"==": [{"var": "project.has_cma_certification"}, true]},
+        {"==": [{"var": "project.has_cnas_recognition"}, true]}
+      ]
+    on_fail: "raise_fatal"
+    on_fail_message: "环境监测项目应具备CMA资质或CNAS认可"
+    citation: "cit-gbe-019"
+
+  # === 绿色服务：绿色认证 ===
+
+  - id: "gbe-028"
+    name: "绿色认证机构资质要求"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C6.2"]}
+    assertion: {"==": [{"var": "project.cnca_approved_certifier"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "绿色认证项目应由经国家认监委批准的认证机构实施"
+    citation: "cit-gbe-025"
+
+  # === 绿色服务：绿色咨询 ===
+
+  - id: "gbe-029"
+    name: "绿色咨询机构资质要求"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      {"==": [{"var": "project.category_l2"}, "C6.1"]}
+    assertion:
+      "or": [
+        {"!=": [{"var": "project.consulting_qualification"}, null]},
+        {"!=": [{"var": "project.green_project_experience"}, null]}
+      ]
+    on_fail: "require_justification"
+    on_fail_message: "绿色咨询服务机构应具备相关行业咨询资质或丰富的绿色项目服务经验"
+    citation: "cit-gbe-021"
+
+  # === 通用：绿色交通规划符合性 ===
+
+  - id: "gbe-030"
+    name: "城市轨道交通规划符合性"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    layer: "schema"
+    lifecycle: "pre_calculation"
+    condition:
+      "and": [
+        {"==": [{"var": "project.category_l2"}, "C5.1"]},
+        {"==": [{"var": "project.transport_subtype"}, "urban_rail"]}
+      ]
+    assertion: {"==": [{"var": "project.in_urban_rail_plan"}, true]}
+    on_fail: "raise_fatal"
+    on_fail_message: "城市轨道交通项目应已纳入城市轨道交通建设规划"
+    citation: "cit-gbe-009"
