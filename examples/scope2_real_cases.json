@@ -1,0 +1,235 @@
+{
+  "metadata": {
+    "description": "Real-world Scope 2 carbon emission accounting cases from three major technology companies",
+    "data_sources": [
+      "Google 2024 Environmental Report (calendar year 2023 data)",
+      "Microsoft 2025 Environmental Data Fact Sheet (FY2024, July 2023 - June 2024)",
+      "Apple 2024 Environmental Progress Report (FY2023, Sept 2022 - Sept 2023)"
+    ],
+    "framework": "GHG Protocol Scope 2 Guidance (2015)",
+    "reporting_methods": ["Location-based", "Market-based"],
+    "generated_date": "2026-06-18",
+    "notes": [
+      "All three companies report both location-based and market-based Scope 2 emissions (dual reporting)",
+      "Fiscal year definitions differ: Google uses calendar year, Microsoft uses July-June fiscal year, Apple uses Sept-Sept fiscal year",
+      "Emission factors sourced from IEA, EPA eGRID, DEFRA/BEIS depending on region",
+      "All three companies use various Energy Attribute Certificates (EACs) including RECs, GOs, I-RECs, GECs"
+    ]
+  },
+  "cases": [
+    {
+      "company": "Google (Alphabet)",
+      "industry": "Technology / Cloud Computing / Data Centers",
+      "reporting_year": "2023 (Calendar Year)",
+      "report_source": "Google 2024 Environmental Report",
+      "report_url": "https://www.gstatic.com/gumdrop/sustainability/google-2024-environmental-report.pdf",
+      "energy_consumption": {
+        "total_electricity_MWh": 25307000,
+        "total_electricity_TWh": 25.3,
+        "data_center_electricity_TWh": 24,
+        "on_site_renewable_MWh": 10700,
+        "total_energy_MWh": 25910500
+      },
+      "scope2_emissions": {
+        "location_based_tCO2e": 9252900,
+        "market_based_tCO2e": 3423400,
+        "impact_of_PPAs_tCO2e": -5829500,
+        "location_based_2019_tCO2e": 5116900,
+        "market_based_2019_tCO2e": 835500,
+        "year_over_year_change_market_based": "+37%",
+        "vs_2019_base_year_market_based": "+310%"
+      },
+      "emission_factors": {
+        "location_based_source": "IEA Emission Factors 2023, EPA eGRID 2024 (US)",
+        "market_based_approach": "Zero emission factor for renewable electricity under contract; grid average for uncovered consumption",
+        "grid_CFE_average_percent": 64
+      },
+      "renewable_energy_procurement": {
+        "global_RE_match_percent": 100,
+        "consecutive_years_100pct_RE": 7,
+        "contracted_clean_energy_GW": 4,
+        "PPA_reduction_in_emissions_percent": 63,
+        "cumulative_emissions_savings_2011_2023_tCO2e": 36000000,
+        "procurement_instruments": [
+          "PPAs",
+          "RECs",
+          "GOs",
+          "I-RECs",
+          "TIGRs",
+          "NZECS",
+          "J-Credits",
+          "NFCs",
+          "LGCs",
+          "GECs",
+          "T-RECs",
+          "utility renewable tariffs"
+        ],
+        "target_24_7_CFE_by_2030": true
+      },
+      "dual_reporting": {
+        "reports_both_methods": true,
+        "gap_explanation": "Despite 100% global RE match, Scope 2 (market-based) increased 37% YoY due to: (1) global vs GHG Protocol market boundary mismatch, (2) data center electricity growth outpacing CFE procurement, (3) CFE contracts terminating before new projects operational, (4) Asia-Pacific region challenges in sourcing clean energy",
+        "methodology_note": "Google uses global matching approach; GHG Protocol requires regional market boundary matching. Google is transitioning to 24/7 hourly CFE matching to better align with GHG Protocol."
+      },
+      "key_insight": "Google's case demonstrates the tension between annual renewable energy matching and GHG Protocol market-based accounting. Despite 100% RE match for 7 years, market-based Scope 2 emissions have quadrupled since 2019 because annual global matching does not equate to regional market-level matching required by GHG Protocol."
+    },
+    {
+      "company": "Microsoft",
+      "industry": "Technology / Cloud Computing / AI / Data Centers",
+      "reporting_year": "FY2024 (July 2023 - June 2024)",
+      "report_source": "Microsoft 2025 Environmental Data Fact Sheet",
+      "report_url": "https://aka.ms/SustainabilityFactSheet2025",
+      "energy_consumption": {
+        "note": "Microsoft reports energy in the main sustainability report; fact sheet provides emissions data. FY24 energy use increased 168% from 2020 baseline.",
+        "total_electricity_note": "Approximately 23-25 TWh estimated based on emissions and intensity data"
+      },
+      "scope2_emissions": {
+        "location_based_tCO2e": 9955368,
+        "location_based_CO2_mt": 9904643,
+        "location_based_CH4_mt": 599,
+        "location_based_N2O_mt": 120,
+        "market_based_tCO2e": 258235,
+        "market_based_CO2_mt": 258217,
+        "market_based_CH4_mt": 6,
+        "market_based_N2O_mt": 12,
+        "location_based_2020_tCO2e": 4328916,
+        "market_based_2020_tCO2e": 454058,
+        "reduction_from_2020_location_based": "+130%",
+        "reduction_from_2020_market_based": "-43%"
+      },
+      "emission_factors": {
+        "location_based_source_US": "EPA eGRID 2024 Emission Factors",
+        "location_based_source_EU": "DEFRA/BEIS 2024, UK Government GHG Conversion Factors",
+        "location_based_source_rest": "IEA Emission Factors 2023",
+        "market_based_approach": "Zero emission factor for procured renewable electricity; utility-based and residual factors for uncovered consumption",
+        "emission_intensity_location_based_per_M_revenue": 40.6,
+        "emission_intensity_market_based_per_M_revenue": 1.1
+      },
+      "renewable_energy_procurement": {
+        "RE_match_percent": 100,
+        "new_RE_contracted_GW_FY24": 19,
+        "total_contracted_RE_GW": 34,
+        "contracted_carbon_removal_mtCO2e": 29800000,
+        "procurement_instruments": [
+          "RECs (Green-e certified)",
+          "GOs",
+          "REGOs",
+          "I-RECs",
+          "TIGRs",
+          "NZECS",
+          "J-Credits",
+          "NFCs",
+          "LGCs",
+          "GECs",
+          "T-RECs",
+          "PowerPlus",
+          "PPAs",
+          "green power products",
+          "on-site generation"
+        ],
+        "target_100pct_direct_RE_by": 2025,
+        "carbon_fee_internal_price": true
+      },
+      "dual_reporting": {
+        "reports_both_methods": true,
+        "location_vs_market_ratio": "38.5:1 (location-based is 38.5x market-based)",
+        "scope1_2_market_based_tCO2e": 402600,
+        "scope1_2_location_based_tCO2e": 10073478,
+        "scope1_2_3_total_market_based_tCO2e": 14857000,
+        "methodology_note": "Microsoft shifted away from non-additional environmental attribute certificates in FY24. Scope 1+2 emissions decreased 29.9% from 2020 baseline. Total emissions (Scope 1+2+3) increased 23.4% from 2020 baseline due to AI/cloud growth."
+      },
+      "key_insight": "Microsoft shows the largest absolute gap between location-based and market-based Scope 2 among these three companies (9.96M vs 0.26M tCO2e). The company is actively shifting from unbundled RECs to direct PPAs and on-site generation. The massive increase in location-based emissions (+130% from FY2020) reflects rapid data center expansion for AI workloads."
+    },
+    {
+      "company": "Apple",
+      "industry": "Technology / Consumer Electronics / Data Centers",
+      "reporting_year": "FY2023 (Sept 2022 - Sept 2023)",
+      "report_source": "Apple 2024 Environmental Progress Report",
+      "report_url": "https://www.apple.com/environment/pdf/Apple_Environmental_Progress_Report_2024.pdf",
+      "energy_consumption": {
+        "corporate_facilities_100pct_RE_since": "January 2018",
+        "colocation_total_kWh_FY2023": 483299062,
+        "colocation_renewable_kWh_FY2023": 483299062,
+        "colocation_location_based_emissions_mtCO2e": 186141,
+        "colocation_market_based_emissions_mtCO2e": 0,
+        "mesa_az_datacenter_kWh": 488000000,
+        "denmark_datacenter_kWh": 40000000,
+        "china_datacenter_kWh": 171000000,
+        "total_datacenter_colocation_kWh_FY2023": 1182299062
+      },
+      "scope2_emissions": {
+        "corporate_GHG_market_based_tCO2e": 471400,
+        "comprehensive_carbon_footprint_tCO2e": 16100000,
+        "comprehensive_footprint_breakdown": {
+          "product_manufacturing_scope3_percent": 59,
+          "product_use_scope3_percent": 29,
+          "corporate_operations_percent": 3,
+          "product_transport_percent": 9,
+          "end_of_life_percent": 1
+        },
+        "colocation_default_emissions_mtCO2e": 186141,
+        "colocation_actual_emissions_mtCO2e": 0,
+        "colocation_avoided_emissions_mtCO2e": 186141,
+        "renewable_electricity_avoided_emissions_mtCO2e": 2000000
+      },
+      "emission_factors": {
+        "location_based_source_US": "eGRID 2022",
+        "location_based_source_DK": "Energinet",
+        "location_based_source_CN": "IEA Electricity Information 2022",
+        "market_based_methodology": "WRI/WBCSD GHG Protocol market-based emissions calculation",
+        "approach": "Apple calculates default utility emissions as baseline, then subtracts renewable energy to show avoided emissions"
+      },
+      "renewable_energy_procurement": {
+        "corporate_RE_match_percent": 100,
+        "corporate_RE_since": "January 2018",
+        "supplier_RE_commitment_GW": 21,
+        "supplier_RE_operational_GW": 16.5,
+        "supplier_clean_energy_MWh_2023": 25500000,
+        "supplier_avoided_emissions_mtCO2e": 1850000,
+        "suppliers_committed_100pct_RE": 320,
+        "supplier_RE_procurement_mix": {
+          "RECs_percent": 66,
+          "renewable_power_purchases_percent": 25,
+          "direct_investments_percent": 8,
+          "onsite_renewable_percent": 1
+        },
+        "supplier_RE_technologies": {
+          "solar_percent": 44,
+          "wind_percent": 37,
+          "other_technology_percent": 19
+        },
+        "supplier_RE_recognition": {
+          "China_GEC": "Green Electricity Certificates recognized as primary instrument",
+          "RECs_interim_solution": true,
+          "transitioning_to_PPAs": true
+        }
+      },
+      "dual_reporting": {
+        "reports_both_methods": true,
+        "location_vs_market_colocation": "186,141 vs 0 mtCO2e (100% gap at colocation facilities)",
+        "approach": "Apple reports both default utility emissions (location-based baseline) and actual emissions including renewable energy (market-based) to demonstrate savings from renewable energy program",
+        "methodology_note": "Apple follows GHG Protocol for market-based calculation. Corporate operations have been 100% renewable since 2018. The main Scope 2 challenge is in the supply chain (Scope 3), where suppliers are transitioning from RECs to PPAs."
+      },
+      "key_insight": "Apple demonstrates the most aggressive approach to Scope 2 reduction among these three companies, achieving 100% renewable for corporate operations since 2018. The main challenge is in supply chain emissions (Scope 3), where 66% of supplier renewable energy still comes from RECs rather than direct PPAs. Apple explicitly acknowledges RECs as an 'interim solution' and is working to transition suppliers to PPAs."
+    }
+  ],
+  "cross_case_comparison": {
+    "scope2_location_based_tCO2e": {
+      "Google_2023": 9252900,
+      "Microsoft_FY2024": 9955368,
+      "Apple_FY2023": "N/A (reports corporate GHG only, not separated by scope in public data)"
+    },
+    "scope2_market_based_tCO2e": {
+      "Google_2023": 3423400,
+      "Microsoft_FY2024": 258235,
+      "Apple_FY2023": 471400
+    },
+    "location_vs_market_ratio": {
+      "Google": "2.7:1",
+      "Microsoft": "38.5:1",
+      "Apple_colocation": "186,141:0 (infinite gap - 100% renewable)"
+    },
+    "dual_reporting_required": true,
+    "dual_reporting_reason": "GHG Protocol Scope 2 Guidance requires companies to report both methods when operating in markets with supplier-specific emission factors or contractual instruments"
+  }
+}
