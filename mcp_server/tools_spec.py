@@ -2,12 +2,24 @@
 Spec-Driven 审计 MCP Tools
 
 实现完整的 spec-driven 审计流程：
+Phase 1-3: 核心审计工具
 1. describe_spec - 描述 spec 结构和要求
 2. get_data_requirements - 获取数据收集要求
 3. analyze_gaps - 差距分析
 4. validate_data - 数据验证
 5. get_remediation - 修复指导
 6. generate_report - 生成合规报告
+
+Phase 4: 多 Spec 联动
+7. describe_multi_spec - 描述多个 spec 的联合概览
+8. validate_multi_spec - 用多个 spec 联合验证数据
+9. generate_cross_domain_report - 生成跨域合规审计报告
+
+Phase 6: 动态 Spec 更新
+10. reload_specs - 重新加载所有 spec 文件
+11. get_spec_versions - 获取所有 spec 版本信息
+12. compare_spec_rules - 获取 spec 规则快照
+13. diff_spec_snapshots - 对比两个快照的差异
 """
 
 from __future__ import annotations
@@ -18,17 +30,26 @@ from datetime import datetime
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
+from mcp.types import ToolAnnotations
 
 from .engine import execute_rules, jsonlogic, AuditResult
 from .loader import SpecLoader
 
 logger = logging.getLogger(__name__)
 
+# Shared annotations for Smithery quality scoring
+_READ_ANN = ToolAnnotations(
+    readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False,
+)
+_WRITE_ANN = ToolAnnotations(
+    readOnlyHint=False, destructiveHint=False, idempotentHint=True, openWorldHint=False,
+)
+
 
 def register_spec_tools(mcp: FastMCP, loader: SpecLoader) -> None:
     """注册 spec-driven 审计工具"""
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def describe_spec(spec_id: str = "") -> str:
         """
         描述 spec 的结构、覆盖范围和要求概览。
@@ -147,7 +168,7 @@ def register_spec_tools(mcp: FastMCP, loader: SpecLoader) -> None:
             logger.exception("describe_spec failed")
             return json.dumps({"error": str(e)}, ensure_ascii=False)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def get_data_requirements(spec_id: str) -> str:
         """
         获取 spec 要求的输入数据结构。
@@ -190,8 +211,10 @@ def register_spec_tools(mcp: FastMCP, loader: SpecLoader) -> None:
                     # 从 assertion 中提取 var 路径
                     fields = _extract_var_paths(assertion)
 
-                    # 判断是否有条件
-                    has_condition = bool(condition) and condition != {}
+                    # 判断条件类型
+                    # - 简单 "not null" 检查 → 视为无条件（required/optional）
+                    # - 真正的条件表达式 → conditional
+                    has_real_condition = _is_real_condition(condition)
 
                     for field_path in fields:
                         field_info = {
@@ -202,7 +225,7 @@ def register_spec_tools(mcp: FastMCP, loader: SpecLoader) -> None:
                             "lifecycle": rule.get("lifecycle", ""),
                         }
 
-                        if has_condition:
+                        if has_real_condition:
                             condition_paths = _extract_var_paths(condition)
                             field_info["condition"] = {
                                 "expression": condition,
@@ -241,7 +264,7 @@ def register_spec_tools(mcp: FastMCP, loader: SpecLoader) -> None:
             logger.exception("get_data_requirements failed")
             return json.dumps({"error": str(e)}, ensure_ascii=False)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def analyze_gaps(spec_id: str, data: str) -> str:
         """
         分析已有数据与 spec 要求之间的差距。
@@ -334,7 +357,7 @@ def register_spec_tools(mcp: FastMCP, loader: SpecLoader) -> None:
             logger.exception("analyze_gaps failed")
             return json.dumps({"error": str(e)}, ensure_ascii=False)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def validate_data(spec_id: str, data: str) -> str:
         """
         执行完整的 spec 规则验证。
@@ -420,7 +443,7 @@ def register_spec_tools(mcp: FastMCP, loader: SpecLoader) -> None:
             logger.exception("validate_data failed")
             return json.dumps({"error": str(e)}, ensure_ascii=False)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def get_remediation(spec_id: str, rule_id: str) -> str:
         """
         获取规则失败的修复指导。
@@ -485,7 +508,7 @@ def register_spec_tools(mcp: FastMCP, loader: SpecLoader) -> None:
             logger.exception("get_remediation failed")
             return json.dumps({"error": str(e)}, ensure_ascii=False)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def generate_report(
         spec_id: str,
         data: str,
@@ -611,6 +634,519 @@ def register_spec_tools(mcp: FastMCP, loader: SpecLoader) -> None:
             logger.exception("generate_report failed")
             return json.dumps({"error": str(e)}, ensure_ascii=False)
 
+    # ============================================================
+    # Phase 4: 多 Spec 联动（跨域审计）
+    # ============================================================
+
+    @mcp.tool(annotations=_READ_ANN)
+    async def describe_multi_spec(spec_ids: str) -> str:
+        """
+        描述多个 spec 的联合概览，用于跨域审计场景。
+
+        当企业需要同时满足多个标准时（如 GHG Protocol + ISSB S2），
+        用此工具了解所有相关 spec 的整体要求。
+
+        Args:
+            spec_ids: 逗号分隔的 spec ID 列表，如 "issb-s2-disclosure,scope1,scope2"
+
+        Returns:
+            JSON 字符串，包含每个 spec 的摘要和联合统计
+        """
+        try:
+            id_list = [s.strip() for s in spec_ids.split(",") if s.strip()]
+            if not id_list:
+                return json.dumps(
+                    {"error": "请提供至少一个 spec ID"},
+                    ensure_ascii=False,
+                )
+
+            specs_info = []
+            total_rules = 0
+            total_citations = 0
+            combined_pillars = {}
+            combined_severity = {}
+
+            for sid in id_list:
+                specs = loader.load_domain(sid)
+                if not specs:
+                    specs_info.append({
+                        "spec_id": sid,
+                        "error": f"未找到 spec: {sid}",
+                    })
+                    continue
+
+                all_rules = []
+                all_citations = []
+                for path, spec in specs.items():
+                    rules = spec.get("rules", [])
+                    citations = spec.get("citations", [])
+                    schema_rules = [r for r in rules if r.get("layer") != "knowledge"]
+                    all_rules.extend(schema_rules)
+                    all_citations.extend(citations)
+
+                pillar_counts = {}
+                for rule in all_rules:
+                    pillar = _infer_pillar(rule.get("name", ""), rule.get("id", ""))
+                    pillar_counts[pillar] = pillar_counts.get(pillar, 0) + 1
+
+                severity_counts = {}
+                for rule in all_rules:
+                    sev = rule.get("severity", "info")
+                    severity_counts[sev] = severity_counts.get(sev, 0) + 1
+
+                specs_info.append({
+                    "spec_id": sid,
+                    "rules_count": len(all_rules),
+                    "citations_count": len(all_citations),
+                    "pillars": pillar_counts,
+                    "severity_breakdown": severity_counts,
+                })
+
+                total_rules += len(all_rules)
+                total_citations += len(all_citations)
+                for p, c in pillar_counts.items():
+                    combined_pillars[p] = combined_pillars.get(p, 0) + c
+                for s, c in severity_counts.items():
+                    combined_severity[s] = combined_severity.get(s, 0) + c
+
+            return json.dumps({
+                "spec_ids": id_list,
+                "specs": specs_info,
+                "combined_totals": {
+                    "rules": total_rules,
+                    "citations": total_citations,
+                },
+                "combined_pillars": combined_pillars,
+                "combined_severity": combined_severity,
+            }, ensure_ascii=False, indent=2)
+
+        except Exception as e:
+            logger.exception("describe_multi_spec failed")
+            return json.dumps({"error": str(e)}, ensure_ascii=False)
+
+    @mcp.tool(annotations=_READ_ANN)
+    async def validate_multi_spec(spec_ids: str, data: str) -> str:
+        """
+        用多个 spec 联合验证数据，用于跨域合规审查。
+
+        同时执行多个标准的规则，生成联合审计结果。
+
+        Args:
+            spec_ids: 逗号分隔的 spec ID 列表，如 "issb-s2-disclosure,scope1,scope2"
+            data: 待验证数据 JSON 字符串
+
+        Returns:
+            JSON 字符串，包含每个 spec 的审计结果和综合评估
+        """
+        try:
+            id_list = [s.strip() for s in spec_ids.split(",") if s.strip()]
+            if not id_list:
+                return json.dumps(
+                    {"error": "请提供至少一个 spec ID"},
+                    ensure_ascii=False,
+                )
+
+            parsed_data = json.loads(data)
+
+            results_by_spec = {}
+            total_passed = 0
+            total_warnings = 0
+            total_fatal = 0
+            total_rules = 0
+
+            for sid in id_list:
+                specs = loader.load_domain(sid)
+                if not specs:
+                    results_by_spec[sid] = {"error": f"未找到 spec: {sid}"}
+                    continue
+
+                result = execute_rules(specs, parsed_data, domain=sid)
+
+                # 按支柱分组
+                pillar_assessment = {}
+                for r in result.results:
+                    pillar = _infer_pillar(r.rule_name, r.rule_id)
+                    if pillar not in pillar_assessment:
+                        pillar_assessment[pillar] = {
+                            "total": 0, "passed": 0, "failed": 0, "rules": [],
+                        }
+                    pillar_assessment[pillar]["total"] += 1
+                    if r.passed:
+                        pillar_assessment[pillar]["passed"] += 1
+                    else:
+                        pillar_assessment[pillar]["failed"] += 1
+
+                for pillar, assessment in pillar_assessment.items():
+                    has_fatal = any(
+                        not r.passed and r.severity == "fatal"
+                        for r in result.results
+                        if _infer_pillar(r.rule_name, r.rule_id) == pillar
+                    )
+                    assessment["status"] = "fatal" if has_fatal else (
+                        "warning" if assessment["failed"] > 0 else "pass"
+                    )
+
+                results_by_spec[sid] = {
+                    "compliance": result.compliance,
+                    "summary": {
+                        "total": result.total_rules,
+                        "passed": result.passed,
+                        "warnings": result.warnings,
+                        "fatal": result.fatal,
+                    },
+                    "pillar_assessment": pillar_assessment,
+                    "results": [r.to_dict() for r in result.results],
+                }
+
+                total_passed += result.passed
+                total_warnings += result.warnings
+                total_fatal += result.fatal
+                total_rules += result.total_rules
+
+            # 综合判定
+            if total_fatal > 0:
+                overall = "fatal"
+            elif total_warnings > 0:
+                overall = "warning"
+            else:
+                overall = "pass"
+
+            return json.dumps({
+                "spec_ids": id_list,
+                "overall_compliance": overall,
+                "combined_summary": {
+                    "total_rules": total_rules,
+                    "total_passed": total_passed,
+                    "total_warnings": total_warnings,
+                    "total_fatal": total_fatal,
+                    "coverage": round(total_passed / total_rules * 100, 1) if total_rules > 0 else 0,
+                },
+                "results_by_spec": results_by_spec,
+            }, ensure_ascii=False, indent=2)
+
+        except json.JSONDecodeError as e:
+            return json.dumps(
+                {"error": f"data JSON 解析失败: {e}"},
+                ensure_ascii=False,
+            )
+        except Exception as e:
+            logger.exception("validate_multi_spec failed")
+            return json.dumps({"error": str(e)}, ensure_ascii=False)
+
+    @mcp.tool(annotations=_READ_ANN)
+    async def generate_cross_domain_report(
+        spec_ids: str,
+        data: str,
+        entity_name: str = "未命名实体",
+        report_format: str = "markdown",
+    ) -> str:
+        """
+        生成跨域合规审计报告。
+
+        同时执行多个标准的规则，生成包含各标准评估和综合结论的报告。
+
+        Args:
+            spec_ids: 逗号分隔的 spec ID 列表
+            data: 待审计数据 JSON 字符串
+            entity_name: 实体名称
+            report_format: 报告格式（"json" 或 "markdown"）
+
+        Returns:
+            跨域合规审计报告
+        """
+        try:
+            id_list = [s.strip() for s in spec_ids.split(",") if s.strip()]
+            if not id_list:
+                return json.dumps(
+                    {"error": "请提供至少一个 spec ID"},
+                    ensure_ascii=False,
+                )
+
+            parsed_data = json.loads(data)
+
+            spec_results = []
+            total_passed = 0
+            total_warnings = 0
+            total_fatal = 0
+            total_rules = 0
+
+            for sid in id_list:
+                specs = loader.load_domain(sid)
+                if not specs:
+                    spec_results.append({
+                        "spec_id": sid,
+                        "error": f"未找到 spec: {sid}",
+                    })
+                    continue
+
+                result = execute_rules(specs, parsed_data, domain=sid)
+
+                spec_results.append({
+                    "spec_id": sid,
+                    "compliance": result.compliance,
+                    "total": result.total_rules,
+                    "passed": result.passed,
+                    "warnings": result.warnings,
+                    "fatal": result.fatal,
+                    "coverage": round(result.passed / result.total_rules * 100, 1) if result.total_rules > 0 else 0,
+                    "findings": [r.to_dict() for r in result.results if not r.passed],
+                })
+
+                total_passed += result.passed
+                total_warnings += result.warnings
+                total_fatal += result.fatal
+                total_rules += result.total_rules
+
+            if total_fatal > 0:
+                overall = "fatal"
+            elif total_warnings > 0:
+                overall = "warning"
+            else:
+                overall = "pass"
+
+            report = {
+                "report_metadata": {
+                    "type": "cross_domain_audit",
+                    "spec_ids": id_list,
+                    "entity_name": entity_name,
+                    "generated_at": datetime.now().isoformat(),
+                },
+                "executive_summary": {
+                    "overall_compliance": overall,
+                    "total_rules_checked": total_rules,
+                    "total_passed": total_passed,
+                    "total_warnings": total_warnings,
+                    "total_fatal": total_fatal,
+                    "overall_coverage": round(total_passed / total_rules * 100, 1) if total_rules > 0 else 0,
+                },
+                "spec_assessments": spec_results,
+                "critical_findings": [
+                    f for sr in spec_results
+                    for f in sr.get("findings", [])
+                    if f.get("severity") == "fatal"
+                ],
+                "warnings": [
+                    f for sr in spec_results
+                    for f in sr.get("findings", [])
+                    if f.get("severity") == "warning"
+                ],
+            }
+
+            if report_format == "markdown":
+                return _format_cross_domain_report_markdown(report)
+            else:
+                return json.dumps(report, ensure_ascii=False, indent=2)
+
+        except json.JSONDecodeError as e:
+            return json.dumps(
+                {"error": f"data JSON 解析失败: {e}"},
+                ensure_ascii=False,
+            )
+        except Exception as e:
+            logger.exception("generate_cross_domain_report failed")
+            return json.dumps({"error": str(e)}, ensure_ascii=False)
+
+    # ============================================================
+    # Phase 6: 动态 Spec 更新
+    # ============================================================
+
+    @mcp.tool(annotations=_WRITE_ANN)
+    async def reload_specs() -> str:
+        """
+        重新加载所有 spec 文件。
+
+        当 spec 文件被修改后，调用此工具重新加载。
+        注意：会清除语义搜索索引，下次搜索时自动重建。
+
+        Returns:
+            JSON 字符串，包含加载结果和统计信息
+        """
+        try:
+            loader.load_all()
+
+            # 清除语义搜索索引缓存（如果存在）
+            try:
+                from . import tools_search
+                tools_search._citation_index = None
+                tools_search._rule_index = None
+            except Exception:
+                pass
+
+            stats = loader.stats
+            return json.dumps({
+                "status": "success",
+                "message": "所有 spec 已重新加载",
+                "stats": stats,
+            }, ensure_ascii=False, indent=2)
+
+        except Exception as e:
+            logger.exception("reload_specs failed")
+            return json.dumps({"error": str(e)}, ensure_ascii=False)
+
+    @mcp.tool(annotations=_READ_ANN)
+    async def get_spec_versions() -> str:
+        """
+        获取所有已加载 spec 的版本信息。
+
+        Returns:
+            JSON 字符串，包含每个 spec 的版本、来源、规则数等
+        """
+        try:
+            versions = []
+            for path, spec in loader.specs.items():
+                meta = spec.get("meta", {})
+                rules = spec.get("rules", [])
+                citations = spec.get("citations", [])
+                schema_rules = [r for r in rules if r.get("layer") != "knowledge"]
+
+                versions.append({
+                    "spec_id": path,
+                    "version": meta.get("version", "unknown"),
+                    "source": meta.get("source", "unknown"),
+                    "layer": meta.get("layer", "unknown"),
+                    "rules_count": len(schema_rules),
+                    "citations_count": len(citations),
+                    "file_path": str(loader.spec_dir / f"{path}.yaml"),
+                })
+
+            return json.dumps({
+                "total_specs": len(versions),
+                "specs": versions,
+            }, ensure_ascii=False, indent=2)
+
+        except Exception as e:
+            logger.exception("get_spec_versions failed")
+            return json.dumps({"error": str(e)}, ensure_ascii=False)
+
+    @mcp.tool(annotations=_READ_ANN)
+    async def compare_spec_rules(spec_id: str) -> str:
+        """
+        分析单个 spec 的规则结构，用于版本对比前的快照。
+
+        返回规则的 ID、名称、严重级别、生命周期等元数据，
+        可用于与新版本 spec 对比，识别新增/修改/删除的规则。
+
+        Args:
+            spec_id: spec 文件标识
+
+        Returns:
+            JSON 字符串，包含规则的结构化快照
+        """
+        try:
+            specs = loader.load_domain(spec_id)
+            if not specs:
+                return json.dumps(
+                    {"error": f"未找到 spec: {spec_id}"},
+                    ensure_ascii=False,
+                )
+
+            snapshot = []
+            for path, spec in specs.items():
+                meta = spec.get("meta", {})
+                for rule in spec.get("rules", []):
+                    if rule.get("layer") == "knowledge":
+                        continue
+                    snapshot.append({
+                        "rule_id": rule.get("id"),
+                        "name": rule.get("name"),
+                        "severity": rule.get("severity"),
+                        "lifecycle": rule.get("lifecycle"),
+                        "on_fail": rule.get("on_fail"),
+                        "citation": rule.get("citation", ""),
+                        "has_condition": bool(rule.get("condition")),
+                        "assertion_keys": list(rule.get("assertion", {}).keys()) if isinstance(rule.get("assertion"), dict) else [],
+                    })
+
+            return json.dumps({
+                "spec_id": spec_id,
+                "total_rules": len(snapshot),
+                "rules": snapshot,
+            }, ensure_ascii=False, indent=2)
+
+        except Exception as e:
+            logger.exception("compare_spec_rules failed")
+            return json.dumps({"error": str(e)}, ensure_ascii=False)
+
+    @mcp.tool(annotations=_READ_ANN)
+    async def diff_spec_snapshots(old_snapshot: str, new_snapshot: str) -> str:
+        """
+        对比两个 spec 快照，识别新增、修改、删除的规则。
+
+        用于 spec 版本升级时的变更追踪。
+
+        Args:
+            old_snapshot: 旧版本快照 JSON（来自 compare_spec_rules）
+            new_snapshot: 新版本快照 JSON（来自 compare_spec_rules）
+
+        Returns:
+            JSON 字符串，包含 diff 结果
+        """
+        try:
+            old = json.loads(old_snapshot)
+            new = json.loads(new_snapshot)
+
+            old_rules = {r["rule_id"]: r for r in old.get("rules", [])}
+            new_rules = {r["rule_id"]: r for r in new.get("rules", [])}
+
+            old_ids = set(old_rules.keys())
+            new_ids = set(new_rules.keys())
+
+            added = []
+            removed = []
+            modified = []
+            unchanged = []
+
+            # 新增
+            for rid in sorted(new_ids - old_ids):
+                added.append(new_rules[rid])
+
+            # 删除
+            for rid in sorted(old_ids - new_ids):
+                removed.append(old_rules[rid])
+
+            # 修改或未变
+            for rid in sorted(old_ids & new_ids):
+                old_r = old_rules[rid]
+                new_r = new_rules[rid]
+                changes = []
+                for key in ["name", "severity", "lifecycle", "on_fail", "citation"]:
+                    if old_r.get(key) != new_r.get(key):
+                        changes.append({
+                            "field": key,
+                            "old": old_r.get(key),
+                            "new": new_r.get(key),
+                        })
+                if changes:
+                    modified.append({
+                        "rule_id": rid,
+                        "changes": changes,
+                    })
+                else:
+                    unchanged.append(rid)
+
+            return json.dumps({
+                "old_spec": old.get("spec_id", "unknown"),
+                "new_spec": new.get("spec_id", "unknown"),
+                "summary": {
+                    "added": len(added),
+                    "removed": len(removed),
+                    "modified": len(modified),
+                    "unchanged": len(unchanged),
+                },
+                "added": added,
+                "removed": removed,
+                "modified": modified,
+            }, ensure_ascii=False, indent=2)
+
+        except json.JSONDecodeError as e:
+            return json.dumps(
+                {"error": f"JSON 解析失败: {e}"},
+                ensure_ascii=False,
+            )
+        except Exception as e:
+            logger.exception("diff_spec_snapshots failed")
+            return json.dumps({"error": str(e)}, ensure_ascii=False)
+
 
 # ============================================================
 # 辅助函数
@@ -632,6 +1168,41 @@ def _extract_var_paths(expr: Any) -> list[str]:
         for item in expr:
             paths.extend(_extract_var_paths(item))
     return paths
+
+
+def _is_real_condition(condition: Any) -> bool:
+    """
+    判断是否为"真正的条件表达式"。
+
+    简单的 "not null" 检查（如 {"!=": [{"var": "x"}, null]}）不算真正的条件，
+    只是数据存在性检查。真正的条件是依赖其他字段值的判断。
+    """
+    if not condition or condition == {}:
+        return False
+
+    # 简单的 != null 检查：{"!=": [{"var": "x"}, null]}
+    if isinstance(condition, dict):
+        op = list(condition.keys())[0] if condition else None
+        args = condition.get(op, [])
+
+        if op == "!=" and isinstance(args, list) and len(args) == 2:
+            # 检查是否为 var != null 模式
+            is_var = isinstance(args[0], dict) and "var" in args[0]
+            is_null = args[1] is None
+            if is_var and is_null:
+                return False  # 这是简单的 not null 检查，不算真正条件
+
+        # and/or 组合：检查是否所有子条件都是 not null
+        if op in ("and", "or") and isinstance(args, list):
+            all_null_checks = all(
+                not _is_real_condition(sub)
+                for sub in args
+                if isinstance(sub, dict)
+            )
+            if all_null_checks:
+                return False
+
+    return True  # 其他情况视为真正条件
 
 
 def _deduplicate_fields(fields: list[dict]) -> list[dict]:
@@ -872,6 +1443,67 @@ def _format_report_markdown(report: dict) -> str:
             lines.append(f"{i}. **{item['rule_id']}** ({item['priority']})")
             for step in item["steps"]:
                 lines.append(f"   - {step}")
+        lines.append(f"")
+
+    return "\n".join(lines)
+
+
+def _format_cross_domain_report_markdown(report: dict) -> str:
+    """将跨域报告格式化为 Markdown"""
+    lines = []
+    meta = report["report_metadata"]
+    summary = report["executive_summary"]
+
+    lines.append(f"# 跨域合规审计报告")
+    lines.append(f"")
+    lines.append(f"**实体**: {meta['entity_name']}")
+    lines.append(f"**规范**: {', '.join(meta['spec_ids'])}")
+    lines.append(f"**日期**: {meta['generated_at']}")
+    lines.append(f"")
+    lines.append(f"## 执行摘要")
+    lines.append(f"")
+    lines.append(f"| 指标 | 值 |")
+    lines.append(f"|------|-----|")
+    lines.append(f"| 综合合规状态 | {summary['overall_compliance']} |")
+    lines.append(f"| 检查规则总数 | {summary['total_rules_checked']} |")
+    lines.append(f"| 通过 | {summary['total_passed']} |")
+    lines.append(f"| 警告 | {summary['total_warnings']} |")
+    lines.append(f"| 严重失败 | {summary['total_fatal']} |")
+    lines.append(f"| 综合覆盖率 | {summary['overall_coverage']}% |")
+    lines.append(f"")
+
+    lines.append(f"## 各标准评估")
+    lines.append(f"")
+    lines.append(f"| 标准 | 状态 | 通过/总数 | 覆盖率 |")
+    lines.append(f"|------|------|----------|--------|")
+    for sr in report["spec_assessments"]:
+        if "error" in sr:
+            lines.append(f"| {sr['spec_id']} | error | - | - |")
+        else:
+            lines.append(
+                f"| {sr['spec_id']} | {sr['compliance']} | "
+                f"{sr['passed']}/{sr['total']} | {sr['coverage']}% |"
+            )
+    lines.append(f"")
+
+    if report["critical_findings"]:
+        lines.append(f"## 严重问题")
+        lines.append(f"")
+        for finding in report["critical_findings"]:
+            lines.append(f"### {finding['rule_id']}: {finding['rule_name']}")
+            lines.append(f"")
+            lines.append(f"- **标准**: {finding.get('spec_id', 'unknown')}")
+            lines.append(f"- **严重级别**: {finding['severity']}")
+            lines.append(f"- **消息**: {finding['message']}")
+            if finding.get("citation"):
+                lines.append(f"- **标准引用**: {finding['citation'][:200]}...")
+            lines.append(f"")
+
+    if report["warnings"]:
+        lines.append(f"## 警告")
+        lines.append(f"")
+        for warning in report["warnings"]:
+            lines.append(f"- **{warning['rule_id']}**: {warning['message']}")
         lines.append(f"")
 
     return "\n".join(lines)

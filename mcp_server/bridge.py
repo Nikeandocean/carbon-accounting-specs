@@ -10,10 +10,15 @@ import json
 import logging
 from typing import Any
 
+from mcp.types import ToolAnnotations
 from mcp_server.engine import execute_rules, AuditResult
 from mcp_server.loader import SpecLoader
 
 logger = logging.getLogger(__name__)
+
+_READ_ANN = ToolAnnotations(
+    readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False,
+)
 
 
 # ============================================================
@@ -229,7 +234,7 @@ def cross_domain_audit(loader: SpecLoader, project_data: dict) -> dict:
 def register_bridge_tools(mcp: Any, loader: SpecLoader) -> None:
     """注册跨域桥接 MCP 工具"""
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def full_green_finance_audit(project_data: str) -> str:
         """一站式绿色金融合规审查（碳数据 + 金融资格）。
 

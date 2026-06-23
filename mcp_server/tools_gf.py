@@ -10,10 +10,15 @@ import json
 import logging
 from typing import Any
 
+from mcp.types import ToolAnnotations
 from mcp_server.engine import execute_rules, AuditResult
 from mcp_server.loader import SpecLoader
 
 logger = logging.getLogger(__name__)
+
+_READ_ANN = ToolAnnotations(
+    readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False,
+)
 
 
 # ============================================================
@@ -70,7 +75,7 @@ _CATEGORY_KEYWORDS: dict[str, list[str]] = {
 def register_gf_tools(mcp: Any, loader: SpecLoader) -> None:
     """注册绿色金融域 MCP 工具"""
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def check_green_bond(
         project_name: str,
         industry_category: str,
@@ -135,7 +140,7 @@ def register_gf_tools(mcp: Any, loader: SpecLoader) -> None:
             logger.exception("check_green_bond failed")
             return json.dumps({"error": str(e)}, ensure_ascii=False)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def check_green_credit(
         project_name: str,
         industry_code: str,
@@ -208,7 +213,7 @@ def register_gf_tools(mcp: Any, loader: SpecLoader) -> None:
             logger.exception("check_green_credit failed")
             return json.dumps({"error": str(e)}, ensure_ascii=False)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def check_issb_s2(
         entity_name: str,
         scope1_emissions: float = 0.0,
@@ -300,7 +305,7 @@ def register_gf_tools(mcp: Any, loader: SpecLoader) -> None:
             logger.exception("check_issb_s2 failed")
             return json.dumps({"error": str(e)}, ensure_ascii=False)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def classify_project(
         project_description: str,
         industry: str = "",
@@ -364,7 +369,7 @@ def register_gf_tools(mcp: Any, loader: SpecLoader) -> None:
             logger.exception("classify_project failed")
             return json.dumps({"error": str(e)}, ensure_ascii=False)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     async def get_gf_rule(rule_id: str) -> str:
         """查询绿色金融规则详情。
 

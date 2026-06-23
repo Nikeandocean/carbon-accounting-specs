@@ -10,15 +10,20 @@ import json
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
+from mcp.types import ToolAnnotations
 
 from .engine import execute_rules
 from .loader import SpecLoader
+
+_READ_ANN = ToolAnnotations(
+    readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False,
+)
 
 
 def register_ghg_tools(mcp: FastMCP, loader: SpecLoader) -> None:
     """注册所有碳核算域 MCP 工具"""
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     def audit_scope1(
         entity_name: str,
         reporting_year: int,
@@ -67,7 +72,7 @@ def register_ghg_tools(mcp: FastMCP, loader: SpecLoader) -> None:
         result = execute_rules(specs, data, domain="scope1")
         return json.dumps(result.to_dict(), ensure_ascii=False, indent=2)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     def audit_scope2(
         entity_name: str,
         reporting_year: int,
@@ -127,7 +132,7 @@ def register_ghg_tools(mcp: FastMCP, loader: SpecLoader) -> None:
         result = execute_rules(specs, data, domain="scope2")
         return json.dumps(result.to_dict(), ensure_ascii=False, indent=2)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     def get_rule(rule_id: str) -> str:
         """
         查询规则详情和关联的标准引用。
@@ -176,7 +181,7 @@ def register_ghg_tools(mcp: FastMCP, loader: SpecLoader) -> None:
 
         return json.dumps(detail, ensure_ascii=False, indent=2)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     def list_rules(scope: str | None = None, lifecycle: str | None = None) -> str:
         """
         列出适用的规则。
@@ -211,7 +216,7 @@ def register_ghg_tools(mcp: FastMCP, loader: SpecLoader) -> None:
 
         return json.dumps({"total": len(rules), "rules": rules}, ensure_ascii=False, indent=2)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ANN)
     def explain_failure(rule_id: str, data: str) -> str:
         """
         解释规则失败原因并提供修复建议。
