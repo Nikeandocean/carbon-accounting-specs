@@ -14,6 +14,7 @@ from mcp.server.fastmcp import FastMCP
 from .loader import SpecLoader
 from .tools_ghg import register_ghg_tools
 from .tools_gf import register_gf_tools
+from .tools_spec import register_spec_tools
 from .bridge import register_bridge_tools
 
 # 初始化规范加载器（相对于项目根目录的 specs/ 目录）
@@ -26,6 +27,13 @@ mcp = FastMCP(
     name="spec-driven-review",
     instructions=(
         "碳核算 + 绿色金融双域合规审查 MCP 服务器。\n\n"
+        "Spec-Driven 审计工具（核心）：\n"
+        "- describe_spec: 描述 spec 结构和要求概览\n"
+        "- get_data_requirements: 获取数据收集要求\n"
+        "- analyze_gaps: 分析已有数据与 spec 要求的差距\n"
+        "- validate_data: 执行完整的 spec 规则验证\n"
+        "- get_remediation: 获取规则失败的修复指导\n"
+        "- generate_report: 生成完整的合规审计报告\n\n"
         "域1 — 碳核算审查（GHG Protocol）：\n"
         "- audit_scope1: 审查 Scope 1 直接排放数据合规性\n"
         "- audit_scope2: 审查 Scope 2 外购能源排放数据合规性\n"
@@ -45,7 +53,8 @@ mcp = FastMCP(
     ),
 )
 
-# 注册工具 — 域1: 碳核算 + 域2: 绿色金融 + 跨域桥接
+# 注册工具 — Spec-Driven 审计 + 域1: 碳核算 + 域2: 绿色金融 + 跨域桥接
+register_spec_tools(mcp, loader)
 register_ghg_tools(mcp, loader)
 register_gf_tools(mcp, loader)
 register_bridge_tools(mcp, loader)
