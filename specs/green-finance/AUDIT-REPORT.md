@@ -13,8 +13,12 @@
 |------|------|---------|
 | cit-gb-133 截断 | ✅ 已修复 | 补全 "25 年内不高于15%。" |
 | 缺少 4.2.1.4 | ✅ 已修复 | 添加到 valid_project_codes，计数更新为 249 |
-| ifrs-s2-text.txt 损坏 | ⚠️ 待处理 | PDF 文件损坏（176KB），需重新获取 |
-| IFRS S2 段落编号 | ⚠️ 待确认 | 需对照正式版 PDF 核实子段落编号 |
+| ifrs-s2-text.txt 损坏 | ✅ 已修复 | 替换为 ISSB 2026 正式版 PDF |
+| IFRS S2 段落编号系统性错位 | ✅ 已修复 | 修正 20 条 citation 段落引用，v3.0.0 |
+| 缺失强制段落引用和规则 | ✅ 已修复 | 新增 50 条 citation + 39 条规则，v3.1.0 |
+| December 2025修正案未覆盖 | ✅ 已修复 | 新增 Para 29A-C 引用和规则，v3.1.0 |
+| cit-s2-016/017 碳信用文本不准确 | ✅ 已修复 | 更新为 Para 36(e) 实际内容，v3.1.0 |
+| cit-s2-012 Scope 2 断言过严 | ✅ 已修复 | 改为 location-based + 合同工具信息，v3.1.0 |
 | GWP 来源过于宽松 | ✅ 已修复 | 限制为 IPCC_AR6/IPCC_AR7 |
 | citation_ref 不一致 | ✅ 已修复 | 统一为 citation 字段 |
 
@@ -27,7 +31,7 @@
 | bond-catalog.yaml | ⚠️ 需修复 | 3 | 246 | 5 |
 | bond-eligibility.yaml | ✅ 基本合规 | 1 | 25 | 30 |
 | credit-classification.yaml | ✅ 基本合规 | 0 | 21 | 18 |
-| issb-s2-disclosure.yaml | ⚠️ 需修复 | 3 | 30 | 34 |
+| issb-s2-disclosure.yaml | ✅ 已修复 | 0 | 80 | 73 |
 | cross-domain-bridge.yaml | ✅ 基本合规 | 0 | 12 | 13 |
 
 ---
@@ -78,45 +82,36 @@
 
 ---
 
-#### 3. issb-s2-disclosure.yaml: IFRS S2 段落编号可能不准确
+#### 3. issb-s2-disclosure.yaml: IFRS S2 段落编号系统性错位
 
 **文件**: `issb-s2-disclosure.yaml`  
-**引用 ID**: `cit-s2-012`, `cit-s2-013`, `cit-s2-023`
+**状态**: ✅ 已修复 (v3.0.0)
 
-**问题**: 
-- `cit-s2-012` 引用 "IFRS S2 Para 29(a)(ii)" 表示 Scope 2 双重报告要求
-- `cit-s2-013` 引用 "IFRS S2 Para 29(a)(iii)" 表示 Scope 3 类别披露
-- `cit-s2-023` 引用 "IFRS S2 Para 29(a)(iii), Appendix B" 表示融资排放
+**问题**: YAML 基于早期草案，30 条 citation 的段落编号与 ISSB 2026 正式版 PDF 不符。
 
-根据 IFRS S2 2023 年 6 月版本，Para 29 的子段落编号为:
-- 29(a)(i): Scope 1/2/3 绝对排放量
-- 29(a)(ii): 计量方法（GHG Protocol）
-- 29(a)(iii): Scope 2 方法选择
-- 29(a)(iv): 范围界定
-- 29(a)(v): 合并方法
-- 29(a)(vi)(1): Scope 3 类别
-- 29(a)(vi)(2): 金融机构融资排放
+**修复内容** (20 条段落引用修正):
+- 治理: Para 5(a)->6(a), 5(b)->6(b)
+- 战略: Para 10->15(a)-(b), 12->10, 18->22
+- 风险管理: Para 22->25(a), 23->25(c)
+- Para 29 子段落: 29(a)(ii)->29(a)(v), 29(a)(iii)->29(a)(vi), 29(b)->29(a)(iii), 29(c)->29(a)(ii), 29(d)->29(b), 29(e)->29(c), 29(f)->29(d), 29(g)->29(e)
+- 目标: Para 35->33(a)-(h), 37->34(a)
+- 过渡: Para 61->Appendix C
 
-**当前引用的段落编号可能基于不同的版本或解读**。建议对照 IFRS S2 原文确认精确的子段落编号。
-
-**风险**: 如果段落编号不准确，可能导致合规审计时被质疑。
-
-**修复方案**: 获取 IFRS S2 2023 年 6 月正式版 PDF，逐条核对段落编号。
+**新增 December 2025 修正案覆盖**:
+- Para 29A: Scope 3 Category 15 融资排放限制
+- Para 29B: 衍生品处理披露
+- Para 29C: Category 15 总排放和小计披露
 
 ---
 
 #### 4. issb-s2-disclosure.yaml: ifrs-s2-text.txt 源文件损坏
 
 **文件**: `specs/green-finance/ifrs-s2-text.txt`  
-**问题**: 文件内容为浏览器登录错误页面，非 IFRS S2 标准文本。
-
-**当前内容**:
-```
-We can't sign you in
-Your browser is currently set to block JavaScript...
-```
-
-**修复方案**: 重新从 IFRS S2 PDF 提取文本内容。
+**问题**: 文件内容为浏览器登录错误页面，非 IFRS S2 标准文本。  
+**状态**: ✅ 已修复  
+**修复**: 删除损坏文件，替换为 ISSB 2026 正式版 PDF:
+- `issb-2026-a-ifrs-s2-climate-related-disclosures.pdf` (IFRS S2)
+- `issb-2026-a-ifrs-s1-general-requirements-for-disclosure-of-sustainability-related-financial-information.pdf` (IFRS S1)
 
 ---
 
@@ -208,9 +203,9 @@ IFRS S2 发布于 2023 年 6 月，当时最新的 IPCC 评估报告是 AR6 (202
 
 | 检查项 | 结果 |
 |--------|------|
-| 项目类别代码完整性 | ❌ 缺少 4.2.1.4 |
-| 源文件完整性 | ❌ ifrs-s2-text.txt 损坏 |
-| 引用文本完整性 | ❌ cit-gb-133 截断 |
+| 项目类别代码完整性 | ✅ 已补全 4.2.1.4 |
+| 源文件完整性 | ✅ ISSB 2026 PDF 已获取 |
+| 引用文本完整性 | ✅ cit-gb-133 已补全 |
 
 ---
 
@@ -218,15 +213,15 @@ IFRS S2 发布于 2023 年 6 月，当时最新的 IPCC 评估报告是 AR6 (202
 
 ### P0 (立即修复)
 
-1. **补全 cit-gb-133 截断文本** — 数据完整性问题
-2. **添加 4.2.1.4 到 valid_project_codes** — 遗漏合规类别
-3. **重新提取 ifrs-s2-text.txt** — 源文件不可用
+1. ~~**补全 cit-gb-133 截断文本**~~ ✅ 已完成
+2. ~~**添加 4.2.1.4 到 valid_project_codes**~~ ✅ 已完成
+3. ~~**重新提取 ifrs-s2-text.txt**~~ ✅ 已完成（替换为 ISSB 2026 PDF）
 
 ### P1 (尽快修复)
 
-4. **核实 IFRS S2 段落编号** — 合规审计风险
-5. **收紧 GWP 来源校验** — 标准解读偏差
-6. **统一 citation_ref → citation** — 字段命名一致性
+4. ~~**核实 IFRS S2 段落编号**~~ ✅ 已完成 (v3.0.0, 20 条修正)
+5. ~~**收紧 GWP 来源校验**~~ ✅ 已完成
+6. ~~**统一 citation_ref → citation**~~ ✅ 已完成
 
 ### P2 (建议改进)
 
@@ -255,9 +250,10 @@ IFRS S2 发布于 2023 年 6 月，当时最新的 IPCC 评估报告是 AR6 (202
 - 分类体系: 12 大类 + 3 个战略性新兴产业
 
 ### issb-s2-disclosure.yaml
-- 引用数: 30 (cit-s2-001 ~ cit-s2-030)
-- 规则数: 34 (gf-s2-001 ~ gf-s2-034)
-- 四大支柱: 治理(3)、战略(5)、风险管理(2)、指标和目标(24)
+- 引用数: 80 (cit-s2-001 ~ cit-s2-080)
+- 规则数: 73 (gf-s2-001 ~ gf-s2-073)
+- 四大支柱: 治理(10)、战略(22)、风险管理(7)、指标和目标(34)
+- 版本: v3.1.0 (2026-06-22)
 
 ### cross-domain-bridge.yaml
 - 引用数: 12 (cit-gf-br-001 ~ cit-gf-br-012)

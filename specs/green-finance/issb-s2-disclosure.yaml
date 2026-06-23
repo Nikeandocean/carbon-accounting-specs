@@ -1,8 +1,8 @@
 meta:
   id: "green-finance/issb-s2-disclosure"
-  version: "2.0.0"
-  source: "IFRS S2 Climate-related Disclosures (June 2023)"
-  source_ref: "https://www.ifrs.org/issued-standards/ifrs-sustainability-standards-navigator/ifrs-s2-climate-related-disclosures/"
+  version: "3.0.0"
+  source: "IFRS S2 Climate-related Disclosures (ISSB 2026)"
+  source_ref: "specs/green-finance/issb-2026-a-ifrs-s2-climate-related-disclosures.pdf"
   layer: "schema"
   description: >
     IFRS S2 气候相关披露规范，覆盖治理、战略、风险管理、指标和目标四大支柱。
@@ -13,10 +13,10 @@ citations:
   # ===== 治理 =====
   - id: "cit-s2-001"
     text: "An entity shall disclose information about its governance body(s) or individual(s) responsible for oversight of climate-related risks and opportunities."
-    section: "IFRS S2 Para 5(a)"
+    section: "IFRS S2 Para 6(a)"
   - id: "cit-s2-002"
     text: "An entity shall disclose the role of management in the governance processes, controls and procedures used to monitor, manage and oversee climate-related risks and opportunities."
-    section: "IFRS S2 Para 5(b)"
+    section: "IFRS S2 Para 6(b)"
   - id: "cit-s2-003"
     text: "An entity shall disclose the amount of remuneration, in monetary or non-monetary form, linked to climate-related risks and opportunities for key management personnel."
     section: "IFRS S2 Para 6"
@@ -24,67 +24,67 @@ citations:
   # ===== 战略 =====
   - id: "cit-s2-004"
     text: "An entity shall disclose its current and anticipated financial effects of climate-related risks and opportunities, including effects on financial position, financial performance and cash flows for the short, medium and long term."
-    section: "IFRS S2 Para 10"
+    section: "IFRS S2 Para 15(a)-(b)"
   - id: "cit-s2-005"
     text: "An entity shall disclose climate-related risks and opportunities that could reasonably be expected to affect the entity's cash flows, its access to finance or cost of capital over the short, medium and long term."
-    section: "IFRS S2 Para 12"
+    section: "IFRS S2 Para 10"
   - id: "cit-s2-006"
     text: "An entity shall disclose its transition plan for managing climate-related risks and opportunities, including planned changes to business model, strategy and resource allocation."
-    section: "IFRS S2 Para 14"
+    section: "IFRS S2 Para 14(a)"
   - id: "cit-s2-007"
     text: "An entity shall use climate-related scenario analysis to assess its climate resilience, including at least one scenario aligned with a 1.5°C or well-below 2°C warming pathway."
-    section: "IFRS S2 Para 18"
+    section: "IFRS S2 Para 22"
 
   # ===== 风险管理 =====
   - id: "cit-s2-008"
     text: "An entity shall disclose how it identifies, assesses, prioritises and monitors climate-related risks and opportunities."
-    section: "IFRS S2 Para 22"
+    section: "IFRS S2 Para 25(a)"
   - id: "cit-s2-009"
     text: "An entity shall disclose how climate-related risks and opportunities are managed as part of the entity's overall risk management process."
-    section: "IFRS S2 Para 23"
+    section: "IFRS S2 Para 25(c)"
 
   # ===== 指标和目标 — 排放 =====
   - id: "cit-s2-010"
     text: "An entity shall disclose its absolute gross GHG emissions generated during the reporting period, measured in metric tonnes of CO2 equivalent (tCO2e), in accordance with the GHG Protocol Corporate Standards, separately for Scope 1, Scope 2 and Scope 3."
-    section: "IFRS S2 Para 29(a)"
+    section: "IFRS S2 Para 29(a)(i)"
   - id: "cit-s2-011"
     text: "An entity shall use GWP values from the most recent IPCC Assessment Report and disclose the source of the GWP values used."
-    section: "IFRS S2 Para 29(a)"
+    section: "IFRS S2 Para 29(a)(i)"
   - id: "cit-s2-012"
-    text: "An entity shall disclose Scope 2 GHG emissions using both the location-based method and the market-based method."
-    section: "IFRS S2 Para 29(a)(ii)"
+    text: "For Scope 2 greenhouse gas emissions, an entity shall disclose its location-based Scope 2 greenhouse gas emissions, and provide information about any contractual instruments that is necessary to inform users' understanding of the entity's Scope 2 greenhouse gas emissions."
+    section: "IFRS S2 Para 29(a)(v)"
   - id: "cit-s2-013"
     text: "An entity shall disclose Scope 3 GHG emissions, including the categories included in the measurement, using the 15 categories described in the GHG Protocol Corporate Value Chain (Scope 3) Standard."
-    section: "IFRS S2 Para 29(a)(iii)"
+    section: "IFRS S2 Para 29(a)(vi)"
   - id: "cit-s2-014"
     text: "An entity shall disclose the measurement approach, inputs and assumptions used to calculate its GHG emissions, including the reporting boundary, consolidation approach and any changes from prior periods."
-    section: "IFRS S2 Para 29(b)"
+    section: "IFRS S2 Para 29(a)(iii)"
   - id: "cit-s2-015"
     text: "An entity shall disclose how it has applied the GHG Protocol Corporate Standard and the GHG Protocol Corporate Value Chain (Scope 3) Standard to measure its GHG emissions."
-    section: "IFRS S2 Para 29(c)"
+    section: "IFRS S2 Para 29(a)(ii)"
   - id: "cit-s2-016"
-    text: "An entity shall separately disclose GHG emissions associated with any GHG removals and carbon credits it has purchased and retired."
-    section: "IFRS S2 Para 30"
+    text: "An entity shall disclose its planned use of carbon credits to offset greenhouse gas emissions to achieve any net greenhouse gas emissions target, including: the extent to which achieving the target relies on carbon credits; which third-party scheme(s) will verify or certify the carbon credits; the type of carbon credit (nature-based or technological, reduction or removal); and any other factors necessary for users to understand the credibility and integrity of the carbon credits."
+    section: "IFRS S2 Para 36(e)"
   - id: "cit-s2-017"
-    text: "An entity shall disclose the amount of GHG emissions offset through carbon credits, the type of carbon credits and the standards under which they were verified."
-    section: "IFRS S2 Para 31"
+    text: "In explaining its planned use of carbon credits, the entity shall disclose: the extent to which, and how, achieving any net greenhouse gas emissions target relies on the use of carbon credits; which third-party scheme(s) will verify or certify the carbon credits; the type of carbon credit, including whether the underlying offset will be nature-based or based on technological carbon removals, and whether achieved through carbon reduction or removal; and any other factors necessary for users to understand credibility and integrity (for example, assumptions regarding permanence)."
+    section: "IFRS S2 Para 36(e)(i)-(iv)"
 
   # ===== 指标和目标 — 其他指标 =====
   - id: "cit-s2-018"
     text: "An entity shall disclose the amount and percentage of assets or business activities vulnerable to transition risks."
-    section: "IFRS S2 Para 29(d)"
+    section: "IFRS S2 Para 29(b)"
   - id: "cit-s2-019"
     text: "An entity shall disclose the amount and percentage of assets or business activities vulnerable to physical risks."
-    section: "IFRS S2 Para 29(e)"
+    section: "IFRS S2 Para 29(c)"
   - id: "cit-s2-020"
     text: "An entity shall disclose the amount and percentage of assets or business activities aligned with climate-related opportunities."
-    section: "IFRS S2 Para 29(f)"
+    section: "IFRS S2 Para 29(d)"
   - id: "cit-s2-021"
     text: "An entity shall disclose the amount of capital expenditure, financing or investment deployed toward climate-related risks and opportunities."
-    section: "IFRS S2 Para 29(g)"
+    section: "IFRS S2 Para 29(e)"
   - id: "cit-s2-022"
     text: "An entity shall disclose the internal carbon price(s) used by the entity and how those prices are applied in decision-making."
-    section: "IFRS S2 Para 34"
+    section: "IFRS S2 Para 29(f)"
 
   # ===== 指标和目标 — 金融机构 =====
   - id: "cit-s2-023"
@@ -97,24 +97,202 @@ citations:
     section: "IFRS S2 Para 33"
   - id: "cit-s2-025"
     text: "For each target disclosed, an entity shall disclose the metric used to measure progress, the specific gases covered, whether the target is absolute or intensity-based, and whether it covers gross or net emissions."
-    section: "IFRS S2 Para 35"
+    section: "IFRS S2 Para 33(a)-(h)"
   - id: "cit-s2-026"
     text: "An entity shall disclose its planned use of carbon credits to achieve any net emission reduction targets, including the type, source and volume of carbon credits expected."
     section: "IFRS S2 Para 36"
   - id: "cit-s2-027"
     text: "An entity shall disclose whether its targets have been validated or verified by a third party, and if so, by whom."
-    section: "IFRS S2 Para 37"
+    section: "IFRS S2 Para 34(a)"
 
   # ===== 过渡性规定 =====
   - id: "cit-s2-028"
     text: "An entity is permitted to use the GHG Protocol Corporate Standard to measure Scope 3 emissions for the first annual reporting period in which it applies IFRS S2. An entity is not required to disclose Scope 3 emissions in the first annual reporting period."
-    section: "IFRS S2 Para 61"
+    section: "IFRS S2 Appendix C"
   - id: "cit-s2-029"
     text: "An entity shall measure its GHG emissions in metric tonnes of CO2 equivalent (tCO2e)."
-    section: "IFRS S2 Para 29(a)"
+    section: "IFRS S2 Para 29(a)(i)"
   - id: "cit-s2-030"
     text: "An entity shall disclose its Scope 1 and Scope 2 GHG emissions separately from Scope 3 GHG emissions."
-    section: "IFRS S2 Para 29(a)"
+    section: "IFRS S2 Para 29(a)(i)"
+
+  # ===== 治理 — 子段落 =====
+  - id: "cit-s2-031"
+    text: "An entity shall disclose how responsibilities for climate-related risks and opportunities are reflected in the terms of reference, mandates, role descriptions and other related policies applicable to the governance body(s) or individual(s)."
+    section: "IFRS S2 Para 6(a)(i)"
+  - id: "cit-s2-032"
+    text: "An entity shall disclose how the governance body(s) or individual(s) determines whether appropriate skills and competencies are available or will be developed to oversee strategies designed to respond to climate-related risks and opportunities."
+    section: "IFRS S2 Para 6(a)(ii)"
+  - id: "cit-s2-033"
+    text: "An entity shall disclose how and how often the governance body(s) or individual(s) is informed about climate-related risks and opportunities."
+    section: "IFRS S2 Para 6(a)(iii)"
+  - id: "cit-s2-034"
+    text: "An entity shall disclose how the governance body(s) or individual(s) takes into account climate-related risks and opportunities when overseeing the entity's strategy, its decisions on major transactions and its risk management processes and related policies, including whether the body(s) or individual(s) has considered trade-offs associated with those risks and opportunities."
+    section: "IFRS S2 Para 6(a)(iv)"
+  - id: "cit-s2-035"
+    text: "An entity shall disclose how the governance body(s) or individual(s) oversees the setting of targets related to climate-related risks and opportunities, and monitors progress towards those targets, including whether and how related performance metrics are included in remuneration policies."
+    section: "IFRS S2 Para 6(a)(v)"
+  - id: "cit-s2-036"
+    text: "An entity shall disclose whether the management role is delegated to a specific management-level position or management-level committee and how oversight is exercised over that position or committee."
+    section: "IFRS S2 Para 6(b)(i)"
+  - id: "cit-s2-037"
+    text: "An entity shall disclose whether management uses controls and procedures to support the oversight of climate-related risks and opportunities and, if so, how these controls and procedures are integrated with other internal functions."
+    section: "IFRS S2 Para 6(b)(ii)"
+
+  # ===== 战略 — 概述 =====
+  - id: "cit-s2-038"
+    text: "An entity shall disclose information to enable users to understand: the climate-related risks and opportunities that could reasonably be expected to affect the entity's prospects; the current and anticipated effects on business model and value chain; the effects on strategy and decision-making, including transition plan; the effects on financial position, performance and cash flows; and the climate resilience of the entity's strategy."
+    section: "IFRS S2 Para 9(a)-(e)"
+
+  # ===== 战略 — 风险机遇识别 =====
+  - id: "cit-s2-039"
+    text: "An entity shall: describe climate-related risks and opportunities that could reasonably be expected to affect the entity's prospects; explain whether each risk is a physical risk or transition risk; specify over which time horizons (short, medium or long term) the effects could reasonably be expected to occur; and explain how the entity defines 'short term', 'medium term' and 'long term' and how these definitions are linked to planning horizons."
+    section: "IFRS S2 Para 10(a)-(d)"
+  - id: "cit-s2-040"
+    text: "In identifying climate-related risks and opportunities, the entity shall use all reasonable and supportable information that is available to the entity at the reporting date without undue cost or effort, including information about past events, current conditions and forecasts of future conditions."
+    section: "IFRS S2 Para 11"
+  - id: "cit-s2-041"
+    text: "In identifying climate-related risks and opportunities, the entity shall refer to and consider the applicability of the industry-based disclosure topics defined in the Industry-based Guidance on Implementing IFRS S2."
+    section: "IFRS S2 Para 12"
+
+  # ===== 战略 — 商业模式和价值链 =====
+  - id: "cit-s2-042"
+    text: "An entity shall disclose: a description of the current and anticipated effects of climate-related risks and opportunities on the entity's business model and value chain; and a description of where in the entity's business model and value chain climate-related risks and opportunities are concentrated (for example, geographical areas, facilities and types of assets)."
+    section: "IFRS S2 Para 13(a)-(b)"
+
+  # ===== 战略 — 战略和决策 =====
+  - id: "cit-s2-043"
+    text: "An entity shall disclose information about how the entity has responded to, and plans to respond to, climate-related risks and opportunities in its strategy and decision-making, including: current and anticipated changes to the business model including resource allocation; current and anticipated direct mitigation and adaptation efforts; current and anticipated indirect mitigation and adaptation efforts; any climate-related transition plan including key assumptions and dependencies; and how the entity plans to achieve any climate-related targets."
+    section: "IFRS S2 Para 14(a)(i)-(v)"
+  - id: "cit-s2-044"
+    text: "An entity shall disclose information about how the entity is resourcing, and plans to resource, the activities disclosed in accordance with paragraph 14(a)."
+    section: "IFRS S2 Para 14(b)"
+  - id: "cit-s2-045"
+    text: "An entity shall disclose quantitative and qualitative information about the progress of plans disclosed in previous reporting periods in accordance with paragraph 14(a)."
+    section: "IFRS S2 Para 14(c)"
+
+  # ===== 战略 — 财务影响 =====
+  - id: "cit-s2-046"
+    text: "An entity shall disclose information that enables users to understand: the effects of climate-related risks and opportunities on the entity's financial position, financial performance and cash flows for the reporting period (current financial effects); and the anticipated effects over the short, medium and long term, taking into consideration how climate-related risks and opportunities are included in the entity's financial planning (anticipated financial effects)."
+    section: "IFRS S2 Para 15(a)-(b)"
+  - id: "cit-s2-047"
+    text: "An entity shall disclose quantitative and qualitative information about: how climate-related risks and opportunities have affected its financial position, financial performance and cash flows for the reporting period; the climate-related risks and opportunities for which there is a significant risk of a material adjustment within the next annual reporting period to the carrying amounts of assets and liabilities; and how the entity expects its financial position to change over the short, medium and long term."
+    section: "IFRS S2 Para 16(a)-(d)"
+  - id: "cit-s2-048"
+    text: "In providing quantitative information about anticipated financial effects, an entity may disclose a single amount or a range."
+    section: "IFRS S2 Para 17"
+  - id: "cit-s2-049"
+    text: "In preparing disclosures about the anticipated financial effects of a climate-related risk or opportunity, an entity shall: use all reasonable and supportable information that is available to the entity at the reporting date without undue cost or effort; and use an approach that is commensurate with the skills, capabilities and resources available to the entity."
+    section: "IFRS S2 Para 18(a)-(b)"
+  - id: "cit-s2-050"
+    text: "An entity need not provide quantitative information about the current or anticipated financial effects if: those effects are not separately identifiable; or the level of measurement uncertainty involved in estimating those effects is so high that the resulting quantitative information would not be useful."
+    section: "IFRS S2 Para 19(a)-(b)"
+  - id: "cit-s2-051"
+    text: "If an entity determines that it need not provide quantitative information, the entity shall: explain why it has not provided quantitative information; provide qualitative information about those financial effects, including identifying line items likely to be affected; and provide quantitative information about the combined financial effects unless the entity determines that such information would not be useful."
+    section: "IFRS S2 Para 21(a)-(c)"
+
+  # ===== 战略 — 气候韧性 =====
+  - id: "cit-s2-052"
+    text: "An entity shall disclose its assessment of its climate resilience as at the reporting date, which shall enable users to understand: the implications for its strategy and business model; the significant areas of uncertainty considered; and the entity's capacity to adjust or adapt its strategy and business model to climate change over the short, medium and long term."
+    section: "IFRS S2 Para 22(a)"
+  - id: "cit-s2-053"
+    text: "An entity shall disclose how and when the climate-related scenario analysis was carried out, including: information about the inputs used (scenarios, diversity, transition/physical risks, alignment with latest international agreement, relevance, time horizons, scope of operations); the key assumptions made (climate policies, macroeconomic trends, regional variables, energy usage/mix, technology developments); and the reporting period in which the analysis was carried out."
+    section: "IFRS S2 Para 22(b)(i)-(iii)"
+
+  # ===== 风险管理 — 详细 =====
+  - id: "cit-s2-054"
+    text: "An entity shall disclose the processes and related policies used to identify, assess, prioritise and monitor climate-related risks, including: inputs and parameters; whether and how climate-related scenario analysis is used; how the nature, likelihood and magnitude of effects are assessed; whether and how risks are prioritised relative to other types of risk; how risks are monitored; and whether and how the processes have changed compared with the previous reporting period."
+    section: "IFRS S2 Para 25(a)(i)-(vi)"
+  - id: "cit-s2-055"
+    text: "An entity shall disclose the processes used to identify, assess, prioritise and monitor climate-related opportunities, including information about whether and how climate-related scenario analysis is used to inform the identification of climate-related opportunities."
+    section: "IFRS S2 Para 25(b)"
+  - id: "cit-s2-056"
+    text: "An entity shall disclose the extent to which, and how, the processes for identifying, assessing, prioritising and monitoring climate-related risks and opportunities are integrated into and inform the entity's overall risk management process."
+    section: "IFRS S2 Para 25(c)"
+
+  # ===== 指标 — 详细 =====
+  - id: "cit-s2-057"
+    text: "An entity shall disclose its absolute gross greenhouse gas emissions generated during the reporting period, expressed as metric tonnes of CO2 equivalent, classified as: Scope 1 greenhouse gas emissions; Scope 2 greenhouse gas emissions; and Scope 3 greenhouse gas emissions."
+    section: "IFRS S2 Para 29(a)(i)(1)-(3)"
+  - id: "cit-s2-058"
+    text: "An entity shall measure its greenhouse gas emissions in accordance with the Greenhouse Gas Protocol: A Corporate Accounting and Reporting Standard (2004) unless the entity is required, in whole or in part, by a jurisdictional authority or an exchange on which it is listed to use a different method."
+    section: "IFRS S2 Para 29(a)(ii)"
+  - id: "cit-s2-059"
+    text: "An entity shall disclose the approach it uses to measure its greenhouse gas emissions, including: the measurement approach, inputs and assumptions; the reason why the entity has chosen the measurement approach, inputs and assumptions; and any changes made during the reporting period and the reasons for those changes."
+    section: "IFRS S2 Para 29(a)(iii)(1)-(3)"
+  - id: "cit-s2-060"
+    text: "For Scope 1 and Scope 2 greenhouse gas emissions, an entity shall disaggregate emissions between: the consolidated accounting group; and other investees excluded from the consolidated group (for example, associates, joint ventures and unconsolidated subsidiaries)."
+    section: "IFRS S2 Para 29(a)(iv)(1)-(2)"
+  - id: "cit-s2-061"
+    text: "For Scope 3 greenhouse gas emissions, an entity shall disclose: the categories included within the entity's measure of Scope 3 emissions, in accordance with the 15 categories in the GHG Protocol Corporate Value Chain (Scope 3) Standard; and additional information about the entity's financed emissions (Category 15), if its activities include asset management, commercial banking or insurance."
+    section: "IFRS S2 Para 29(a)(vi)(1)-(2)"
+  - id: "cit-s2-062"
+    text: "An entity shall disclose climate-related transition risks—the amount and percentage of assets or business activities vulnerable to climate-related transition risks."
+    section: "IFRS S2 Para 29(b)"
+  - id: "cit-s2-063"
+    text: "An entity shall disclose climate-related physical risks—the amount and percentage of assets or business activities vulnerable to climate-related physical risks."
+    section: "IFRS S2 Para 29(c)"
+  - id: "cit-s2-064"
+    text: "An entity shall disclose climate-related opportunities—the amount and percentage of assets or business activities aligned with climate-related opportunities."
+    section: "IFRS S2 Para 29(d)"
+  - id: "cit-s2-065"
+    text: "An entity shall disclose capital deployment—the amount of capital expenditure, financing or investment deployed towards climate-related risks and opportunities."
+    section: "IFRS S2 Para 29(e)"
+  - id: "cit-s2-066"
+    text: "An entity shall disclose internal carbon prices: an explanation of whether and how the entity is applying a carbon price in decision-making (for example, investment decisions, transfer pricing and scenario analysis); and the price for each metric tonne of greenhouse gas emissions the entity uses to assess the costs of its greenhouse gas emissions."
+    section: "IFRS S2 Para 29(f)(i)-(ii)"
+  - id: "cit-s2-067"
+    text: "An entity shall disclose remuneration: a description of whether and how climate-related considerations are factored into executive remuneration; and the percentage of executive management remuneration recognised in the current period that is linked to climate-related considerations."
+    section: "IFRS S2 Para 29(g)(i)-(ii)"
+
+  # ===== December 2025 修正案 =====
+  - id: "cit-s2-068"
+    text: "In preparing disclosures to meet the requirement in paragraph 29(a)(i)(3), an entity is permitted to limit what it includes in its measure of Scope 3 Category 15 greenhouse gas emissions to only its financed emissions—that is, emissions attributed to loans and investments made by the entity to investees or counterparties. 'Loans and investments' include loans, project finance, bonds, equity investments and undrawn loan commitments. For asset management, financed emissions include emissions attributed to assets under management. An entity is permitted to exclude greenhouse gas emissions attributable to derivatives."
+    section: "IFRS S2 Para 29A (December 2025 Amendment)"
+  - id: "cit-s2-069"
+    text: "If an entity applies the limitation in paragraph 29A, the entity shall: explain what it has treated as a derivative to enable users to understand how it applied the limitation; and describe the financial activities it has excluded from its measure of Scope 3 Category 15 greenhouse gas emissions as a result of applying paragraph 29A, including activities associated with derivatives."
+    section: "IFRS S2 Para 29B(a)-(b) (December 2025 Amendment)"
+  - id: "cit-s2-070"
+    text: "If an entity has included Category 15 greenhouse gas emissions in its measure of Scope 3 greenhouse gas emissions, the entity shall disclose the total Category 15 greenhouse gas emissions and the subtotal of financed emissions included in that total."
+    section: "IFRS S2 Para 29C (December 2025 Amendment)"
+
+  # ===== 目标 — 详细 =====
+  - id: "cit-s2-071"
+    text: "An entity shall disclose the quantitative and qualitative climate-related targets it has set to monitor progress towards achieving its strategic goals, and any targets it is required to meet by law or regulation, including any greenhouse gas emissions targets."
+    section: "IFRS S2 Para 33"
+  - id: "cit-s2-072"
+    text: "For each target, the entity shall disclose: the metric used to set the target; the objective of the target (mitigation, adaptation or conformance); the part of the entity to which the target applies; the period over which the target applies; the base period from which progress is measured; any milestones and interim targets; if quantitative, whether absolute or intensity-based; and how the latest international agreement on climate change has informed the target."
+    section: "IFRS S2 Para 33(a)-(h)"
+  - id: "cit-s2-073"
+    text: "An entity shall disclose information about its approach to setting and reviewing each target, and how it monitors progress against each target, including: whether the target and methodology has been validated by a third party; the entity's processes for reviewing the target; the metrics used to monitor progress; and any revisions to the target and an explanation for those revisions."
+    section: "IFRS S2 Para 34(a)-(d)"
+  - id: "cit-s2-074"
+    text: "An entity shall disclose information about its performance against each climate-related target and an analysis of trends or changes in the entity's performance."
+    section: "IFRS S2 Para 35"
+  - id: "cit-s2-075"
+    text: "For each greenhouse gas emissions target, an entity shall disclose: which greenhouse gases are covered by the target; whether Scope 1, Scope 2 or Scope 3 emissions are covered; whether the target is a gross or net emissions target (if net, also disclose associated gross target); whether the target was derived using a sectoral decarbonisation approach; and the entity's planned use of carbon credits to offset emissions to achieve any net target."
+    section: "IFRS S2 Para 36(a)-(e)"
+  - id: "cit-s2-076"
+    text: "In identifying and disclosing the metrics used to set and monitor progress towards reaching a target, an entity shall refer to and consider the applicability of cross-industry metrics (paragraph 29) and industry-based metrics (paragraph 32), including those described in an applicable IFRS Sustainability Disclosure Standard, or metrics that otherwise satisfy the requirements in IFRS S1."
+    section: "IFRS S2 Para 37"
+
+  # ===== 跨行业指标使用 =====
+  - id: "cit-s2-077"
+    text: "In preparing disclosures to meet the requirements in paragraphs 29(b)–(d), an entity shall use all reasonable and supportable information that is available to the entity at the reporting date without undue cost or effort."
+    section: "IFRS S2 Para 30"
+  - id: "cit-s2-078"
+    text: "In preparing disclosures to meet the requirements in paragraphs 29(b)–(g), an entity shall refer to paragraphs B64–B65."
+    section: "IFRS S2 Para 31"
+
+  # ===== 行业指标 =====
+  - id: "cit-s2-079"
+    text: "An entity shall disclose industry-based metrics that are associated with one or more particular business models, activities or other common features that characterise participation in an industry. In determining the industry-based metrics, the entity shall refer to and consider the applicability of the industry-based metrics associated with disclosure topics described in the Industry-based Guidance on Implementing IFRS S2."
+    section: "IFRS S2 Para 32"
+
+  # ===== 指标参考 =====
+  - id: "cit-s2-080"
+    text: "In preparing disclosures to meet the requirements in paragraphs 13–22, an entity shall refer to and consider the applicability of cross-industry metric categories, as described in paragraph 29, and industry-based metrics associated with disclosure topics defined in the Industry-based Guidance on Implementing IFRS S2 as described in paragraph 32."
+    section: "IFRS S2 Para 23"
 
 rules:
   # ================================================================
@@ -131,7 +309,7 @@ rules:
     assertion:
       {"!=": [{"var": "output.governance.climate_governance_body"}, null]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 5(a): 须披露负责监督气候相关风险和机遇的治理机构或个人"
+    on_fail_message: "IFRS S2 Para 6(a): 须披露负责监督气候相关风险和机遇的治理机构或个人"
     citation: "cit-s2-001"
 
   - id: "gf-s2-002"
@@ -144,7 +322,7 @@ rules:
     assertion:
       {"!=": [{"var": "output.governance.management_role"}, null]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 5(b): 须披露管理层在气候风险监控和管理中的角色"
+    on_fail_message: "IFRS S2 Para 6(b): 须披露管理层在气候风险监控和管理中的角色"
     citation: "cit-s2-002"
 
   - id: "gf-s2-003"
@@ -174,7 +352,7 @@ rules:
     assertion:
       {"!=": [{"var": "output.strategy.climate_risks_opportunities"}, null]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 12: 须识别并披露可能影响现金流、融资渠道或资本成本的气候相关风险和机遇"
+    on_fail_message: "IFRS S2 Para 10: 须识别并披露可能影响现金流、融资渠道或资本成本的气候相关风险和机遇"
     citation: "cit-s2-005"
 
   - id: "gf-s2-005"
@@ -191,7 +369,7 @@ rules:
         {"!=": [{"var": "output.strategy.long_term_risks"}, null]}
       ]
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 12: 须按短期、中期和长期披露气候相关风险"
+    on_fail_message: "IFRS S2 Para 10: 须按短期、中期和长期披露气候相关风险"
     citation: "cit-s2-005"
 
   - id: "gf-s2-006"
@@ -210,7 +388,7 @@ rules:
         ]}
       ]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 14: 须披露气候转型计划，包括商业模式、战略和资源配置的计划性变化"
+    on_fail_message: "IFRS S2 Para 14(a): 须披露气候转型计划，包括商业模式、战略和资源配置的计划性变化"
     citation: "cit-s2-006"
 
   - id: "gf-s2-007"
@@ -223,7 +401,7 @@ rules:
     assertion:
       {"!=": [{"var": "output.strategy.financial_effects"}, null]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 10: 须披露气候风险和机遇对财务状况、财务绩效和现金流的当前及预期影响"
+    on_fail_message: "IFRS S2 Para 15(a)-(b): 须披露气候风险和机遇对财务状况、财务绩效和现金流的当前及预期影响"
     citation: "cit-s2-004"
 
   - id: "gf-s2-008"
@@ -239,7 +417,7 @@ rules:
         {"!=": [{"var": "input.justifications.gf-s2-008"}, null]}
       ]}
     on_fail: "require_justification"
-    on_fail_message: "IFRS S2 Para 18: 须使用气候情景分析评估实体气候韧性，至少包含1.5度或远低于2度升温路径"
+    on_fail_message: "IFRS S2 Para 22: 须使用气候情景分析评估实体气候韧性，至少包含1.5度或远低于2度升温路径"
     citation: "cit-s2-007"
 
   # ================================================================
@@ -256,7 +434,7 @@ rules:
     assertion:
       {"!=": [{"var": "output.risk_management.risk_identification_process"}, null]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 22: 须披露气候风险的识别、评估、优先级排序和监控流程"
+    on_fail_message: "IFRS S2 Para 25(a): 须披露气候风险的识别、评估、优先级排序和监控流程"
     citation: "cit-s2-008"
 
   - id: "gf-s2-010"
@@ -269,7 +447,7 @@ rules:
     assertion:
       {"!=": [{"var": "output.risk_management.overall_risk_integration"}, null]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 23: 须披露气候风险管理如何融入整体风险管理流程"
+    on_fail_message: "IFRS S2 Para 25(c): 须披露气候风险管理如何融入整体风险管理流程"
     citation: "cit-s2-009"
 
   # ================================================================
@@ -286,7 +464,7 @@ rules:
     assertion:
       {"!=": [{"var": "output.metrics.ghg.scope1_emissions_tco2e"}, null]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 29(a): 须披露Scope 1温室气体绝对排放总量（tCO2e）"
+    on_fail_message: "IFRS S2 Para 29(a)(i): 须披露Scope 1温室气体绝对排放总量（tCO2e）"
     citation: "cit-s2-010"
 
   - id: "gf-s2-012"
@@ -302,7 +480,7 @@ rules:
         {"!=": [{"var": "output.metrics.ghg.scope2_market_based_tco2e"}, null]}
       ]
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 29(a)(ii): 须分别用地域法(location-based)和市场法(market-based)披露Scope 2排放"
+    on_fail_message: "IFRS S2 Para 29(a)(v): 须分别用地域法(location-based)和市场法(market-based)披露Scope 2排放"
     citation: "cit-s2-012"
 
   - id: "gf-s2-013"
@@ -318,7 +496,7 @@ rules:
         {"!=": [{"var": "input.justifications.gf-s2-013"}, null]}
       ]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 29(a)(iii): 须披露Scope 3排放量（首年可豁免）"
+    on_fail_message: "IFRS S2 Para 29(a)(vi): 须披露Scope 3排放量（首年可豁免）"
     citation: "cit-s2-013"
 
   - id: "gf-s2-014"
@@ -332,7 +510,7 @@ rules:
     assertion:
       {"!=": [{"var": "output.metrics.ghg.scope3_categories_included"}, null]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 29(a)(iii): 须披露Scope 3排放所涵盖的15个类别"
+    on_fail_message: "IFRS S2 Para 29(a)(vi): 须披露Scope 3排放所涵盖的15个类别"
     citation: "cit-s2-013"
 
   - id: "gf-s2-015"
@@ -345,7 +523,7 @@ rules:
     assertion:
       {"==": [{"var": "output.metrics.ghg.unit"}, "tCO2e"]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 29(a): GHG排放量须以tCO2e为单位披露"
+    on_fail_message: "IFRS S2 Para 29(a)(i): GHG排放量须以tCO2e为单位披露"
     citation: "cit-s2-029"
 
   - id: "gf-s2-016"
@@ -358,7 +536,7 @@ rules:
     assertion:
       {"in": [{"var": "output.metrics.ghg.gwp_source"}, ["IPCC_AR6", "IPCC_AR7"]]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 29(a): 须使用最新IPCC评估报告的GWP值（IFRS S2发布时为AR6，AR7发布后应升级）"
+    on_fail_message: "IFRS S2 Para 29(a)(i): 须使用最新IPCC评估报告的GWP值（IFRS S2发布时为AR6，AR7发布后应升级）"
     citation: "cit-s2-011"
 
   - id: "gf-s2-017"
@@ -374,7 +552,7 @@ rules:
         {"!=": [{"var": "output.metrics.ghg.scope2_location_based_tco2e"}, null]}
       ]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 29(a): 须将Scope 1/2与Scope 3排放分别披露"
+    on_fail_message: "IFRS S2 Para 29(a)(i): 须将Scope 1/2与Scope 3排放分别披露"
     citation: "cit-s2-030"
 
   - id: "gf-s2-018"
@@ -391,7 +569,7 @@ rules:
         {"!=": [{"var": "output.metrics.ghg.consolidation_approach"}, null]}
       ]
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 29(b): 须披露GHG排放的计量方法、输入假设、报告边界和合并方法"
+    on_fail_message: "IFRS S2 Para 29(a)(iii): 须披露GHG排放的计量方法、输入假设、报告边界和合并方法"
     citation: "cit-s2-014"
 
   - id: "gf-s2-019"
@@ -404,7 +582,7 @@ rules:
     assertion:
       {"!=": [{"var": "output.metrics.ghg.ghg_protocol_application"}, null]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 29(c): 须声明如何应用GHG Protocol Corporate Standard和Scope 3 Standard"
+    on_fail_message: "IFRS S2 Para 29(a)(ii): 须声明如何应用GHG Protocol Corporate Standard和Scope 3 Standard"
     citation: "cit-s2-015"
 
   # ================================================================
@@ -424,7 +602,7 @@ rules:
         {"!=": [{"var": "input.justifications.gf-s2-020"}, null]}
       ]}
     on_fail: "require_justification"
-    on_fail_message: "IFRS S2 Para 29(d): 须披露面临转型风险的资产或业务活动的金额及比例"
+    on_fail_message: "IFRS S2 Para 29(b): 须披露面临转型风险的资产或业务活动的金额及比例"
     citation: "cit-s2-018"
 
   - id: "gf-s2-021"
@@ -440,7 +618,7 @@ rules:
         {"!=": [{"var": "input.justifications.gf-s2-021"}, null]}
       ]}
     on_fail: "require_justification"
-    on_fail_message: "IFRS S2 Para 29(e): 须披露面临物理风险的资产或业务活动的金额及比例"
+    on_fail_message: "IFRS S2 Para 29(c): 须披露面临物理风险的资产或业务活动的金额及比例"
     citation: "cit-s2-019"
 
   - id: "gf-s2-022"
@@ -456,7 +634,7 @@ rules:
         {"!=": [{"var": "input.justifications.gf-s2-022"}, null]}
       ]}
     on_fail: "require_justification"
-    on_fail_message: "IFRS S2 Para 29(f): 须披露与气候机遇对齐的资产或业务活动的金额及比例"
+    on_fail_message: "IFRS S2 Para 29(d): 须披露与气候机遇对齐的资产或业务活动的金额及比例"
     citation: "cit-s2-020"
 
   - id: "gf-s2-023"
@@ -472,7 +650,7 @@ rules:
         {"!=": [{"var": "input.justifications.gf-s2-023"}, null]}
       ]}
     on_fail: "require_justification"
-    on_fail_message: "IFRS S2 Para 29(g): 须披露用于应对气候风险和机遇的资本支出、融资或投资金额"
+    on_fail_message: "IFRS S2 Para 29(e): 须披露用于应对气候风险和机遇的资本支出、融资或投资金额"
     citation: "cit-s2-021"
 
   - id: "gf-s2-024"
@@ -488,7 +666,7 @@ rules:
         {"!=": [{"var": "input.justifications.gf-s2-024"}, null]}
       ]}
     on_fail: "require_justification"
-    on_fail_message: "IFRS S2 Para 34: 须披露内部碳价格及其在决策中的应用方式"
+    on_fail_message: "IFRS S2 Para 29(f): 须披露内部碳价格及其在决策中的应用方式"
     citation: "cit-s2-022"
 
   - id: "gf-s2-025"
@@ -502,7 +680,7 @@ rules:
     assertion:
       {"!=": [{"var": "output.metrics.ghg.financed_emissions_tco2e"}, null]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 29(a)(iii)/Appendix B: 金融机构须披露其贷款和投资活动相关的融资排放量（Scope 3 Category 15）"
+    on_fail_message: "IFRS S2 Para 29(a)(vi)/Appendix B: 金融机构须披露其贷款和投资活动相关的融资排放量（Scope 3 Category 15）"
     citation: "cit-s2-023"
 
   # ================================================================
@@ -522,7 +700,7 @@ rules:
         {"==": [{"var": "input.entity.uses_carbon_credits"}, false]}
       ]}
     on_fail: "raise_warning"
-    on_fail_message: "IFRS S2 Para 30: 若使用碳信用，须分别披露扣除碳信用前后的排放总量"
+    on_fail_message: "IFRS S2 Para 36(e): 若使用碳信用，须分别披露扣除碳信用前后的排放总量"
     citation: "cit-s2-016"
 
   - id: "gf-s2-027"
@@ -539,7 +717,7 @@ rules:
         {"!=": [{"var": "output.metrics.carbon_credits.verification_standard"}, null]}
       ]
     on_fail: "raise_warning"
-    on_fail_message: "IFRS S2 Para 31: 须披露碳信用的类型（CER、VER、国家合规信用等）和验证标准"
+    on_fail_message: "IFRS S2 Para 36(e): 须披露碳信用的类型（CER、VER、国家合规信用等）和验证标准"
     citation: "cit-s2-017"
 
   # ================================================================
@@ -582,7 +760,7 @@ rules:
         {"!=": [{"var": "output.targets.emission_reduction_targets.gases_covered"}, null]}
       ]
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 35: 减排目标须包含衡量标准、基准年、目标年、覆盖Scope和涵盖气体"
+    on_fail_message: "IFRS S2 Para 33(a)-(h): 减排目标须包含衡量标准、基准年、目标年、覆盖Scope和涵盖气体"
     citation: "cit-s2-025"
 
   - id: "gf-s2-030"
@@ -596,7 +774,7 @@ rules:
     assertion:
       {"in": [{"var": "output.targets.emission_reduction_targets.target_type"}, ["absolute", "intensity"]]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 35: 须明确目标是绝对量目标还是强度目标"
+    on_fail_message: "IFRS S2 Para 33(a)-(h): 须明确目标是绝对量目标还是强度目标"
     citation: "cit-s2-025"
 
   - id: "gf-s2-031"
@@ -610,7 +788,7 @@ rules:
     assertion:
       {"in": [{"var": "output.targets.emission_reduction_targets.gross_or_net"}, ["gross", "net"]]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 35: 须明确目标涵盖的是总排放量(gross)还是净排放量(net)"
+    on_fail_message: "IFRS S2 Para 33(a)-(h): 须明确目标涵盖的是总排放量(gross)还是净排放量(net)"
     citation: "cit-s2-025"
 
   - id: "gf-s2-032"
@@ -638,7 +816,7 @@ rules:
     assertion:
       {"!=": [{"var": "output.targets.third_party_verification"}, null]}
     on_fail: "raise_fatal"
-    on_fail_message: "IFRS S2 Para 37: 须披露减排目标是否经第三方验证，以及验证机构名称"
+    on_fail_message: "IFRS S2 Para 34(a): 须披露减排目标是否经第三方验证，以及验证机构名称"
     citation: "cit-s2-027"
 
   - id: "gf-s2-034"
@@ -657,6 +835,653 @@ rules:
     on_fail: "require_justification"
     on_fail_message: "IFRS S2 Para 33: 建议披露减排目标的进展情况"
     citation: "cit-s2-024"
+
+  # ================================================================
+  # 治理支柱 — 子段落 (Governance Sub-paragraphs)
+  # ================================================================
+
+  - id: "gf-s2-035"
+    name: "治理职责条款披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.governance.governance_responsibilities_in_terms_of_reference"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 6(a)(i): 须披露气候相关风险和机遇的职责如何体现在治理机构的职权范围、授权、角色描述等政策中"
+    citation: "cit-s2-031"
+
+  - id: "gf-s2-036"
+    name: "治理技能和能力披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.governance.skills_competencies_assessment"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 6(a)(ii): 须披露治理机构如何确定是否具备或将发展适当的技能和能力来监督气候相关战略"
+    citation: "cit-s2-032"
+
+  - id: "gf-s2-037"
+    name: "治理信息获取频率披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.governance.information_frequency"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 6(a)(iii): 须披露治理机构如何以及多频繁地获取气候相关风险和机遇信息"
+    citation: "cit-s2-033"
+
+  - id: "gf-s2-038"
+    name: "治理战略考量披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.governance.strategy_risk_consideration"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 6(a)(iv): 须披露治理机构在监督战略、重大交易决策和风险管理时如何考虑气候相关风险和机遇，包括是否考虑了权衡取舍"
+    citation: "cit-s2-034"
+
+  - id: "gf-s2-039"
+    name: "治理目标设定监督披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.governance.target_oversight"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 6(a)(v): 须披露治理机构如何监督气候相关目标的设定和进展监控，包括相关绩效指标是否纳入薪酬政策"
+    citation: "cit-s2-035"
+
+  - id: "gf-s2-040"
+    name: "管理层授权委托披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.governance.management_delegation"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 6(b)(i): 须披露管理层角色是否委托给特定管理层职位或委员会，以及如何行使监督"
+    citation: "cit-s2-036"
+
+  - id: "gf-s2-041"
+    name: "管理层控制程序披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.governance.management_controls_procedures"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 6(b)(ii): 须披露管理层是否使用控制和程序来支持气候风险监督，以及这些控制如何与其他内部职能整合"
+    citation: "cit-s2-037"
+
+  # ================================================================
+  # 战略支柱 — 风险机遇识别 (Strategy — Risk Identification)
+  # ================================================================
+
+  - id: "gf-s2-042"
+    name: "风险类型区分"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.climate_risks_opportunities"}, null]}
+    assertion:
+      {"!=": [{"var": "output.strategy.risk_type_classification"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 10(b): 须说明每个已识别的气候风险是物理风险还是转型风险"
+    citation: "cit-s2-039"
+
+  - id: "gf-s2-043"
+    name: "时间维度定义披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.climate_risks_opportunities"}, null]}
+    assertion:
+      {"!=": [{"var": "output.strategy.time_horizon_definitions"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 10(d): 须说明实体如何定义'短期'、'中期'和'长期'，以及这些定义如何与战略决策规划期限关联"
+    citation: "cit-s2-039"
+
+  # ================================================================
+  # 战略支柱 — 商业模式 (Strategy — Business Model)
+  # ================================================================
+
+  - id: "gf-s2-044"
+    name: "商业模式和价值链影响披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.strategy.business_model_impacts"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 13(a): 须披露气候相关风险和机遇对实体商业模式和价值链的当前和预期影响"
+    citation: "cit-s2-042"
+
+  - id: "gf-s2-045"
+    name: "风险集中度披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.business_model_impacts"}, null]}
+    assertion:
+      {"!=": [{"var": "output.strategy.risk_concentration"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 13(b): 须披露气候风险和机遇在商业模式和价值链中的集中位置（如地理区域、设施、资产类型）"
+    citation: "cit-s2-042"
+
+  # ================================================================
+  # 战略支柱 — 战略和决策 (Strategy — Decision-making)
+  # ================================================================
+
+  - id: "gf-s2-046"
+    name: "直接减缓和适应措施披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.strategy.direct_mitigation_adaptation"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 14(a)(ii): 须披露当前和预期的直接减缓和适应措施（如生产流程变化、设备更新、设施搬迁等）"
+    citation: "cit-s2-043"
+
+  - id: "gf-s2-047"
+    name: "间接减缓和适应措施披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.strategy.indirect_mitigation_adaptation"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 14(a)(iii): 须披露当前和预期的间接减缓和适应措施（如与客户和供应链合作）"
+    citation: "cit-s2-043"
+
+  - id: "gf-s2-048"
+    name: "转型计划关键假设和依赖披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.transition_plan"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.strategy.transition_plan_key_assumptions"}, null]},
+        {"!=": [{"var": "output.strategy.transition_plan_dependencies"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 14(a)(iv): 须披露转型计划的关键假设和依赖条件"
+    citation: "cit-s2-043"
+
+  - id: "gf-s2-049"
+    name: "资源配置披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.transition_plan"}, null]}
+    assertion:
+      {"!=": [{"var": "output.strategy.resourcing_plans"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 14(b): 须披露实体如何为战略活动提供资源，以及计划如何提供资源"
+    citation: "cit-s2-044"
+
+  - id: "gf-s2-050"
+    name: "计划进展披露"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.strategy.previous_plans_progress"}, null]},
+        {"!=": [{"var": "input.justifications.gf-s2-050"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Para 14(c): 建议披露以前报告期披露的计划的定量和定性进展信息"
+    citation: "cit-s2-045"
+
+  # ================================================================
+  # 战略支柱 — 财务影响 (Strategy — Financial Effects)
+  # ================================================================
+
+  - id: "gf-s2-051"
+    name: "当前财务影响披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.strategy.current_financial_effects"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 16(a): 须披露气候风险和机遇对报告期财务状况、财务绩效和现金流的影响"
+    citation: "cit-s2-047"
+
+  - id: "gf-s2-052"
+    name: "重大调整风险披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.strategy.material_adjustment_risks"}, null]},
+        {"==": [{"var": "output.strategy.material_adjustment_risks_count"}, 0]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 16(b): 须披露存在重大调整风险的气候相关风险和机遇，即下一个年度报告期内资产和负债账面金额可能需要重大调整"
+    citation: "cit-s2-047"
+
+  # ================================================================
+  # 战略支柱 — 气候韧性 (Strategy — Climate Resilience)
+  # ================================================================
+
+  - id: "gf-s2-053"
+    name: "气候韧性评估披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.scenario_analysis"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.strategy.resilience_implications_for_strategy"}, null]},
+        {"!=": [{"var": "output.strategy.resilience_uncertainty_areas"}, null]},
+        {"!=": [{"var": "output.strategy.resilience_adaptive_capacity"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 22(a): 须披露气候韧性评估结果，包括对战略的影响、不确定性领域、以及调整或适应战略的能力"
+    citation: "cit-s2-052"
+
+  - id: "gf-s2-054"
+    name: "情景分析方法披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.scenario_analysis"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.strategy.scenario_analysis_scenarios_used"}, null]},
+        {"!=": [{"var": "output.strategy.scenario_analysis_time_horizons"}, null]},
+        {"!=": [{"var": "output.strategy.scenario_analysis_scope_of_operations"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 22(b): 须披露情景分析的方法，包括使用的场景、时间范围和运营范围"
+    citation: "cit-s2-053"
+
+  # ================================================================
+  # 风险管理支柱 — 详细 (Risk Management — Detailed)
+  # ================================================================
+
+  - id: "gf-s2-055"
+    name: "气候风险评估方法披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.risk_management.risk_identification_process"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.risk_management.risk_inputs_parameters"}, null]},
+        {"!=": [{"var": "output.risk_management.risk_scenario_analysis_used"}, null]},
+        {"!=": [{"var": "output.risk_management.risk_assessment_approach"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 25(a)(i)-(iii): 须披露气候风险评估的输入参数、是否使用情景分析、以及如何评估风险的性质、可能性和影响程度"
+    citation: "cit-s2-054"
+
+  - id: "gf-s2-056"
+    name: "气候风险优先级和监控披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.risk_management.risk_identification_process"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.risk_management.risk_prioritisation_approach"}, null]},
+        {"!=": [{"var": "output.risk_management.risk_monitoring_approach"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 25(a)(iv)-(v): 须披露如何将气候风险与其他风险类型进行优先级排序，以及如何监控气候风险"
+    citation: "cit-s2-054"
+
+  - id: "gf-s2-057"
+    name: "气候机遇管理流程披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.risk_management.opportunity_management_process"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 25(b): 须披露识别、评估、优先级排序和监控气候机遇的流程，包括是否使用情景分析"
+    citation: "cit-s2-055"
+
+  # ================================================================
+  # 指标 — 排放详细 (Metrics — GHG Emissions Detail)
+  # ================================================================
+
+  - id: "gf-s2-058"
+    name: "排放合并范围分解"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope1_emissions_tco2e"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.scope1_consolidated_group_tco2e"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.scope2_consolidated_group_tco2e"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 29(a)(iv): 须将Scope 1和Scope 2排放分解为合并会计集团和其他被投资方（如联营企业、合营企业）"
+    citation: "cit-s2-060"
+
+  - id: "gf-s2-059"
+    name: "Scope 3 类别和融资排放披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope3_emissions_tco2e"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.scope3_categories_included"}, null]},
+        {"or": [
+          {"!=": [{"var": "output.metrics.ghg.financed_emissions_tco2e"}, null]},
+          {"==": [{"var": "input.entity.is_financial_institution"}, false]}
+        ]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 29(a)(vi): 须披露Scope 3涵盖的类别；金融机构须额外披露融资排放信息"
+    citation: "cit-s2-061"
+
+  # ================================================================
+  # 指标 — 其他指标详细 (Metrics — Other Indicators Detail)
+  # ================================================================
+
+  - id: "gf-s2-060"
+    name: "内部碳价详细披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.internal_carbon_price"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.internal_carbon_price_application"}, null]},
+        {"!=": [{"var": "output.metrics.internal_carbon_price_per_tco2e"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 29(f): 内部碳价须披露：是否以及如何在决策中应用碳价（如投资决策、转让定价、情景分析）；以及用于评估排放成本的每吨CO2e价格"
+    citation: "cit-s2-066"
+
+  - id: "gf-s2-061"
+    name: "高管薪酬气候挂钩详细披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.governance.climate_linked_remuneration_pct"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.governance.climate_linked_remuneration_description"}, null]},
+        {"!=": [{"var": "output.governance.climate_linked_remuneration_pct"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 29(g): 须披露：气候相关因素如何纳入高管薪酬的描述；以及当前期间确认的与气候相关的高管薪酬百分比"
+    citation: "cit-s2-067"
+
+  # ================================================================
+  # December 2025 修正案 (Amendment Rules)
+  # ================================================================
+
+  - id: "gf-s2-062"
+    name: "融资排放范围限制说明"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.scope3_emissions_tco2e"}, null]},
+        {"==": [{"var": "input.entity.is_financial_institution"}, true]}
+      ]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.metrics.ghg.financed_emissions_scope_limitation"}, null]},
+        {"!=": [{"var": "input.justifications.gf-s2-062"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Para 29A (December 2025): 金融机构可将Scope 3 Category 15排放限制为仅融资排放（贷款和投资），需说明是否应用此限制"
+    citation: "cit-s2-068"
+
+  - id: "gf-s2-063"
+    name: "衍生品处理说明"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.financed_emissions_scope_limitation"}, null]},
+        {"==": [{"var": "input.entity.is_financial_institution"}, true]}
+      ]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.derivative_treatment_explanation"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.excluded_activities_description"}, null]}
+      ]}
+    on_fail: "raise_warning"
+    on_fail_message: "IFRS S2 Para 29B (December 2025): 若应用29A限制，须说明如何定义衍生品，以及因此排除的金融活动（包括衍生品相关活动）"
+    citation: "cit-s2-069"
+
+  - id: "gf-s2-064"
+    name: "Category 15 排放分项披露"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.scope3_category15_tco2e"}, null]},
+        {"==": [{"var": "input.entity.is_financial_institution"}, true]}
+      ]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.scope3_category15_total_tco2e"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.scope3_category15_financed_emissions_subtotal_tco2e"}, null]}
+      ]}
+    on_fail: "raise_warning"
+    on_fail_message: "IFRS S2 Para 29C (December 2025): 若包含Category 15排放，须披露Category 15排放总量和其中融资排放的小计"
+    citation: "cit-s2-070"
+
+  # ================================================================
+  # 目标 — 详细 (Targets — Detailed)
+  # ================================================================
+
+  - id: "gf-s2-065"
+    name: "目标涵盖气体和Scope披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.targets.emission_reduction_targets"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.targets.emission_reduction_targets.gases_covered"}, null]},
+        {"!=": [{"var": "output.targets.emission_reduction_targets.scope_coverage"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 36(a)-(b): 减排目标须披露涵盖的温室气体种类以及覆盖的Scope（1、2或3）"
+    citation: "cit-s2-075"
+
+  - id: "gf-s2-066"
+    name: "净排放目标关联总排放目标"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "output.targets.emission_reduction_targets.gross_or_net"}, "net"]}
+    assertion:
+      {"!=": [{"var": "output.targets.emission_reduction_targets.associated_gross_target"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 36(c): 若为净排放目标，须同时披露关联的总排放量目标"
+    citation: "cit-s2-075"
+
+  - id: "gf-s2-067"
+    name: "行业脱碳方法披露"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.targets.emission_reduction_targets"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.targets.emission_reduction_targets.sectoral_decarbonisation_approach"}, null]},
+        {"!=": [{"var": "input.justifications.gf-s2-067"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Para 36(d): 须说明目标是否使用行业脱碳方法制定"
+    citation: "cit-s2-075"
+
+  - id: "gf-s2-068"
+    name: "目标制定和审查方法披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.targets.emission_reduction_targets"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.targets.target_setting_methodology"}, null]},
+        {"!=": [{"var": "output.targets.target_review_processes"}, null]},
+        {"!=": [{"var": "output.targets.progress_monitoring_metrics"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 34(a)-(c): 须披露目标制定方法（是否经第三方验证）、审查流程和用于监控进展的指标"
+    citation: "cit-s2-073"
+
+  - id: "gf-s2-069"
+    name: "目标修订说明"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.targets.emission_reduction_targets"}, null]}
+    assertion:
+      {"or": [
+        {"==": [{"var": "output.targets.target_revisions_count"}, 0]},
+        {"!=": [{"var": "output.targets.target_revisions_explanation"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Para 34(d): 若目标有修订，须披露修订内容及原因"
+    citation: "cit-s2-073"
+
+  - id: "gf-s2-070"
+    name: "目标绩效和趋势分析"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.targets.emission_reduction_targets"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.targets.performance_against_targets"}, null]},
+        {"!=": [{"var": "input.justifications.gf-s2-070"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Para 35: 建议披露每个气候目标的绩效表现和趋势变化分析"
+    citation: "cit-s2-074"
+
+  # ================================================================
+  # 行业指标 (Industry-based Metrics)
+  # ================================================================
+
+  - id: "gf-s2-071"
+    name: "行业指标适用性评估"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.metrics.industry_based_metrics_assessment"}, null]},
+        {"!=": [{"var": "input.justifications.gf-s2-071"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Para 32: 须参考并评估IFRS S2行业实施指南中行业指标的适用性"
+    citation: "cit-s2-079"
+
+  # ================================================================
+  # 合理性信息 (Reasonable and Supportable Information)
+  # ================================================================
+
+  - id: "gf-s2-072"
+    name: "合理可用信息使用声明"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "pre_calculation"
+    condition: {"!=": [{"var": "input.entity.reporting_year"}, null]}
+    assertion:
+      {"!=": [{"var": "output.methodology.reasonable_supportable_info_used"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Para 11/18: 须声明使用了报告日可获得的所有合理和支持性信息，无需过度成本或努力"
+    citation: "cit-s2-040"
+
+  - id: "gf-s2-073"
+    name: "跨行业指标参考声明"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope1_emissions_tco2e"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.metrics.cross_industry_metrics_referenced"}, null]},
+        {"!=": [{"var": "input.justifications.gf-s2-073"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Para 23/31: 须参考并评估跨行业指标类别（Para 29）和行业指标（Para 32）的适用性"
+    citation: "cit-s2-080"
 
 dependencies:
   - ref: "scope1/principles/emission-categories"
