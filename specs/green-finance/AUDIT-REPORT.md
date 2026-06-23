@@ -19,6 +19,7 @@
 | December 2025修正案未覆盖 | ✅ 已修复 | 新增 Para 29A-C 引用和规则，v3.1.0 |
 | cit-s2-016/017 碳信用文本不准确 | ✅ 已修复 | 更新为 Para 36(e) 实际内容，v3.1.0 |
 | cit-s2-012 Scope 2 断言过严 | ✅ 已修复 | 改为 location-based + 合同工具信息，v3.1.0 |
+| Appendix B 覆盖不完整 | ✅ 已修复 | 新增 42 条 citation + 26 条规则，v3.2.0 |
 | GWP 来源过于宽松 | ✅ 已修复 | 限制为 IPCC_AR6/IPCC_AR7 |
 | citation_ref 不一致 | ✅ 已修复 | 统一为 citation 字段 |
 
@@ -31,7 +32,7 @@
 | bond-catalog.yaml | ⚠️ 需修复 | 3 | 246 | 5 |
 | bond-eligibility.yaml | ✅ 基本合规 | 1 | 25 | 30 |
 | credit-classification.yaml | ✅ 基本合规 | 0 | 21 | 18 |
-| issb-s2-disclosure.yaml | ✅ 已修复 | 0 | 80 | 73 |
+| issb-s2-disclosure.yaml | ✅ 已修复 | 0 | 122 | 99 |
 | cross-domain-bridge.yaml | ✅ 基本合规 | 0 | 12 | 13 |
 
 ---
@@ -250,10 +251,10 @@ IFRS S2 发布于 2023 年 6 月，当时最新的 IPCC 评估报告是 AR6 (202
 - 分类体系: 12 大类 + 3 个战略性新兴产业
 
 ### issb-s2-disclosure.yaml
-- 引用数: 80 (cit-s2-001 ~ cit-s2-080)
-- 规则数: 73 (gf-s2-001 ~ gf-s2-073)
-- 四大支柱: 治理(10)、战略(22)、风险管理(7)、指标和目标(34)
-- 版本: v3.1.0 (2026-06-22)
+- 引用数: 122 (cit-s2-001 ~ cit-s2-122)
+- 规则数: 99 (gf-s2-001 ~ gf-s2-099)
+- 四大支柱: 治理(10)、战略(22)、风险管理(7)、指标和目标(34)、附录B(26)
+- 版本: v3.2.0 (2026-06-22)
 
 ### cross-domain-bridge.yaml
 - 引用数: 12 (cit-gf-br-001 ~ cit-gf-br-012)

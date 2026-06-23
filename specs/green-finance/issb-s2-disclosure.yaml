@@ -1,13 +1,14 @@
 meta:
   id: "green-finance/issb-s2-disclosure"
-  version: "3.0.0"
+  version: "3.2.0"
   source: "IFRS S2 Climate-related Disclosures (ISSB 2026)"
   source_ref: "specs/green-finance/issb-2026-a-ifrs-s2-climate-related-disclosures.pdf"
   layer: "schema"
   description: >
-    IFRS S2 气候相关披露规范，覆盖治理、战略、风险管理、指标和目标四大支柱。
+    IFRS S2 气候相关披露规范，覆盖治理、战略、风险管理、指标和目标四大支柱，含Appendix B应用指南。
     重点量化指标：Scope 1/2/3 排放、转型/物理风险暴露、气候机遇、资本支出、
     内部碳价、高管薪酬、减排目标及碳信用。适用于所有行业，含金融机构融资排放要求。
+    122条引用，99条规则，覆盖IFRS S2全部强制段落和December 2025修正案。
 
 citations:
   # ===== 治理 =====
@@ -293,6 +294,148 @@ citations:
   - id: "cit-s2-080"
     text: "In preparing disclosures to meet the requirements in paragraphs 13–22, an entity shall refer to and consider the applicability of cross-industry metric categories, as described in paragraph 29, and industry-based metrics associated with disclosure topics defined in the Industry-based Guidance on Implementing IFRS S2 as described in paragraph 32."
     section: "IFRS S2 Para 23"
+
+  # ===== Appendix B — 气候情景分析 (B1-B18) =====
+  - id: "cit-s2-081"
+    text: "An entity shall use an approach to climate-related scenario analysis that is commensurate with its circumstances. To assess its circumstances the entity shall consider: the entity's exposure to climate-related risks and opportunities; and the skills, capabilities and resources available to the entity for the climate-related scenario analysis."
+    section: "IFRS S2 Appendix B, Para B2-B3"
+  - id: "cit-s2-082"
+    text: "An entity shall consider its exposure to climate-related risks and opportunities in its assessment of its circumstances and when determining the approach to use for its climate-related scenario analysis. The greater the entity's exposure to climate-related risks or opportunities, the more likely it is the entity would determine that a more technically sophisticated form of climate-related scenario analysis is required."
+    section: "IFRS S2 Appendix B, Para B4-B5"
+  - id: "cit-s2-083"
+    text: "An entity shall consider the available skills, capabilities and resources when determining an appropriate approach to use for its climate-related scenario analysis. These skills, capabilities and resources might include both internal and external skills, capabilities and resources."
+    section: "IFRS S2 Appendix B, Para B6-B7"
+  - id: "cit-s2-084"
+    text: "An entity shall determine an approach to climate-related scenario analysis that enables it to consider all reasonable and supportable information that is available to the entity at the reporting date without undue cost or effort. The determination involves: selecting inputs to the climate-related scenario analysis; and making analytical choices about how to carry out the analysis."
+    section: "IFRS S2 Appendix B, Para B8-B9"
+  - id: "cit-s2-085"
+    text: "When selecting inputs to use in its climate-related scenario analysis, the entity shall consider all reasonable and supportable information—including scenarios, variables and other inputs—available to the entity at the reporting date without undue cost or effort. Publicly available climate-related scenarios from authoritative sources are considered available without undue cost or effort."
+    section: "IFRS S2 Appendix B, Para B11-B12"
+  - id: "cit-s2-086"
+    text: "The entity shall prioritise the analytical choices that will enable it to consider all reasonable and supportable information available without undue cost or effort. Quantitative information will often enable a more robust assessment, but qualitative information (including scenario narratives), either alone or combined with quantitative data, can also provide a reasonable and supportable basis."
+    section: "IFRS S2 Appendix B, Para B14-B15"
+  - id: "cit-s2-087"
+    text: "An entity might use a simpler approach to climate-related scenario analysis, such as qualitative scenario narratives, if appropriate to its circumstances. An entity with high exposure to climate-related risks and opportunities, and with access to necessary skills, capabilities or resources, is required to apply a more advanced quantitative approach."
+    section: "IFRS S2 Appendix B, Para B17"
+  - id: "cit-s2-088"
+    text: "An entity might carry out its climate-related scenario analysis in line with its strategic planning cycle, including a multi-year cycle (for example, every three to five years). The entity shall—at a minimum—update its climate-related scenario analysis in line with its strategic planning cycle. However, an assessment of the entity's resilience is required to be carried out annually."
+    section: "IFRS S2 Appendix B, Para B18"
+
+  # ===== Appendix B — GHG 计量 (B19-B29) =====
+  - id: "cit-s2-089"
+    text: "An entity might have a different reporting period from some or all of the entities in its value chain. In such circumstances, the entity is permitted to measure its greenhouse gas emissions using information for reporting periods that are different from its own, on the condition that: the entity uses the most recent data available; the length of the reporting periods is the same; and the entity discloses the effects of significant events and changes."
+    section: "IFRS S2 Appendix B, Para B19-B20"
+  - id: "cit-s2-090"
+    text: "If an entity uses direct measurement to measure its greenhouse gas emissions, the entity is required to convert the seven constituent greenhouse gases into a CO2 equivalent value using global warming potential values based on a 100-year time horizon, from the latest IPCC assessment available at the reporting date, unless required by a jurisdictional authority or exchange to use different values."
+    section: "IFRS S2 Appendix B, Para B21"
+  - id: "cit-s2-091"
+    text: "If an entity uses emission factors to estimate its greenhouse gas emissions, the entity shall use—as its basis for measuring its greenhouse gas emissions—the emission factors that best represent the entity's activity. If these emission factors have already converted the constituent gases into CO2 equivalent values, the entity is not required to recalculate using GWP values."
+    section: "IFRS S2 Appendix B, Para B22"
+  - id: "cit-s2-092"
+    text: "An entity shall apply the requirements in the Greenhouse Gas Protocol: A Corporate Accounting and Reporting Standard (2004) only to the extent that they do not conflict with the requirements in IFRS S2. An entity is required to use the GHG Protocol unless required by a jurisdictional authority or exchange to use a different method."
+    section: "IFRS S2 Appendix B, Para B23-B25"
+  - id: "cit-s2-093"
+    text: "As part of the measurement approach disclosure, the entity shall include information about: the measurement approach used in accordance with the GHG Protocol (equity share or control approach); the applicable method if not using the GHG Protocol; and the emission factors used."
+    section: "IFRS S2 Appendix B, Para B26"
+  - id: "cit-s2-094"
+    text: "When the entity discloses its greenhouse gas emissions measured in accordance with the GHG Protocol, the entity is required to use the equity share or control approach and shall disclose: the approach used; and the reason for the choice and how it relates to the disclosure objective."
+    section: "IFRS S2 Appendix B, Para B27"
+  - id: "cit-s2-095"
+    text: "This Standard does not specify emission factors an entity is required to use. Instead, the entity is required to use emission factors that best represent the entity's activity as its basis for measuring its greenhouse gas emissions."
+    section: "IFRS S2 Appendix B, Para B29"
+
+  # ===== Appendix B — Scope 2 (B30-B31) =====
+  - id: "cit-s2-096"
+    text: "An entity is required to disclose its Scope 2 greenhouse gas emissions using a location-based approach and is required to provide information about contractual instruments only if such instruments exist and information about them informs users' understanding of an entity's Scope 2 greenhouse gas emissions."
+    section: "IFRS S2 Appendix B, Para B30"
+  - id: "cit-s2-097"
+    text: "Contractual instruments are any type of contract between an entity and another party for the sale and purchase of energy bundled with attributes about the energy generation or for unbundled energy attribute claims. Various types of contractual instruments are available in different markets and the entity might disclose information about its market-based Scope 2 greenhouse gas emissions as part of its disclosure."
+    section: "IFRS S2 Appendix B, Para B31"
+
+  # ===== Appendix B — Scope 3 框架 (B32-B57) =====
+  - id: "cit-s2-098"
+    text: "An entity shall consider its entire value chain (upstream and downstream) and shall consider all 15 categories of Scope 3 greenhouse gas emissions. The entity shall disclose which of these categories are included in its Scope 3 greenhouse gas emissions disclosures."
+    section: "IFRS S2 Appendix B, Para B32-B33"
+  - id: "cit-s2-099"
+    text: "On the occurrence of a significant event or a significant change in circumstances, an entity shall reassess the scope of all affected climate-related risks and opportunities throughout its value chain, including reassessing which Scope 3 categories and entities to include. Such events include: a significant change in the value chain; a significant change in business model or corporate structure; and a significant change in exposure to climate-related risks."
+    section: "IFRS S2 Appendix B, Para B34-B35"
+  - id: "cit-s2-100"
+    text: "An entity's measurement of Scope 3 greenhouse gas emissions is likely to include the use of estimation. In measuring Scope 3 emissions the entity shall use a measurement approach, inputs and assumptions that result in a faithful representation. The entity shall prioritise inputs and assumptions using these characteristics: data based on direct measurement; data from specific activities within the value chain; timely data that faithfully represents jurisdiction and technology; and data that has been verified."
+    section: "IFRS S2 Appendix B, Para B40-B42"
+  - id: "cit-s2-101"
+    text: "Of direct measurement and estimation methods—and with all else being equal—an entity shall prioritise direct measurement. 'Direct measurement' refers to the direct monitoring of greenhouse gas emissions and provides the most accurate evidence. However, Scope 3 data will likely include estimation due to challenges associated with direct measurement."
+    section: "IFRS S2 Appendix B, Para B43-B45"
+  - id: "cit-s2-102"
+    text: "Primary data for Scope 3 includes data provided by suppliers or other entities in the value chain related to specific activities (for example, meter readings, utility bills, supplier-specific emission factors). Secondary data is not obtained directly from specific activities and includes industry-average data from published databases, government statistics, literature studies and industry associations."
+    section: "IFRS S2 Appendix B, Para B46-B49"
+  - id: "cit-s2-103"
+    text: "If an entity uses secondary data, it shall prioritise: activity or emissions data based on or representing the technology used; data representing the jurisdiction in which the activity happened; and data that is timely and representative of the entity's value chain activity during the reporting period."
+    section: "IFRS S2 Appendix B, Para B50-B52"
+  - id: "cit-s2-104"
+    text: "An entity shall prioritise Scope 3 greenhouse gas emissions data that is verified. Verification can provide users with confidence that the information is complete, neutral and accurate. Verified data might include data that has been internally or externally verified."
+    section: "IFRS S2 Appendix B, Para B53-B54"
+  - id: "cit-s2-105"
+    text: "As part of the measurement approach disclosure, the entity shall disclose: the extent to which Scope 3 emissions are measured using inputs from specific activities within the value chain; and the extent to which Scope 3 emissions are measured using inputs that are verified."
+    section: "IFRS S2 Appendix B, Para B55-B56"
+  - id: "cit-s2-106"
+    text: "This Standard includes the presumption that Scope 3 greenhouse gas emissions can be estimated reliably using secondary data and industry averages. In those rare cases when an entity determines it is impracticable to estimate its Scope 3 emissions, the entity shall disclose how it is managing its Scope 3 emissions."
+    section: "IFRS S2 Appendix B, Para B57"
+
+  # ===== Appendix B — 融资排放 (B58-B63A) =====
+  - id: "cit-s2-107"
+    text: "An entity that participates in one or more of the following financial activities is required to disclose additional and specific information about its financed emissions (part of Category 15): asset management; commercial banking; and insurance."
+    section: "IFRS S2 Appendix B, Para B58-B60"
+  - id: "cit-s2-108"
+    text: "An entity that participates in asset management activities shall disclose: absolute gross financed emissions disaggregated by Scope 1, 2 and 3; total AUM included in the disclosure; percentage of total AUM included; and the methodology used including allocation method."
+    section: "IFRS S2 Appendix B, Para B61(a)-(d)"
+  - id: "cit-s2-109"
+    text: "An entity that participates in commercial banking activities shall disclose: absolute gross financed emissions disaggregated by Scope 1, 2 and 3 for each industry by asset class; gross exposure to each industry by asset class; percentage of gross exposure included; and the methodology used including allocation method."
+    section: "IFRS S2 Appendix B, Para B62(a)-(d)"
+  - id: "cit-s2-110"
+    text: "When disaggregating financed emissions by industry, an entity shall select an industry-classification system that enables it to classify investees or counterparties in a manner that results in information that enables users to understand the entity's exposure to climate-related transition risks. A commonly used system is more likely to support comparability."
+    section: "IFRS S2 Appendix B, Para B62A(a)-(b)"
+  - id: "cit-s2-111"
+    text: "When disaggregating financed emissions by asset class, the disclosure shall include loans, project finance, bonds, equity investments and undrawn loan commitments. If the entity includes additional asset classes, it shall explain why inclusion provides relevant information."
+    section: "IFRS S2 Appendix B, Para B62A(b)"
+  - id: "cit-s2-112"
+    text: "An entity that participates in insurance activities shall disclose: absolute gross financed emissions disaggregated by Scope 1, 2 and 3 for each industry by asset class; gross exposure; percentage included; and the methodology used including allocation method."
+    section: "IFRS S2 Appendix B, Para B63(a)-(d)"
+  - id: "cit-s2-113"
+    text: "When disaggregating insurance financed emissions by asset class, the disclosure shall include loans, bonds, equity investments and undrawn loan commitments."
+    section: "IFRS S2 Appendix B, Para B63A(b)"
+
+  # ===== Appendix B — 跨行业指标 (B64-B65) =====
+  - id: "cit-s2-114"
+    text: "In preparing disclosures to fulfil the requirements in paragraph 29(b)–(g), an entity shall: consider time horizons; consider where risks and opportunities are concentrated; consider information about financial effects; consider whether industry-based metrics could satisfy requirements; and consider connections with related financial statements."
+    section: "IFRS S2 Appendix B, Para B64-B65"
+
+  # ===== Appendix B — 目标指南 (B66-B71) =====
+  - id: "cit-s2-115"
+    text: "If the climate-related target is quantitative, an entity is required to describe whether the target is an absolute target or an intensity target. An absolute target is defined as a total amount of a measure or a change in the total amount, whereas an intensity target is defined as a ratio of a measure, or a change in the ratio, to a business metric."
+    section: "IFRS S2 Appendix B, Para B66"
+  - id: "cit-s2-116"
+    text: "In identifying and disclosing the metric used to set a climate-related target and measure progress, an entity shall consider the cross-industry metrics and industry-based metrics. If the metric has been developed by the entity, the entity shall disclose information about that metric in accordance with paragraph 50 of IFRS S1."
+    section: "IFRS S2 Appendix B, Para B67"
+  - id: "cit-s2-117"
+    text: "Gross greenhouse gas emissions targets reflect the total changes in greenhouse gas emissions planned within the entity's value chain. Net greenhouse gas emissions targets are the entity's targeted gross emissions minus any planned offsetting efforts. If an entity has a net target it is required to also disclose a gross target. A net target cannot obscure information about gross targets."
+    section: "IFRS S2 Appendix B, Para B68-B69"
+  - id: "cit-s2-118"
+    text: "Any information about the planned use of carbon credits shall clearly demonstrate the extent to which these carbon credits are relied on to achieve the net greenhouse gas emissions targets. An entity is required to disclose only its planned use of carbon credits, but might also include information about carbon credits already purchased that are planned to be used."
+    section: "IFRS S2 Appendix B, Para B70-B71"
+
+  # ===== Appendix C — 过渡规定 =====
+  - id: "cit-s2-119"
+    text: "An entity is not required to provide the disclosures specified in this Standard for any period before the date of initial application. An entity is not required to disclose comparative information in the first annual reporting period."
+    section: "IFRS S2 Appendix C, Para C3"
+  - id: "cit-s2-120"
+    text: "In the first annual reporting period, the entity is permitted to use one or both of these reliefs: if the entity used a method other than the GHG Protocol in the preceding period, it is permitted to continue using that other method; and an entity is not required to disclose its Scope 3 emissions (including financed emissions)."
+    section: "IFRS S2 Appendix C, Para C4(a)-(b)"
+  - id: "cit-s2-121"
+    text: "If an entity uses the reliefs, the entity is permitted to continue to use that relief for presenting comparative information in subsequent reporting periods."
+    section: "IFRS S2 Appendix C, Para C5"
+  - id: "cit-s2-122"
+    text: "For the December 2025 amendments, in the first annual reporting period: if the entity changed how it measures GHG emissions, it shall adjust comparative information; if the entity disclosed Scope 3 Category 15 emissions, it shall adjust to provide total Category 15 and financed emissions subtotal; and if the entity disclosed disaggregated financed emissions by industry, it shall adjust to reflect the selected industry-classification system."
+    section: "IFRS S2 Appendix C, Para C6(a)-(c)"
 
 rules:
   # ================================================================
@@ -1482,6 +1625,475 @@ rules:
     on_fail: "require_justification"
     on_fail_message: "IFRS S2 Para 23/31: 须参考并评估跨行业指标类别（Para 29）和行业指标（Para 32）的适用性"
     citation: "cit-s2-080"
+
+  # ================================================================
+  # Appendix B — 气候情景分析 (Scenario Analysis)
+  # ================================================================
+
+  - id: "gf-s2-074"
+    name: "情景分析方法与情况匹配"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.scenario_analysis"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.strategy.scenario_analysis_exposure_assessment"}, null]},
+        {"!=": [{"var": "output.strategy.scenario_analysis_skills_resources"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B2-B3: 情景分析方法须与实体情况相匹配，包括评估气候风险暴露程度和可用的技能资源"
+    citation: "cit-s2-081"
+
+  - id: "gf-s2-075"
+    name: "情景分析暴露程度评估"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.scenario_analysis"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.strategy.scenario_analysis_exposure_level"}, null]},
+        {"!=": [{"var": "input.justifications.gf-s2-075"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Appendix B, Para B4-B5: 须评估实体对气候风险的暴露程度，暴露程度越高，越需要更技术化的情景分析方法"
+    citation: "cit-s2-082"
+
+  - id: "gf-s2-076"
+    name: "情景分析输入选择"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.scenario_analysis"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.strategy.scenario_analysis_scenarios_used"}, null]},
+        {"!=": [{"var": "output.strategy.scenario_analysis_variables"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B11-B12: 须披露情景分析中使用的场景、变量和其他输入，包括是否使用权威来源的公开可用气候情景"
+    citation: "cit-s2-085"
+
+  - id: "gf-s2-077"
+    name: "情景分析方法进阶要求"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.scenario_analysis"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.strategy.scenario_analysis_approach_sophistication"}, null]},
+        {"!=": [{"var": "input.justifications.gf-s2-077"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Appendix B, Para B17: 高暴露度实体须采用更先进的定量分析方法；低暴露度实体可使用定性情景叙述"
+    citation: "cit-s2-087"
+
+  - id: "gf-s2-078"
+    name: "情景分析更新频率"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.strategy.scenario_analysis"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.strategy.scenario_analysis_update_frequency"}, null]},
+        {"!=": [{"var": "output.strategy.resilience_assessment_annual"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B18: 情景分析须至少每战略规划周期更新一次，但韧性评估须每年进行"
+    citation: "cit-s2-088"
+
+  # ================================================================
+  # Appendix B — GHG 计量 (GHG Measurement)
+  # ================================================================
+
+  - id: "gf-s2-079"
+    name: "GWP 值来源和时间范围"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope1_emissions_tco2e"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.gwp_time_horizon"}, "100-year"]},
+        {"!=": [{"var": "output.metrics.ghg.gwp_source"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B21: 须使用100年时间范围的GWP值，来源为报告日最新的IPCC评估报告"
+    citation: "cit-s2-090"
+
+  - id: "gf-s2-080"
+    name: "排放因子代表性"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope1_emissions_tco2e"}, null]}
+    assertion:
+      {"!=": [{"var": "output.metrics.ghg.emission_factor_representativeness"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B22/B29: 须使用最能代表实体活动的排放因子"
+    citation: "cit-s2-091"
+
+  - id: "gf-s2-081"
+    name: "GHG Protocol 方法选择声明"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope1_emissions_tco2e"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.consolidation_approach"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.consolidation_approach_reason"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B27: 须披露使用股权法还是控制法，以及选择原因"
+    citation: "cit-s2-094"
+
+  # ================================================================
+  # Appendix B — Scope 2 (Contractual Instruments)
+  # ================================================================
+
+  - id: "gf-s2-082"
+    name: "Scope 2 合同工具信息披露"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.scope2_location_based_tco2e"}, null]},
+        {"!=": [{"var": "input.entity.has_contractual_instruments"}, null]}
+      ]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.metrics.ghg.scope2_contractual_instruments_info"}, null]},
+        {"==": [{"var": "input.entity.has_contractual_instruments"}, false]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Appendix B, Para B30-B31: 若存在合同工具（如绿证、PPA），须提供相关信息以帮助用户理解Scope 2排放"
+    citation: "cit-s2-096"
+
+  # ================================================================
+  # Appendix B — Scope 3 框架 (Scope 3 Framework)
+  # ================================================================
+
+  - id: "gf-s2-083"
+    name: "Scope 3 全价值链覆盖"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope3_emissions_tco2e"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.scope3_upstream_categories"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.scope3_downstream_categories"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B32-B33: 须考虑整个价值链（上游和下游），并披露涵盖的15个Scope 3类别"
+    citation: "cit-s2-098"
+
+  - id: "gf-s2-084"
+    name: "Scope 3 重大事件重新评估"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope3_emissions_tco2e"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.metrics.ghg.scope3_reassessment_trigger"}, null]},
+        {"==": [{"var": "output.metrics.ghg.scope3_significant_changes_count"}, 0]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Appendix B, Para B34-B35: 发生重大事件或重大变化时，须重新评估Scope 3涵盖范围"
+    citation: "cit-s2-099"
+
+  - id: "gf-s2-085"
+    name: "Scope 3 数据优先级框架"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope3_emissions_tco2e"}, null]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.scope3_data_prioritisation"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.scope3_primary_data_pct"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B40-B42: 须披露Scope 3数据优先级方法，包括一级数据（直接来自价值链）的使用比例"
+    citation: "cit-s2-100"
+
+  - id: "gf-s2-086"
+    name: "Scope 3 数据验证程度"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope3_emissions_tco2e"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.metrics.ghg.scope3_verified_data_pct"}, null]},
+        {"!=": [{"var": "input.justifications.gf-s2-086"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Appendix B, Para B53-B56: 须披露Scope 3数据中已验证数据的比例"
+    citation: "cit-s2-104"
+
+  - id: "gf-s2-087"
+    name: "Scope 3 不可计量时的披露"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope3_emissions_tco2e"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.metrics.ghg.scope3_estimation_reliable"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.scope3_management_approach"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Appendix B, Para B57: 若确定Scope 3排放不可可靠计量，须披露如何管理Scope 3排放"
+    citation: "cit-s2-106"
+
+  # ================================================================
+  # Appendix B — 融资排放 (Financed Emissions)
+  # ================================================================
+
+  - id: "gf-s2-088"
+    name: "资产管理融资排放披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "input.entity.asset_management_activities"}, true]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.financed_emissions_scope1_tco2e"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.financed_emissions_scope2_tco2e"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.financed_emissions_scope3_tco2e"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.aum_included_amount"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.aum_included_pct"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B61: 资产管理机构须披露融资排放（分Scope 1/2/3）、纳入的AUM金额和比例、计算方法"
+    citation: "cit-s2-108"
+
+  - id: "gf-s2-089"
+    name: "商业银行融资排放披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "input.entity.commercial_banking_activities"}, true]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.financed_emissions_by_industry_asset_class"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.gross_exposure_by_industry_asset_class"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.gross_exposure_included_pct"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B62: 商业银行须按行业和资产类别披露融资排放、风险敞口和纳入比例"
+    citation: "cit-s2-109"
+
+  - id: "gf-s2-090"
+    name: "融资排放行业分类体系"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition:
+      {"or": [
+        {"==": [{"var": "input.entity.commercial_banking_activities"}, true]},
+        {"==": [{"var": "input.entity.insurance_activities"}, true]}
+      ]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.industry_classification_system"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.industry_classification_system_rationale"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B62A/B63A: 须选择并披露行业分类体系，优先使用通用体系以支持可比性"
+    citation: "cit-s2-110"
+
+  - id: "gf-s2-091"
+    name: "融资排放资产类别覆盖"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition:
+      {"or": [
+        {"==": [{"var": "input.entity.commercial_banking_activities"}, true]},
+        {"==": [{"var": "input.entity.insurance_activities"}, true]}
+      ]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.asset_classes_included"}, null]},
+        {"in": [{"var": "output.metrics.ghg.asset_classes_included"}, ["loans,bonds,equity,undrawn_commitments,project_finance"]]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B62A/B63A: 资产类别须包括贷款、项目融资、债券、股权投资和未提取承诺"
+    citation: "cit-s2-111"
+
+  - id: "gf-s2-092"
+    name: "保险融资排放披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "input.entity.insurance_activities"}, true]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.metrics.ghg.financed_emissions_by_industry_asset_class"}, null]},
+        {"!=": [{"var": "output.metrics.ghg.gross_exposure_by_industry_asset_class"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B63: 保险机构须按行业和资产类别披露融资排放和风险敞口"
+    citation: "cit-s2-112"
+
+  # ================================================================
+  # Appendix B — 跨行业指标 (Cross-industry Metrics)
+  # ================================================================
+
+  - id: "gf-s2-093"
+    name: "跨行业指标综合考量"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition: {"!=": [{"var": "output.metrics.ghg.scope1_emissions_tco2e"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.metrics.cross_industry_metrics_comprehensive_consideration"}, null]},
+        {"!=": [{"var": "input.justifications.gf-s2-093"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Appendix B, Para B64-B65: 披露29(b)-(g)指标时，须考虑时间维度、风险集中度、财务影响、行业指标适用性和与财务报表的关联"
+    citation: "cit-s2-114"
+
+  # ================================================================
+  # Appendix B — 目标指南 (Targets Guidance)
+  # ================================================================
+
+  - id: "gf-s2-094"
+    name: "绝对目标与强度目标区分（附录B）"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition:
+      {"and": [
+        {"!=": [{"var": "output.targets.emission_reduction_targets"}, null]},
+        {"==": [{"var": "output.targets.emission_reduction_targets.is_quantitative"}, true]}
+      ]}
+    assertion:
+      {"in": [{"var": "output.targets.emission_reduction_targets.target_type"}, ["absolute", "intensity"]]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B66: 定量目标须明确是绝对量目标（总量变化）还是强度目标（比率变化）"
+    citation: "cit-s2-115"
+
+  - id: "gf-s2-095"
+    name: "目标指标选择和参考"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition:
+      {"!=": [{"var": "output.targets.emission_reduction_targets"}, null]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.targets.metric_selection_cross_industry_reference"}, null]},
+        {"!=": [{"var": "output.targets.metric_selection_industry_reference"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Appendix B, Para B67: 选择目标指标时，须参考跨行业指标和行业指标"
+    citation: "cit-s2-116"
+
+  - id: "gf-s2-096"
+    name: "净排放目标不掩盖总排放目标"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition:
+      {"==": [{"var": "output.targets.emission_reduction_targets.gross_or_net"}, "net"]}
+    assertion:
+      {"and": [
+        {"!=": [{"var": "output.targets.emission_reduction_targets.associated_gross_target"}, null]},
+        {"!=": [{"var": "output.targets.emission_reduction_targets.gross_target_visible"}, null]}
+      ]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B68-B69: 净排放目标不得掩盖总排放目标信息"
+    citation: "cit-s2-117"
+
+  - id: "gf-s2-097"
+    name: "碳信用依赖程度披露"
+    type: "requirement"
+    priority: "MUST"
+    severity: "fatal"
+    lifecycle: "post_audit"
+    condition:
+      {"and": [
+        {"!=": [{"var": "output.targets.carbon_credit_plan"}, null]},
+        {"==": [{"var": "output.targets.emission_reduction_targets.gross_or_net"}, "net"]}
+      ]}
+    assertion:
+      {"!=": [{"var": "output.targets.carbon_credit_reliance_extent"}, null]}
+    on_fail: "raise_fatal"
+    on_fail_message: "IFRS S2 Appendix B, Para B70-B71: 碳信用使用计划须清楚说明依赖碳信用实现净目标的程度"
+    citation: "cit-s2-118"
+
+  # ================================================================
+  # Appendix C — 过渡规定 (Transition)
+  # ================================================================
+
+  - id: "gf-s2-098"
+    name: "首年报告豁免声明"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "pre_calculation"
+    condition: {"==": [{"var": "input.entity.is_first_ifrs_s2_year"}, true]}
+    assertion:
+      {"!=": [{"var": "output.methodology.transition_relief_applied"}, null]}
+    on_fail: "raise_warning"
+    on_fail_message: "IFRS S2 Appendix C, Para C4: 首年应用IFRS S2时，须声明是否使用过渡豁免（其他方法继续使用、Scope 3豁免）"
+    citation: "cit-s2-120"
+
+  - id: "gf-s2-099"
+    name: "December 2025修正案过渡调整"
+    type: "requirement"
+    priority: "SHOULD"
+    severity: "warning"
+    lifecycle: "post_audit"
+    condition:
+      {"and": [
+        {"==": [{"var": "input.entity.is_first_amendment_year"}, true]},
+        {"!=": [{"var": "input.entity.previously_applied_ifrs_s2"}, null]}
+      ]}
+    assertion:
+      {"or": [
+        {"!=": [{"var": "output.methodology.amendment_transition_adjustments"}, null]},
+        {"!=": [{"var": "input.justifications.gf-s2-099"}, null]}
+      ]}
+    on_fail: "require_justification"
+    on_fail_message: "IFRS S2 Appendix C, Para C6: 首次应用December 2025修正案时，须调整比较信息（排放计量方法、Category 15、行业分类）"
+    citation: "cit-s2-122"
 
 dependencies:
   - ref: "scope1/principles/emission-categories"
