@@ -1,0 +1,1125 @@
+# Smithery.ai configuration for Spec-Driven Review
+# https://smithery.ai/docs/config
+
+name: spec-driven-review
+description: >
+  MCP server for GHG Protocol + green finance cross-domain compliance audit.
+  Driven by machine-readable YAML specs (473 rules, 839 citations) covering
+  Scope 1/2/3 emissions, green bonds, green credits, and ISSB S2 climate
+  disclosures. Supports multi-spec cross-domain audit, semantic search,
+  gap analysis, remediation guidance, and dynamic spec updates.
+version: 1.0.0
+author: nikeandocean
+homepage: https://nikeandocean.github.io/carbon-accounting-specs/
+repository: https://github.com/Nikeandocean/carbon-accounting-specs
+
+# Entry point
+entryPoint: mcp_server.server:main
+
+# Runtime configuration
+runtime: python
+pythonVersion: "3.11"
+
+# Environment variables
+env:
+  - name: SPEC_REMOTE
+    description: >
+      URL to a zip archive of spec files (e.g. from R2/S3).
+      If set, specs are downloaded at startup instead of using bundled files.
+    required: false
+  - name: SPEC_DIR
+    description: Local path to spec directory (overrides bundled specs)
+    required: false
+
+# MCP tools exposed (explicit schema for Smithery scoring)
+tools:
+  # ── Spec-Driven Audit (Core) ──────────────────────────────────
+  - name: describe_spec
+    description: >
+      Get a high-level overview of a spec: rule count, phase distribution,
+      severity breakdown, citation count, and data requirements summary.
+    args:
+      spec_id:
+        type: string
+        description: Spec identifier (e.g. "issb_s2", "scope3_category1")
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Spec overview containing rule count, phase distribution, severity
+        breakdown, citation count, and data requirements summary.
+      properties:
+        spec_id:
+          type: string
+          description: The spec identifier that was queried
+        rule_count:
+          type: integer
+          description: Total number of rules in the spec
+        phase_distribution:
+          type: object
+          description: Rule count per lifecycle phase (pre_calculation, runtime_inference, post_audit)
+        severity_breakdown:
+          type: object
+          description: Rule count per severity level (fatal, warning, info)
+        citation_count:
+          type: integer
+          description: Number of source citations in the spec
+        data_requirements:
+          type: object
+          description: Summary of required, optional, and conditional data fields
+      required:
+        - spec_id
+        - rule_count
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: get_data_requirements
+    description: >
+      Extract all data fields required by a spec, classified as required,
+      optional, or conditional. Returns field paths, data types, source
+      citations, and validation rules.
+    args:
+      spec_id:
+        type: string
+        description: Spec identifier
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Data requirements with fields classified as required, optional,
+        or conditional, including paths, types, and source citations.
+      properties:
+        spec_id:
+          type: string
+          description: The spec identifier
+        required_fields:
+          type: array
+          description: Fields that must be present for compliance
+        optional_fields:
+          type: array
+          description: Fields that enhance compliance but are not mandatory
+        conditional_fields:
+          type: array
+          description: Fields required only under certain conditions
+      required:
+        - spec_id
+        - required_fields
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: analyze_gaps
+    description: >
+      Compare actual data against spec requirements to identify gaps.
+      Returns missing required fields, failed rules, and coverage metrics.
+    args:
+      spec_id:
+        type: string
+        description: Spec identifier
+        required: true
+      data:
+        type: object
+        description: Actual data to check against spec requirements
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Gap analysis results including missing fields, failed rules,
+        and overall coverage percentage.
+      properties:
+        spec_id:
+          type: string
+          description: The spec identifier
+        missing_required:
+          type: array
+          description: List of required fields missing from the provided data
+        failed_rules:
+          type: array
+          description: Rules that would fail with the current data
+        coverage:
+          type: number
+          description: Percentage of requirements covered (0-100)
+      required:
+        - spec_id
+        - coverage
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: validate_data
+    description: >
+      Execute all spec rules against provided data. Returns per-rule
+      pass/fail results with severity, citations, and failure details.
+    args:
+      spec_id:
+        type: string
+        description: Spec identifier
+        required: true
+      data:
+        type: object
+        description: Data to validate against spec rules
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Validation results with per-rule pass/fail, severity levels,
+        and detailed failure information.
+      properties:
+        spec_id:
+          type: string
+          description: The spec identifier
+        total_rules:
+          type: integer
+          description: Total number of rules evaluated
+        passed:
+          type: integer
+          description: Number of rules that passed
+        failed:
+          type: integer
+          description: Number of rules that failed
+        results:
+          type: array
+          description: Per-rule results with pass/fail status, severity, and details
+      required:
+        - spec_id
+        - total_rules
+        - passed
+        - failed
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: get_remediation
+    description: >
+      Get remediation guidance for failed rules. Returns actionable
+      steps, related citations, and priority recommendations.
+    args:
+      spec_id:
+        type: string
+        description: Spec identifier
+        required: true
+      data:
+        type: object
+        description: Data that was validated
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Remediation guidance with actionable steps, citations, and
+        priority recommendations for each failed rule.
+      properties:
+        spec_id:
+          type: string
+          description: The spec identifier
+        remediation:
+          type: array
+          description: List of remediation steps with priority and citations
+      required:
+        - spec_id
+        - remediation
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: generate_report
+    description: >
+      Generate a full compliance audit report in Markdown format.
+      Includes executive summary, rule results, gap analysis, and
+      remediation plan.
+    args:
+      spec_id:
+        type: string
+        description: Spec identifier
+        required: true
+      data:
+        type: object
+        description: Data to audit
+        required: true
+      report_format:
+        type: string
+        description: Output format: "markdown" or "json"
+        default: markdown
+        required: false
+    outputSchema:
+      type: object
+      description: >
+        Complete compliance audit report with executive summary,
+        detailed rule results, gap analysis, and remediation plan.
+      properties:
+        spec_id:
+          type: string
+          description: The spec identifier
+        format:
+          type: string
+          description: Report format (markdown or json)
+        report:
+          type: string
+          description: The full audit report content
+        summary:
+          type: object
+          description: Executive summary with pass/fail counts and compliance score
+      required:
+        - spec_id
+        - format
+        - report
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  # ── Phase 4: Multi-Spec Cross-Domain ──────────────────────────
+  - name: describe_multi_spec
+    description: >
+      Describe multiple specs as a unified audit scope. Returns combined
+      rule count, phase distribution, and cross-domain overview.
+    args:
+      spec_ids:
+        type: array
+        description: List of spec identifiers to combine
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Unified overview of multiple specs with combined rule count,
+        phase distribution, and cross-domain summary.
+      properties:
+        spec_ids:
+          type: array
+          description: List of spec identifiers
+        total_rules:
+          type: integer
+          description: Combined rule count across all specs
+        phase_distribution:
+          type: object
+          description: Combined phase distribution
+        cross_domain_summary:
+          type: object
+          description: Cross-domain overlap and consistency overview
+      required:
+        - spec_ids
+        - total_rules
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: validate_multi_spec
+    description: >
+      Validate data against multiple specs simultaneously. Returns
+      per-spec and combined validation results.
+    args:
+      spec_ids:
+        type: array
+        description: List of spec identifiers
+        required: true
+      data:
+        type: object
+        description: Data to validate
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Multi-spec validation results with per-spec breakdown
+        and combined pass/fail statistics.
+      properties:
+        spec_ids:
+          type: array
+          description: List of spec identifiers validated
+        per_spec_results:
+          type: object
+          description: Validation results keyed by spec_id
+        combined:
+          type: object
+          description: Aggregate pass/fail counts across all specs
+      required:
+        - spec_ids
+        - per_spec_results
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: generate_cross_domain_report
+    description: >
+      Generate a cross-domain compliance report covering multiple specs.
+      Includes per-spec breakdown and cross-domain consistency checks.
+    args:
+      spec_ids:
+        type: array
+        description: List of spec identifiers
+        required: true
+      data:
+        type: object
+        description: Data to audit
+        required: true
+      report_format:
+        type: string
+        description: Output format: "markdown" or "json"
+        default: markdown
+        required: false
+    outputSchema:
+      type: object
+      description: >
+        Cross-domain compliance report with per-spec breakdown,
+        consistency checks, and combined recommendations.
+      properties:
+        spec_ids:
+          type: array
+          description: List of spec identifiers
+        format:
+          type: string
+          description: Report format
+        report:
+          type: string
+          description: Full cross-domain audit report
+      required:
+        - spec_ids
+        - format
+        - report
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  # ── Phase 5: Semantic Search ──────────────────────────────────
+  - name: search_citations
+    description: >
+      Natural language search over spec citations. Returns matching
+      source text with page references and relevance scores.
+    args:
+      query:
+        type: string
+        description: Natural language search query
+        required: true
+      spec_id:
+        type: string
+        description: Limit search to a specific spec (optional)
+        required: false
+      top_k:
+        type: integer
+        description: Number of results to return (default 5)
+        default: 5
+        required: false
+    outputSchema:
+      type: object
+      description: >
+        Search results over citations with relevance scores,
+        source text, and page references.
+      properties:
+        query:
+          type: string
+          description: The original search query
+        count:
+          type: integer
+          description: Number of results returned
+        results:
+          type: array
+          description: Matching citations with text, source, page, and relevance score
+      required:
+        - query
+        - count
+        - results
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: search_rules
+    description: >
+      Natural language search over spec rules. Returns matching rules
+      with severity, phase, and relevance scores.
+    args:
+      query:
+        type: string
+        description: Natural language search query
+        required: true
+      spec_id:
+        type: string
+        description: Limit search to a specific spec (optional)
+        required: false
+      top_k:
+        type: integer
+        description: Number of results to return (default 5)
+        default: 5
+        required: false
+    outputSchema:
+      type: object
+      description: >
+        Search results over rules with relevance scores,
+        severity, phase, and rule details.
+      properties:
+        query:
+          type: string
+          description: The original search query
+        count:
+          type: integer
+          description: Number of results returned
+        results:
+          type: array
+          description: Matching rules with id, description, severity, phase, and relevance score
+      required:
+        - query
+        - count
+        - results
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: search_all
+    description: >
+      Search across both citations and rules simultaneously.
+      Returns unified results sorted by relevance.
+    args:
+      query:
+        type: string
+        description: Natural language search query
+        required: true
+      top_k:
+        type: integer
+        description: Number of results to return (default 5)
+        default: 5
+        required: false
+    outputSchema:
+      type: object
+      description: >
+        Unified search results across citations and rules,
+        sorted by relevance score.
+      properties:
+        query:
+          type: string
+          description: The original search query
+        count:
+          type: integer
+          description: Total number of results returned
+        citations:
+          type: array
+          description: Matching citations
+        rules:
+          type: array
+          description: Matching rules
+      required:
+        - query
+        - count
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  # ── Phase 6: Dynamic Spec Update ──────────────────────────────
+  - name: reload_specs
+    description: >
+      Reload all spec files from disk. Use after updating spec files
+      to apply changes without restarting the server.
+    outputSchema:
+      type: object
+      description: >
+        Result of spec reload operation with count and list of reloaded specs.
+      properties:
+        reloaded:
+          type: integer
+          description: Number of specs reloaded
+        specs:
+          type: array
+          description: List of reloaded spec identifiers
+      required:
+        - reloaded
+    annotations:
+      readOnlyHint: false
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: get_spec_versions
+    description: >
+      Get version information for all loaded specs. Returns spec_id,
+      version, rule count, and citation count.
+    outputSchema:
+      type: object
+      description: >
+        Version information for all loaded specs.
+      properties:
+        specs:
+          type: array
+          description: >
+            List of spec version info objects, each with spec_id,
+            version, rule_count, and citation_count
+      required:
+        - specs
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: compare_spec_rules
+    description: >
+      Get a rule snapshot for a spec (all rules with IDs, severity, phase).
+      Used as baseline for diff comparison.
+    args:
+      spec_id:
+        type: string
+        description: Spec identifier
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Rule snapshot containing all rules with their IDs, severity,
+        and lifecycle phase.
+      properties:
+        spec_id:
+          type: string
+          description: The spec identifier
+        rule_count:
+          type: integer
+          description: Number of rules in the snapshot
+        snapshot:
+          type: array
+          description: List of rule objects with id, severity, phase, and description
+      required:
+        - spec_id
+        - rule_count
+        - snapshot
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: diff_spec_snapshots
+    description: >
+      Compare two rule snapshots to identify added, removed, and modified
+      rules. Returns structured diff report.
+    args:
+      spec_id:
+        type: string
+        description: Spec identifier
+        required: true
+      old_snapshot:
+        type: array
+        description: Baseline rule snapshot (from compare_spec_rules)
+        required: true
+      new_snapshot:
+        type: array
+        description: Current rule snapshot (from compare_spec_rules)
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Diff report showing added, removed, and modified rules
+        between two snapshots.
+      properties:
+        spec_id:
+          type: string
+          description: The spec identifier
+        added:
+          type: array
+          description: Rules present in new_snapshot but not in old_snapshot
+        removed:
+          type: array
+          description: Rules present in old_snapshot but not in new_snapshot
+        modified:
+          type: array
+          description: Rules present in both but with changes
+        unchanged:
+          type: integer
+          description: Number of rules that remained the same
+      required:
+        - spec_id
+        - added
+        - removed
+        - modified
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  # ── GHG Protocol Domain Tools ─────────────────────────────────
+  - name: audit_scope1
+    description: >
+      Audit Scope 1 direct emission data against GHG Protocol rules.
+      Checks fuel combustion, process emissions, fugitive emissions.
+    args:
+      data:
+        type: object
+        description: Scope 1 emission data
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Scope 1 audit results with per-rule pass/fail, severity,
+        and compliance summary.
+      properties:
+        status:
+          type: string
+          description: Overall compliance status (pass, warning, fail)
+        total_rules:
+          type: integer
+          description: Total rules evaluated
+        passed:
+          type: integer
+          description: Rules that passed
+        failed:
+          type: integer
+          description: Rules that failed
+        results:
+          type: array
+          description: Per-rule audit results
+      required:
+        - status
+        - total_rules
+        - passed
+        - failed
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: audit_scope2
+    description: >
+      Audit Scope 2 purchased energy data. Supports both location-based
+      and market-based methods with fallback chains.
+    args:
+      data:
+        type: object
+        description: Scope 2 emission data
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Scope 2 audit results covering both location-based and
+        market-based methods.
+      properties:
+        status:
+          type: string
+          description: Overall compliance status
+        total_rules:
+          type: integer
+          description: Total rules evaluated
+        passed:
+          type: integer
+          description: Rules that passed
+        failed:
+          type: integer
+          description: Rules that failed
+        results:
+          type: array
+          description: Per-rule audit results
+      required:
+        - status
+        - total_rules
+        - passed
+        - failed
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: audit_scope3
+    description: >
+      Audit Scope 3 supply chain emission data. Covers 15 categories
+      with category-specific rules and calculation methods.
+    args:
+      data:
+        type: object
+        description: Scope 3 emission data
+        required: true
+      category:
+        type: integer
+        description: Scope 3 category number (1-15)
+        required: false
+    outputSchema:
+      type: object
+      description: >
+        Scope 3 audit results with category-specific rule evaluation.
+      properties:
+        status:
+          type: string
+          description: Overall compliance status
+        category:
+          type: integer
+          description: Scope 3 category audited (if specified)
+        total_rules:
+          type: integer
+          description: Total rules evaluated
+        passed:
+          type: integer
+          description: Rules that passed
+        failed:
+          type: integer
+          description: Rules that failed
+        results:
+          type: array
+          description: Per-rule audit results
+      required:
+        - status
+        - total_rules
+        - passed
+        - failed
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: get_rule
+    description: >
+      Get detailed information about a specific GHG Protocol rule
+      including assertion, citations, and severity.
+    args:
+      rule_id:
+        type: string
+        description: Rule identifier (e.g. "rule-pre-001")
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Detailed rule information including assertion logic,
+        source citations, and severity level.
+      properties:
+        rule_id:
+          type: string
+          description: The rule identifier
+        rule:
+          type: object
+          description: Full rule definition with assertion, severity, phase, and citations
+      required:
+        - rule_id
+        - rule
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: list_rules
+    description: >
+      List applicable rules for a given spec scope and phase.
+    args:
+      scope:
+        type: string
+        description: Spec scope (e.g. "scope1", "scope2")
+        required: false
+      phase:
+        type: string
+        description: Rule phase: pre_calculation, runtime_inference, post_audit
+        required: false
+    outputSchema:
+      type: object
+      description: >
+        List of applicable rules filtered by scope and phase.
+      properties:
+        scope:
+          type: string
+          description: The scope filter applied
+        phase:
+          type: string
+          description: The phase filter applied
+        count:
+          type: integer
+          description: Number of rules matching the filters
+        rules:
+          type: array
+          description: List of matching rule objects
+      required:
+        - count
+        - rules
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: explain_failure
+    description: >
+      Explain why a rule failed and provide remediation guidance
+      with references to GHG Protocol source text.
+    args:
+      rule_id:
+        type: string
+        description: Failed rule identifier
+        required: true
+      data:
+        type: object
+        description: Data that caused the failure
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Failure explanation with root cause, remediation steps,
+        and source citations.
+      properties:
+        rule_id:
+          type: string
+          description: The failed rule identifier
+        explanation:
+          type: string
+          description: Human-readable explanation of why the rule failed
+        remediation:
+          type: array
+          description: Actionable remediation steps
+        citations:
+          type: array
+          description: Relevant GHG Protocol source references
+      required:
+        - rule_id
+        - explanation
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  # ── Green Finance Domain Tools ────────────────────────────────
+  - name: check_green_bond
+    description: >
+      Check if a project qualifies under the Green Bond endorsed project
+      catalog. Maps to eligible categories and identifies exclusions.
+    args:
+      project:
+        type: object
+        description: Project details (industry, technology, description)
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Green bond eligibility result with matched categories
+        and exclusion list.
+      properties:
+        eligible:
+          type: boolean
+          description: Whether the project qualifies as a green bond project
+        categories:
+          type: array
+          description: Matched green bond catalog categories
+        exclusions:
+          type: array
+          description: Applicable exclusion criteria
+        confidence:
+          type: number
+          description: Classification confidence score (0-1)
+      required:
+        - eligible
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: check_green_credit
+    description: >
+      Check if a loan project qualifies as green credit under PBOC
+      classification standards.
+    args:
+      project:
+        type: object
+        description: Loan project details
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Green credit classification result with eligibility
+        and category mapping.
+      properties:
+        eligible:
+          type: boolean
+          description: Whether the project qualifies as green credit
+        classification:
+          type: string
+          description: PBOC green credit classification
+        reasoning:
+          type: string
+          description: Classification reasoning
+      required:
+        - eligible
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: check_issb_s2
+    description: >
+      Check ISSB S2 climate disclosure compliance. Validates governance,
+      strategy, risk management, and metrics/targets disclosures.
+    args:
+      data:
+        type: object
+        description: Disclosure data
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        ISSB S2 compliance results across four disclosure pillars:
+        governance, strategy, risk management, metrics and targets.
+      properties:
+        status:
+          type: string
+          description: Overall compliance status
+        pillars:
+          type: object
+          description: Per-pillar compliance results (governance, strategy, risk, metrics)
+        total_rules:
+          type: integer
+          description: Total rules evaluated
+        passed:
+          type: integer
+          description: Rules that passed
+        failed:
+          type: integer
+          description: Rules that failed
+      required:
+        - status
+        - total_rules
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: classify_project
+    description: >
+      Auto-classify a project into Green Bond catalog categories.
+      Returns matched category, confidence score, and reasoning.
+    args:
+      project:
+        type: object
+        description: Project description and attributes
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Project classification result with matched category,
+        confidence score, and classification reasoning.
+      properties:
+        category:
+          type: string
+          description: Best-matched green bond catalog category
+        confidence:
+          type: number
+          description: Classification confidence score (0-1)
+        reasoning:
+          type: string
+          description: Explanation of why the category was selected
+        alternatives:
+          type: array
+          description: Alternative categories considered
+      required:
+        - category
+        - confidence
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  - name: get_gf_rule
+    description: >
+      Get detailed information about a green finance rule.
+    args:
+      rule_id:
+        type: string
+        description: Green finance rule identifier
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Detailed green finance rule information.
+      properties:
+        rule_id:
+          type: string
+          description: The rule identifier
+        rule:
+          type: object
+          description: Full rule definition
+      required:
+        - rule_id
+        - rule
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+  # ── Cross-Domain Bridge ───────────────────────────────────────
+  - name: full_green_finance_audit
+    description: >
+      One-stop green finance compliance audit: carbon data review →
+      green bond eligibility → green credit classification → combined
+      judgment. Cross-domain integration of GHG Protocol and green
+      finance standards.
+    args:
+      carbon_data:
+        type: object
+        description: Carbon emission data (Scope 1/2/3)
+        required: true
+      project:
+        type: object
+        description: Project details for green finance classification
+        required: true
+    outputSchema:
+      type: object
+      description: >
+        Complete cross-domain audit result combining carbon compliance,
+        green bond eligibility, and green credit classification.
+      properties:
+        carbon_audit:
+          type: object
+          description: Carbon data compliance results
+        green_bond:
+          type: object
+          description: Green bond eligibility results
+        green_credit:
+          type: object
+          description: Green credit classification results
+        overall_status:
+          type: string
+          description: Combined compliance status
+        recommendations:
+          type: array
+          description: Cross-domain remediation recommendations
+      required:
+        - overall_status
+    annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: true
+      openWorldHint: false
+
+# Tags for discovery
+tags:
+  - carbon-accounting
+  - ghg-protocol
+  - green-finance
+  - issb
+  - climate-disclosure
+  - compliance
+  - sustainability
+  - esg
+
+# Category
+category: Science & Engineering
+
+# License
+license: MIT

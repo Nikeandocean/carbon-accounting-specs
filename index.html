@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spec-Driven Review — MCP Server for Carbon & Green Finance Compliance</title>
+    <meta name="description" content="Machine-parseable YAML specs driving automated compliance audit across carbon accounting (GHG Protocol) and green finance (ISSB S2, Green Bond, Green Credit). 473 rules, 839 citations, 25 MCP tools.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #0d1117;
+            color: #ecf2f8;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #58a6ff, #3fb950);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero .subtitle {
+            color: #8b949e;
+            font-size: 1.2rem;
+            margin-bottom: 32px;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat .number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #58a6ff;
+        }
+        .stat .label {
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+        .buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        .btn-primary {
+            background-color: #238636;
+            color: #fff;
+        }
+        .btn-primary:hover { background-color: #2ea043; }
+        .btn-secondary {
+            background-color: #21262d;
+            color: #ecf2f8;
+            border: 1px solid #30363d;
+        }
+        .btn-secondary:hover { background-color: #30363d; }
+
+        .section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 24px;
+            color: #ecf2f8;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .feature {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 24px;
+        }
+        .feature h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #58a6ff;
+        }
+        .feature p {
+            color: #8b949e;
+            font-size: 0.95rem;
+        }
+
+        .tools-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .tools-table th, .tools-table td {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 1px solid #21262d;
+            font-size: 0.9rem;
+        }
+        .tools-table th {
+            color: #8b949e;
+            font-weight: 600;
+        }
+        .tools-table td:first-child {
+            color: #58a6ff;
+            font-family: monospace;
+        }
+
+        .install-code {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #ecf2f8;
+            overflow-x: auto;
+            margin-top: 12px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #8b949e;
+            font-size: 0.85rem;
+            border-top: 1px solid #21262d;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .footer a { color: #58a6ff; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Spec-Driven Review</h1>
+        <p class="subtitle">MCP Server for Carbon & Green Finance Compliance Audit</p>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="number">473</div>
+                <div class="label">Rules</div>
+            </div>
+            <div class="stat">
+                <div class="number">839</div>
+                <div class="label">Citations</div>
+            </div>
+            <div class="stat">
+                <div class="number">25</div>
+                <div class="label">MCP Tools</div>
+            </div>
+            <div class="stat">
+                <div class="number">46</div>
+                <div class="label">Spec Files</div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <a href="https://smithery.ai/server/nikeandocean/spec-driven-review" class="btn btn-primary">Install via Smithery</a>
+            <a href="https://github.com/Nikeandocean/carbon-accounting-specs" class="btn btn-secondary">View on GitHub</a>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Coverage</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>Scope 1/2/3 Emissions</h3>
+                <p>Full GHG Protocol compliance audit for direct emissions, purchased energy, and supply chain across 15 categories.</p>
+            </div>
+            <div class="feature">
+                <h3>Green Bond</h3>
+                <p>Eligibility check against ICMA Green Bond endorsed project catalog with category mapping and exclusion detection.</p>
+            </div>
+            <div class="feature">
+                <h3>Green Credit</h3>
+                <p>PBOC green credit classification for loan projects with compliance validation.</p>
+            </div>
+            <div class="feature">
+                <h3>ISSB S2 Disclosure</h3>
+                <p>Climate disclosure compliance across governance, strategy, risk management, and metrics/targets pillars.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Quick Start</h2>
+        <div class="install-code">
+# Via Smithery CLI<br>
+npx -y @smithery/cli install spec-driven-review --client claude<br>
+<br>
+# Via pip<br>
+pip install spec-driven-review<br>
+python -m mcp_server
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>MCP Tools (25)</h2>
+        <table class="tools-table">
+            <thead>
+                <tr><th>Phase</th><th>Tools</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Core Audit</td><td>describe_spec, validate_data, analyze_gaps, ...</td><td>Spec-driven compliance audit workflow</td></tr>
+                <tr><td>Cross-Domain</td><td>describe_multi_spec, validate_multi_spec, ...</td><td>Multi-spec joint validation</td></tr>
+                <tr><td>Search</td><td>search_citations, search_rules, search_all</td><td>TF-IDF semantic search over specs</td></tr>
+                <tr><td>Dynamic</td><td>reload_specs, diff_spec_snapshots, ...</td><td>Hot-reload and version diffing</td></tr>
+                <tr><td>GHG Protocol</td><td>audit_scope1/2/3, get_rule, list_rules, ...</td><td>Carbon emission compliance</td></tr>
+                <tr><td>Green Finance</td><td>check_green_bond/credit/issb_s2, ...</td><td>Green finance classification</td></tr>
+                <tr><td>Bridge</td><td>full_green_finance_audit</td><td>One-stop cross-domain audit</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Architecture</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>Layer 1: Schema (Deterministic)</h3>
+                <p>JsonLogic expressions + external functions. Machine-executable without LLM. ~80% of rules.</p>
+            </div>
+            <div class="feature">
+                <h3>Layer 2: Knowledge (Semantic)</h3>
+                <p>Citations, interpretation guidance, and semantic context from GHG Protocol for LLM agents.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>
+            <a href="https://github.com/Nikeandocean/carbon-accounting-specs">GitHub</a> ·
+            <a href="https://smithery.ai/server/nikeandocean/spec-driven-review">Smithery</a> ·
+            MIT License
+        </p>
+        <p style="margin-top: 8px;">Built by <a href="https://github.com/Nikeandocean">@Nikeandocean</a></p>
+    </div>
+</body>
+</html>
